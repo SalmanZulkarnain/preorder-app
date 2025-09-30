@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { cookies } from "next/headers";
 import { getDashboardData } from "@/lib/dashboard-data";
 import SalesReportChart from "@/components/features/dashboard/SalesReportChart";
