@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { writeFile } from "fs/promises";
 import prisma from '@/lib/prisma';
 import path from 'path';
+import { put } from "@vercel/blob";
 
 export async function getSessionId() {
     const cookieStore = await cookies();
@@ -78,36 +79,48 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-    const formData = await request.formData();
-
-    const image = formData.get("image");
-    const name = formData.get("name");
-    const description = formData.get("description");
-    const price = Number(formData.get("price"));
-
-    if (!name || !description || isNaN(price)) {
-        return NextResponse.json(
-            { message: 'Invalid product data' },
-            { status: 400 }
-        );
-    }
-
-    let imagePath = null;
-
-    if (image && image?.name) {
-        const bytes = await image.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        const fileName = `${Date.now()}-${image.name.replace(/\s+/g, "_")}`;
-        const uploadPath = path.join(process.cwd(), "public", "uploads", fileName);
-
-        await writeFile(uploadPath, buffer);
-        imagePath = `/uploads/${fileName}`;
-    }
-
     try {
-        const products = await prisma.product.create({
+        const formData = await request.formData();
+
+        const image = formData.get("image");
+        const name = formData.get("name");
+        const description = formData.get("description");
+        const price = Number(formData.get("price"));
+
+        if (!name || !description || isNaN(price)) {
+            return NextResponse.json(
+                { message: 'Invalid product data', success: false },
+                { status: 400 }
+            );
+        }
+
+        let imageUrl = null;
+
+        if (image && image?.name) {
+            const fileName = `${Date.now()}-${image.name.replace(/\s+/g, "_")}`;
+            const isDevelopment = process.env.NODE_ENV === 'development';
+
+            if (isDevelopment) {
+                const bytes = await image.arrayBuffer();
+                const buffer = Buffer.from(bytes);
+                const uploadPath = path.join(process.cwd(), "public", "uploads", fileName);
+
+                await writeFile(uploadPath, buffer);
+                imageUrl = `/uploads/${fileName}`;
+            } else {
+                const blob = await put(fileName, image, {
+                    access: 'public',
+                    token: process.env.BLOB_READ_WRITE_TOKEN
+                });
+
+                imageUrl = blob.url;
+            }
+
+        }
+
+        const product = await prisma.product.create({
             data: {
-                image: imagePath,
+                image: imageUrl,
                 name,
                 description,
                 price
@@ -117,14 +130,13 @@ export async function POST(request) {
         return NextResponse.json({
             message: 'Product added',
             success: true,
-            data: products
+            data: product
         }, { status: 201 });
     } catch (err) {
         console.error('Failed to add product: ', err);
         return NextResponse.json({
-            message: 'Internal server error',
+            message: err.message || 'Internal server error',
             success: false
         }, { status: 500 });
     }
 }
-
