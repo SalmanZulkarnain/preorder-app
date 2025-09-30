@@ -4,11 +4,7 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'sanex.co.id'
-            },
-            {
-                protocol: 'https',
-                hostname: 'allofresh.id'
+                hostname: '**.vercel-storage.com'
             }
         ]
     }

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getPayment } from "@/lib/utils/fetchData";
 import TransactionAdminClient from "./TransactionAdminClient";
 
