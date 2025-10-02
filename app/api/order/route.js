@@ -102,7 +102,7 @@ export async function POST(request) {
         data: {
           transactionId,
           customerId: customer.id,
-          customerName: customer.name,
+          customerName: name,
           totalAmount: total,
           status: 'unpaid'
         }

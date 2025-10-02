@@ -14,15 +14,24 @@ import {
 } from "lucide-react";
 import { getPayment } from "@/lib/utils/fetchData";
 import Link from "next/link";
+import { SummaryCard } from "@/components/features/dashboard/summary-card";
 import { formatDate } from "@/lib/utils/formatDate";
+
+const getPercentStatus = (percent) => {
+  const value = parseFloat(percent.replace("%", ""));
+  return { value, isPositive: value >= 0 };
+};
 
 export default async function DashboardPage() {
   const payments = await getPayment();
-  const recentPayments = payments.data.slice(0, 5)
+  const recentPayments = payments.data.slice(0, 5);
 
   const data = await getDashboardData();
-  const percentValue = parseFloat(data.revenueDailyPercent.replace("%", ""));
-  const isPositive = percentValue >= 0;
+
+  const revenueDaily = getPercentStatus(data.revenueDailyPercent);
+  const revenueWeekly = getPercentStatus(data.revenueWeeklyPercent);
+  const orderWeekly = getPercentStatus(data.weeklyOrdersPercent);
+  const customerWeekly = getPercentStatus(data.weeklyCustomersPercent);
 
   const cookieStore = await cookies();
   const session = cookieStore.get("session_user");
@@ -36,72 +45,45 @@ export default async function DashboardPage() {
 
       {/* card */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-5">
-        <div className="bg-white rounded-xl p-4 space-y-4">
-          <div className="inline-flex bg-gray-100 rounded-xl p-3">
-            <DollarSign className="text-gray-500" />
-          </div>
-          <p className="text-sm text-gray-500">Revenue</p>
-          <h3 className="text-2xl font-bold">
-            Rp{data.weeklyRevenue.toLocaleString("id-ID")}
-          </h3>
-          <div>
-            <p className="text-sm flex justify-between items-center">
-              <span className="bg-red-100 rounded p-1 text-red-700">
-                {data.revenueWeeklyPercent}
-              </span>
-              In 7days
-            </p>
-          </div>
-        </div>
-        <div className="bg-white rounded-xl p-4 space-y-4">
-          <div className="inline-flex bg-gray-100 rounded-xl p-3">
-            <Users className="text-gray-500" />
-          </div>
-          <p className="text-sm text-gray-500">Customers</p>
-          <h3 className="text-2xl font-bold">{data.weeklyCustomers}</h3>
-          <div>
-            <p className="text-sm flex justify-between items-center">
-              <span className="bg-green-100 rounded p-1 text-green-700">
-                +19%
-              </span>
-              In 7days
-            </p>
-          </div>
-        </div>
-        <div className="bg-white rounded-xl p-4 space-y-4">
-          <div className="inline-flex bg-gray-100 rounded-xl p-3">
-            <Box className="text-gray-500" />
-          </div>
-          <p className="text-sm text-gray-500">Orders</p>
-          <h3 className="text-2xl font-bold">{data.weeklyOrders}</h3>
-          <div>
-            <p className="text-sm flex justify-between items-center">
-              <span className="bg-green-100 rounded p-1 text-green-700">
-                +14%
-              </span>
-              In 7days
-            </p>
-          </div>
-        </div>
+        <SummaryCard
+          icon={<DollarSign className="text-gray-500" />}
+          title="Revenue"
+          data={`Rp${data.weeklyRevenue.toLocaleString("id-ID")}`}
+          percent={data.revenueWeeklyPercent}
+          isPositive={revenueWeekly.isPositive}
+          percentValue={revenueWeekly.value}
+        />
+
+        <SummaryCard
+          title="Customers"
+          data={data.weeklyCustomers}
+          percent={data.weeklyCustomersPercent}
+          isPositive={customerWeekly.isPositive}
+          percentValue={customerWeekly.value}
+          icon={<Users className="text-gray-500" />}
+        />
+
+        <SummaryCard
+          title="Orders"
+          data={data.weeklyOrders}
+          percent={data.weeklyOrdersPercent}
+          isPositive={orderWeekly.isPositive}
+          percentValue={orderWeekly.value}
+          icon={<Box className="text-gray-500" />}
+        />
         <div className="bg-white rounded-xl p-4 space-y-4">
           <div className="inline-flex bg-gray-100 rounded-xl p-3">
             <Hamburger className="text-gray-500" />
           </div>
           <p className="text-sm text-gray-500">Products</p>
           <h3 className="text-2xl font-bold">{data.totalProducts}</h3>
-          <div>
-            <p className="text-sm flex justify-between items-center">
-              <span className="bg-red-100 rounded p-1 text-red-700">-9%</span>In
-              7days
-            </p>
-          </div>
         </div>
       </div>
 
       <div className="grid sm:grid-cols-4 md:grid-cols-5 gap-5 mt-5 items-start">
         <div className="bg-white rounded-xl p-4 space-y-4 sm:col-span-4 md:col-span-3">
           <SalesReportChart
-            weeklyRevenue={data.weeklyRevenue.toLocaleString('id-ID')}
+            weeklyRevenue={data.weeklyRevenue.toLocaleString("id-ID")}
             salesData={data.salesData}
             revenueWeeklyPercent={data.revenueWeeklyPercent}
           />
@@ -140,18 +122,20 @@ export default async function DashboardPage() {
                 <p className="text-sm">Daily Revenue</p>
                 <div
                   className={`flex items-center justify-between ${
-                    isPositive
+                    revenueDaily.isPositive
                       ? "bg-green-100 text-green-700"
                       : "bg-red-100 text-red-700"
                   } rounded-full px-1.5 py-1 gap-1`}
                 >
-                  {isPositive ? (
+                  {revenueDaily.isPositive ? (
                     <MoveUp className="w-4" />
                   ) : (
                     <MoveDown className="w-4" />
                   )}
                   <span className="text-sm">
-                    {isPositive && percentValue > 0 ? "+" : ""}
+                    {revenueDaily.isPositive && revenueDaily.value > 0
+                      ? "+"
+                      : ""}
                     {data.revenueDailyPercent}
                   </span>
                 </div>
@@ -211,7 +195,7 @@ export default async function DashboardPage() {
                       {p.transactionId}
                     </td>
                     <td className="px-5 py-4 border-b border-gray-200 first:pl-0">
-                      {p.order.customer.name +
+                      {p.order.customerName +
                         ` (${p.order.customer.phoneNumber})`}
                     </td>
                     <td className="px-5 py-4 border-b border-gray-200 first:pl-0">
