@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import { AuthProvider } from "@/lib/auth-context";
 import { ProductProvider } from "@/lib/product-context";
 import { CartProvider } from "@/lib/cart-context";
-import { PaymentProvider } from "@/lib/payment-context";
 import LayoutContent from "@/components/layout/LayoutContent";
 import Script from "next/script";
 
@@ -24,11 +23,6 @@ export default function RootLayout({ children }) {
               <LayoutContent>{children}</LayoutContent>
             </CartProvider>
           </ProductProvider>
-          <Script
-            src="https://app.sandbox.midtrans.com/snap/snap.js"
-            data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
-            strategy="afterInteractive"
-          />
         </AuthProvider>
       </body>
     </html>

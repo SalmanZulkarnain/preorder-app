@@ -7,8 +7,8 @@ export default function Checkout() {
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(null); 
-  const [messageType, setMessageType] = useState(""); 
+  const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState("");
 
   const { carts, fetchCarts, totalAmount } = useCart();
 
@@ -34,7 +34,7 @@ export default function Checkout() {
           name: name.trim(),
           phoneNumber: phoneNumber.trim(),
         }),
-        credentials: "include"
+        credentials: "include",
       });
 
       const resultOrder = await resOrder.json();
@@ -47,47 +47,34 @@ export default function Checkout() {
         setPhoneNumber("");
         console.log(resultOrder.data.order.id);
 
-        const resMidtrans = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/midtrans`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ orderId: resultOrder.data.order.id }),
-        });
+        const resMidtrans = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/midtrans`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ orderId: resultOrder.data.order.id }),
+          }
+        );
 
         const resultMidtrans = await resMidtrans.json();
 
-        console.log(resultMidtrans);
-        console.log("Snap token: ", resultMidtrans.token);
-        console.log("Redirect URL: ", resultMidtrans.redirect_url);
-
         if (resultMidtrans.token) {
-          // ✅ Panggil Snap popup
-          window.snap.pay(resultMidtrans.token, {
-            onSuccess: function (result) {
-              console.log("SUCCESS:", result);
-              setMessage("Pembayaran berhasil!");
-              setMessageType("success");
-              fetchCarts();
-            },
-            onPending: function (result) {
-              console.log("PENDING:", result);
-              setMessage(
-                "Pembayaran pending. Silakan selesaikan pembayaran Anda."
-              );
-              setMessageType("info");
-            },
-            onError: function (result) {
-              console.error("ERROR:", result);
-              setMessage("Pembayaran gagal. Silakan coba lagi.");
-              setMessageType("error");
-            },
-            onClose: function () {
-              console.log("Popup ditutup");
-              setMessage("Anda menutup popup pembayaran.");
-              setMessageType("warning");
-            },
-          });
+          if (!window.snap) {
+            const script = document.createElement("script");
+            script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
+            script.setAttribute(
+              "data-client-key",
+              process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY
+            ),
+              (script.onload = () => {
+                window.snap.pay(resultMidtrans.token, callbacks);
+              });
+            document.body.appendChild(script);
+          } else {
+            window.snap.pay(resultMidtrans.token, callbacks);
+          }
         }
       } else {
         setMessage(result.message);
@@ -99,6 +86,30 @@ export default function Checkout() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const callbacks = {
+    onSuccess: function (result) {
+      console.log("SUCCESS:", result);
+      setMessage("Pembayaran berhasil!");
+      setMessageType("success");
+      fetchCarts();
+    },
+    onPending: function (result) {
+      console.log("PENDING:", result);
+      setMessage("Pembayaran pending. Silakan selesaikan pembayaran Anda.");
+      setMessageType("info");
+    },
+    onError: function (result) {
+      console.error("ERROR:", result);
+      setMessage("Pembayaran gagal. Silakan coba lagi.");
+      setMessageType("error");
+    },
+    onClose: function () {
+      console.log("Popup ditutup");
+      setMessage("Anda menutup popup pembayaran.");
+      setMessageType("warning");
+    },
   };
 
   return (

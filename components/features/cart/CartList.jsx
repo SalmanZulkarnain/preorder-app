@@ -2,6 +2,7 @@
 
 import CartCard from "./CartCard";
 import { useCart } from "@/lib/cart-context";
+import HandlerButton from "./handleCartBtn";
 
 export default function CartList() {
   const { carts, setCarts, loading, fetchCarts } = useCart();
@@ -30,7 +31,7 @@ export default function CartList() {
                 quantity:
                   operation === "increment"
                     ? cart.quantity + 1
-                    : Math.max(1, cart.quantity - 1),
+                    : Math.max(0, cart.quantity - 1),
               }
             : cart
         )
@@ -48,7 +49,11 @@ export default function CartList() {
 
       const result = await res.json();
 
-      if (result.message === "Cart deleted") fetchCarts();
+      if (result.message === "Cart deleted successfully") {
+        setCarts(prev => prev.filter(cart => cart.id !== cartId))
+      }
+
+      // if (result.message === "Cart deleted successfully") fetchCarts();
     } catch (error) {
       setCarts(originalCarts);
     }
@@ -73,75 +78,7 @@ export default function CartList() {
       {carts.map((c) => (
         <CartCard key={c.id} cart={c}>
           {/* hapus */}
-          <button
-            onClick={() => handleDelete(c.id)}
-            className="p-3 cursor-pointer rounded-full"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 text-red-700"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-              />
-            </svg>
-          </button>
-          {/* container minus, jumlah, dan plus */}
-          <div className="sm:h-10 h-8 flex items-center outline outline-gray-500 rounded-full">
-            {/* minus */}
-            <button
-              onClick={() => handleUpdateQuantity(c.id, "decrement")}
-              className="p-3 cursor-pointer"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 text-green-700"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M20 12H4"
-                />
-              </svg>
-            </button>
-            <input
-              type="text"
-              className="text-center sm:w-8 w-5"
-              readOnly
-              value={c.quantity}
-            />
-            {/* plus */}
-            <button
-              onClick={() => handleUpdateQuantity(c.id, "increment")}
-              className="p-3 cursor-pointer"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 text-green-700"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                {" "}
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4v16m8-8H4"
-                />{" "}
-              </svg>
-            </button>
-          </div>
+          <HandlerButton cart={c} onDelete={handleDelete} onUpdateQuantity={handleUpdateQuantity} />
         </CartCard>
       ))}
     </div>
