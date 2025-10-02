@@ -22,19 +22,20 @@ const getPercentStatus = (percent) => {
   return { value, isPositive: value >= 0 };
 };
 
-const payments = await getPayment();
-const recentPayments = payments.data.slice(0, 5);
-
-const data = await getDashboardData();
-
-const revenueDaily = getPercentStatus(data.revenueDailyPercent);
-const revenueWeekly = getPercentStatus(data.revenueWeeklyPercent);
-const orderWeekly = getPercentStatus(data.weeklyOrdersPercent);
-const customerWeekly = getPercentStatus(data.weeklyCustomersPercent);
-
 export default async function DashboardPage() {
-  const cookieStore = await cookies();
+  const [payments, data, cookieStore] = await Promise.all([
+    getPayment(),
+    getDashboardData(),
+    cookies(),
+  ]);
+
+  const recentPayments = payments.data.slice(0, 5);
+  const revenueDaily = getPercentStatus(data.revenueDailyPercent);
+  const revenueWeekly = getPercentStatus(data.revenueWeeklyPercent);
+  const orderWeekly = getPercentStatus(data.weeklyOrdersPercent);
+  const customerWeekly = getPercentStatus(data.weeklyCustomersPercent);
   const session = cookieStore.get("session_user");
+
   return (
     <div className="space-y-6">
       <div>
