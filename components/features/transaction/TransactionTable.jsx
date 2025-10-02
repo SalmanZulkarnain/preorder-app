@@ -125,7 +125,7 @@ export default function TransactionTable({ filters, initialPayments }) {
                   Rp{p.grossAmount.toLocaleString("id-ID")}
                 </td>
                 <td className="border-b border-gray-200 px-5 py-4">
-                  {p.order.customer.name}
+                  {p.order.customerName}
                 </td>
                 <td className="border-b border-gray-200 px-5 py-4">
                   {p.order.customer.phoneNumber}
@@ -307,7 +307,7 @@ export default function TransactionTable({ filters, initialPayments }) {
                       <div className="p-4 bg-gray-100 rounded">
                         <p>
                           <strong>Name:</strong>{" "}
-                          {selectedPayment.order.customer.name}
+                          {selectedPayment.order.customerName}
                         </p>
                         <p>
                           <strong>Mobile number:</strong>{" "}
