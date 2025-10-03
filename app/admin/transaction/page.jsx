@@ -3,8 +3,8 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { getPayment } from "@/lib/utils/fetchData";
-import TransactionAdminClient from "./TransactionAdminClient";
 import { Suspense } from "react";
+import TransactionAdminClient from "./TransactionAdminClient";
 
 async function TransactionData() {
   const payments = await getPayment();

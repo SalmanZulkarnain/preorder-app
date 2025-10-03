@@ -10,6 +10,7 @@ function isValidDate(dateString) {
 
 export async function GET(request) {
   try {
+    const start = Date.now();
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status")?.toLowerCase();
     const paymentType = searchParams.get("paymentType")?.toLowerCase();
@@ -100,6 +101,7 @@ export async function GET(request) {
       skip, 
       take: limit
     });
+    console.log(`Query took: ${Date.now() - start}ms`);
 
     return NextResponse.json({
       message: 'Success fetching payments',
