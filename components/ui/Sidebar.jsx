@@ -30,7 +30,7 @@ export default function Sidebar({ onToggle, isMobile = false }) {
               ✕ {/* Close button for mobile */}
             </button>
           )}
-          <Link href={"/"} className="font-medium text-xl text-green-700 block">
+          <Link href={"/"} className="font-medium text-xl text-green-600 block">
             MyShop
           </Link>
         </header>

@@ -16,7 +16,7 @@ export const SummaryCard = ({
           <span
             className={`rounded p-1 ${
               isPositive
-                ? "text-green-700 bg-green-100"
+                ? "text-green-600 bg-green-100"
                 : "text-red-700 bg-red-100"
             }`}
           >

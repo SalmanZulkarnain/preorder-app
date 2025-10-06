@@ -53,7 +53,7 @@ export default function DashboardClient({ data, session }) {
           <h3 className="text-2xl font-bold">{data.weeklyCustomers}</h3>
           <div>
             <p className="text-sm flex justify-between items-center">
-              <span className="bg-green-100 rounded p-1 text-green-700">
+              <span className="bg-green-100 rounded p-1 text-green-600">
                 +19%
               </span>
               In 7days
@@ -68,7 +68,7 @@ export default function DashboardClient({ data, session }) {
           <h3 className="text-2xl font-bold">{data.weeklyOrders}</h3>
           <div>
             <p className="text-sm flex justify-between items-center">
-              <span className="bg-green-100 rounded p-1 text-green-700">
+              <span className="bg-green-100 rounded p-1 text-green-600">
                 +14%
               </span>
               In 7days
@@ -127,14 +127,14 @@ export default function DashboardClient({ data, session }) {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <p className="text-sm">Daily Revenue</p>
-                <div className={`flex items-center justify-between ${isPositive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} rounded-full px-1.5 py-1 gap-1`}>
+                <div className={`flex items-center justify-between ${isPositive ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-700'} rounded-full px-1.5 py-1 gap-1`}>
                   {isPositive ? <MoveUp className="w-4" /> : <MoveDown className="w-4" />}
                   <span className="text-sm">{isPositive && percentValue > 0 ? '+' : ''}{data.revenueDailyPercent}</span>
                 </div>
               </div>
               <div className="flex gap-2 items-center">
                 <div className="bg-green-100 py-0.5 px-2 rounded-full">
-                  <DollarSign className="w-3 text-green-700" />
+                  <DollarSign className="w-3 text-green-600" />
                 </div>
                 <span className="font-semibold text-xl">
                   Rp{data.dailyRevenue.toLocaleString("id-ID")}

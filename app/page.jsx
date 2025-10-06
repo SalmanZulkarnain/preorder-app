@@ -21,27 +21,36 @@ const PreorderFoodLandingPage = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Hero Section */}
-      <header className="relative bg-gradient-to-r from-green-600 to-green-700 text-white py-20 px-4">
-        <div className="container mx-auto max-w-6xl text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Preorder Makanan Lezat
-          </h1>
-          <p className="text-xl md:text-2xl mb-8">
-            Pesan sekarang, nikmati kapan saja. Makanan segar langsung ke rumah
-            Anda!
-          </p>
-          <Link
-            href="/product"
-            className="bg-white text-green-700 hover:bg-gray-100 font-medium py-3 px-6 rounded-lg text-lg"
-          >
-            Lihat Menu
-          </Link>
+      {/* Banner Section */}
+      <section className="pt-16 pb-12">
+        <div className="relative overflow-hidden rounded-lg">
+          <Image
+            src="/assets/banner.jpg"
+            alt="Image banner"
+            width={1280}
+            height={400}
+            className="w-full h-[400px] object-cover rounded-xl"
+          />
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white px-4">
+            <h1 className="text-3xl md:text-5xl font-bold mb-4">
+              Preorder Makanan Lezat
+            </h1>
+            <p className="text-xl md:text-2xl mb-8">
+              Pesan sekarang, nikmati kapan saja. Makanan segar langsung ke
+              rumah Anda!
+            </p>
+            <Link
+              href="/product"
+              className="bg-white text-green-600 hover:bg-gray-100 font-medium py-3 px-6 rounded-lg text-lg"
+            >
+              Lihat Menu
+            </Link>
+          </div>
         </div>
-      </header>
+      </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4">
+      <section className="py-12">
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-3xl font-bold text-center mb-12">
             Mengapa Preorder di Kami?
@@ -106,8 +115,8 @@ const PreorderFoodLandingPage = () => {
         </div>
       </section>
 
-      {/* Popular Items Section */}
-      <section className="py-16 px-4 bg-muted">
+      {/* Popular Products Section */}
+      <section className="py-12">
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-3xl font-bold text-center mb-12">Menu Populer</h2>
 
@@ -129,7 +138,7 @@ const PreorderFoodLandingPage = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-16 px-4">
+      <section className="py-12">
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-3xl font-bold text-center mb-12">Cara Memesan</h2>
 
@@ -179,7 +188,7 @@ const PreorderFoodLandingPage = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 px-4 bg-muted">
+      <section className="py-12">
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-3xl font-bold text-center mb-12">
             Apa Kata Pelanggan Kami
@@ -256,7 +265,7 @@ const PreorderFoodLandingPage = () => {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 px-4">
+      <section className="py-12">
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="text-3xl font-bold mb-4">
             Dapatkan Info Menu Terbaru
@@ -286,7 +295,7 @@ const PreorderFoodLandingPage = () => {
             </div>
             <button
               type="submit"
-              className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg"
+              className="bg-green-600 hover:bg-green-600 text-white font-medium py-2 px-6 rounded-lg"
             >
               Berlangganan
             </button>

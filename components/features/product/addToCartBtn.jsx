@@ -36,7 +36,7 @@ export default function AddToCartButton({ productId }) {
     <button
       onClick={handleAdd}
       disabled={loading}
-      className={`p-3 cursor-pointer rounded-full transition-all duration-200 ${added ? 'bg-green-600 scale-110' : 'bg-green-700 hover:bg-green-800 active:scale-95'} disabled:opacity-75`}
+      className={`p-3 cursor-pointer rounded-full transition-all duration-200 ${added ? 'bg-green-600 scale-110' : 'bg-green-600 hover:bg-green-700 active:scale-95'} disabled:opacity-75`}
     >
       {added ? <Check className="size-4 text-white"/> : <Plus className="size-4 text-white" /> }
       

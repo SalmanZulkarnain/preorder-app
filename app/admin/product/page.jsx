@@ -142,7 +142,7 @@ export default function ProductAdmin() {
             </Button>
             <Link
               href={"/admin/add-product"}
-              className="items-center inline-flex bg-green-600 hover:bg-green-700 transition rounded-lg px-4 py-2 gap-2 text-sm shadow-xs"
+              className="items-center inline-flex bg-green-600 hover:bg-green-600 transition rounded-lg px-4 py-2 gap-2 text-sm shadow-xs"
             >
               <Plus className="text-white w-4" />
               <span className="text-white font-medium">Add Product</span>

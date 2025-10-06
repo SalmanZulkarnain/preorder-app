@@ -123,7 +123,7 @@ export default async function DashboardPage() {
                 <div
                   className={`flex items-center justify-between ${
                     revenueDaily.isPositive
-                      ? "bg-green-100 text-green-700"
+                      ? "bg-green-100 text-green-600"
                       : "bg-red-100 text-red-700"
                   } rounded-full px-1.5 py-1 gap-1`}
                 >
@@ -142,7 +142,7 @@ export default async function DashboardPage() {
               </div>
               <div className="flex gap-2 items-center">
                 <div className="bg-green-100 py-0.5 px-2 rounded-full">
-                  <DollarSign className="w-3 text-green-700" />
+                  <DollarSign className="w-3 text-green-600" />
                 </div>
                 <span className="font-semibold text-xl">
                   Rp{data.dailyRevenue.toLocaleString("id-ID")}

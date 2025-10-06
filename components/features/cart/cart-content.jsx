@@ -173,7 +173,7 @@ export default function CartPageContent() {
                         }
                         className="p-3 cursor-pointer"
                       >
-                        <Minus className="size-4 text-green-700" />
+                        <Minus className="size-4 text-green-600" />
                       </button>
                       <input
                         type="text"
@@ -188,7 +188,7 @@ export default function CartPageContent() {
                         }
                         className="p-3 cursor-pointer"
                       >
-                        <Plus className="size-4 text-green-700" />
+                        <Plus className="size-4 text-green-600" />
                       </button>
                     </div>
                   </>
@@ -205,7 +205,7 @@ export default function CartPageContent() {
               <div
                 className={`p-3 rounded-md mb-4 ${
                   messageType === "success"
-                    ? "bg-green-100 text-green-700"
+                    ? "bg-green-100 text-green-600"
                     : "bg-red-100 text-red-700"
                 }`}
               >
@@ -265,7 +265,7 @@ export default function CartPageContent() {
 
             <button
               type="submit"
-              className="bg-green-700 w-full rounded-md text-sm py-3 text-white font-medium cursor-pointer hover:bg-green-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+              className="bg-green-600 w-full rounded-md text-sm py-3 text-white font-medium cursor-pointer hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
               disabled={loading}
             >
               {loading ? "Processing..." : "Checkout"}

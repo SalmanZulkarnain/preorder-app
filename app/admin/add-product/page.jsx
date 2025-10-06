@@ -91,7 +91,7 @@ export default function ProductCreate() {
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              className="mt-1 block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+              className="mt-1 block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-green-50 file:text-green-600 hover:file:bg-green-100"
             />
             {preview && (
               <Image
@@ -150,7 +150,7 @@ export default function ProductCreate() {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full hover:bg-green-700 text-white py-2 px-4 rounded-lg transition-colors ${
+            className={`w-full hover:bg-green-600 text-white py-2 px-4 rounded-lg transition-colors ${
               loading
                 ? "opacity-50 cursor-not-allowed"
                 : "bg-green-600 cursor-pointer"

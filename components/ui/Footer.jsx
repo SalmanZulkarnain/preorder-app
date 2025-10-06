@@ -1,8 +1,8 @@
 export default function Footer() {
   return (
-    <footer className="bg-green-700 text-white py-12 px-4">
-      <div className="container mx-auto max-w-6xl">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="bg-green-600 text-white py-12 px-4">
+      <div className="mx-auto max-w-6xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <h3 className="font-bold text-lg mb-4">Preorder Makanan</h3>
             <p>

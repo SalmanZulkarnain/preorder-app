@@ -113,14 +113,14 @@ export default function Checkout() {
   };
 
   return (
-    <div className="bg-white sm:p-6 col-span-1">
+    <div className="bg-white sm:p-6 p-4 col-span-1">
       <h3 className="font-bold mb-2">Informasi Pembeli</h3>
       <form onSubmit={handleOrder}>
         {message && (
           <div
             className={`p-3 rounded-md mb-4 ${
               messageType === "success"
-                ? "bg-green-100 text-green-700"
+                ? "bg-green-100 text-green-600"
                 : "bg-red-100 text-red-700"
             }`}
           >
@@ -173,7 +173,7 @@ export default function Checkout() {
 
         <button
           type="submit"
-          className="bg-green-700 w-full rounded-md text-sm py-3 text-white font-medium cursor-pointer hover:bg-green-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="bg-green-600 w-full rounded-md text-sm py-3 text-white font-medium cursor-pointer hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
           disabled={loading}
         >
           {loading ? "Memproses..." : "Pesan"}

@@ -19,7 +19,7 @@ export default function HandlerButton({ cart, onDelete, onUpdateQuantity }) {
           onClick={() => onUpdateQuantity(cart.id, "decrement")}
           className="p-3 cursor-pointer"
         >
-          <Minus className="size-4 text-green-700" />
+          <Minus className="size-4 text-green-600" />
         </button>
         <input
           type="text"
@@ -32,7 +32,7 @@ export default function HandlerButton({ cart, onDelete, onUpdateQuantity }) {
           onClick={() => onUpdateQuantity(cart.id, "increment")}
           className="p-3 cursor-pointer"
         >
-          <Plus className="size-4 text-green-700" />
+          <Plus className="size-4 text-green-600" />
         </button>
       </div>
     </>

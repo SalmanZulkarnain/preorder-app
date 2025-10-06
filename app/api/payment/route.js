@@ -98,9 +98,13 @@ export async function GET(request) {
       orderBy: {
         transactionTime: 'desc'
       },
-      skip, 
+      skip,
       take: limit
     });
+    
+    // ✅ Tambahin ini
+    const dataSize = JSON.stringify(payments).length;
+    console.log(`Data size: ${(dataSize / 1024).toFixed(2)} KB`);
     console.log(`Query took: ${Date.now() - start}ms`);
 
     return NextResponse.json({
@@ -108,8 +112,8 @@ export async function GET(request) {
       success: true,
       data: payments,
       pagination: {
-        page, 
-        limit, 
+        page,
+        limit,
         totalCount,
         totalPages: Math.ceil(totalCount / limit),
         hasNextPage: page < Math.ceil(totalCount / limit),

@@ -27,7 +27,7 @@ export default function CartPage() {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 max-w-6xl mx-auto items-start gap-8">
+    <div className="pt-16 grid grid-cols-1 lg:grid-cols-3 max-w-6xl mx-auto items-start gap-8">
       <CartList carts={carts} setCarts={setCarts} loading={loading} fetchCarts={fetchCarts} />
       <Checkout carts={carts} fetchCarts={fetchCarts} />
     </div>

@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function CartCard({ cart, children }) {
   return (
-    <div className="bg-white rounded-sm hover:outline hover:outline-green-600 duration-100 hover:shadow-sm flex flex-row gap-2">
+    <div className="bg-white rounded-sm hover:outline hover:outline-green-600 duration-100 hover:shadow-sm flex flex-row gap-2 p-4 sm:p-0">
       <div className="sm:size-40 size-20 rounded relative sm:p-4">
         <Image
           src={cart.product.image}
@@ -14,8 +14,8 @@ export default function CartCard({ cart, children }) {
       </div>
       <div className="sm:p-4 flex flex-1 flex-col gap-2 sm:gap-0 justify-between">
         <div className="flex flex-wrap justify-between sm:flex-col space-y-2 space-x-2">
-          <h4 className="font-medium">{cart.product.name}</h4>
-          <h4 className="font-bold">
+          <h4 className="font-medium text-sm sm:text-base">{cart.product.name}</h4>
+          <h4 className="font-semibold">
             {cart.product.price.toLocaleString("id-ID")}
           </h4>
         </div>

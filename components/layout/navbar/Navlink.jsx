@@ -34,11 +34,11 @@ export default function Navlink() {
               hidden: !open,
             })}
           >
-            <ul className="flex flex-col font-semibold text-sm uppercase p-4 mt-4 rounded-sm bg-gray-50 md:flex-row md:items-center md:space-x-10 md:p-0 md:mt-0 md:border-0 md:bg-white">
+            <ul className="flex flex-col font-semibold text-sm uppercase p-4 md:p-0 rounded-sm md:flex-row md:items-center md:space-x-10 md:bg-white">
               <li>
                 <Link
                   href="/"
-                  className="block py-2 px-3 text-gray-800 hover:bg-gray-100 rounded-sm md:hover:bg-transparent md:p-0"
+                  className="block py-2 px-3 md:p-0 text-gray-600 hover:text-black "
                 >
                   Home
                 </Link>
@@ -46,7 +46,7 @@ export default function Navlink() {
               <li>
                 <Link
                   href="/product"
-                  className="block py-2 px-3 text-gray-800 hover:bg-gray-100 rounded-sm md:hover:bg-transparent md:p-0"
+                  className="block py-2 px-3 md:p-0 text-gray-600 hover:text-black "
                 >
                   Product
                 </Link>
@@ -54,16 +54,16 @@ export default function Navlink() {
               <li>
                 <Link
                   href="/cart"
-                  className="block py-2 px-3 text-gray-800 hover:bg-gray-100 rounded-sm md:hover:bg-transparent md:p-0"
+                  className="block py-2 px-3 md:p-0 text-gray-600 hover:text-black "
                 >
                   Cart ({totalItems})
                 </Link>
               </li>
               {!user ? (
-                <li className="pt-2 md:pt-0">
+                <li>
                   <Link
                     href="/login"
-                    className="py-2.5 px-6 bg-green-700 text-white hover:bg-green-800 rounded-sm"
+                    className="block py-2 px-3 md:py-2.5 md:px-6 md:bg-green-600 md:text-gray-100 hover:bg-green- transition duration-200 rounded"
                   >
                     Sign In
                   </Link>

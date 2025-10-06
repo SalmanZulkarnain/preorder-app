@@ -10,7 +10,7 @@ export default async function ProductPage() {
           Tidak ada produk yang tersedia saat ini.
         </p>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 max-w-screen-xl mx-auto">
+        <div className="pt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-screen-xl mx-auto">
           {products.map(p => {
             return <ProductCard key={p.id} product={p} />;
           })}

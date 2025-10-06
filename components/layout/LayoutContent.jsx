@@ -46,7 +46,7 @@ export default function LayoutContent({ children }) {
 
         {/* Main Content */}
         <div className={`flex flex-col flex-1 w-full ${user?.role === "ADMIN" ? 'md:ml-64' : ''}`}>
-          <header className="sticky inset-x-0 top-0 w-full bg-white shadow-sm z-10">
+          <header className="fixed inset-x-0 top-0 w-full bg-white shadow-sm z-10">
             <Navbar
               isAdmin={user?.role === "ADMIN"}
               onToggleSidebar={toggleSidebar}

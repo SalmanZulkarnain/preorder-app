@@ -145,7 +145,7 @@ export default function TransactionFilter({ onFilter }) {
               </button>
               <button
                 onClick={handleApply}
-                className="bg-green-600 text-white px-3 py-2 rounded-md flex-1 hover:bg-green-700"
+                className="bg-green-600 text-white px-3 py-2 rounded-md flex-1 hover:bg-green-600"
               >
                 Apply
               </button>

@@ -107,7 +107,7 @@ export default function ProductUpdate({ params }) {
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              className="block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+              className="block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-green-50 file:text-green-600 hover:file:bg-green-100"
             />
             {preview && (
               <div className="w-full h-60 relative">
@@ -165,7 +165,7 @@ export default function ProductUpdate({ params }) {
           {/* Submit */}
           <button
             type="submit"
-            className={`w-full text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors ${
+            className={`w-full text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors ${
               loading
                 ? "opacity-50 cursor-not-allowed"
                 : "bg-green-600 cursor-pointer"
