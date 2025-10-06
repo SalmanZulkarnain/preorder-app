@@ -1,9 +1,11 @@
 import AddToCartButton from "./addToCartBtn";
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, onProductClick }) {
+
+  const handleClick = onProductClick ? () => onProductClick(product) : undefined;
   
   return (
-    <div className="bg-white border border-gray-200 rounded-sm p-4 hover:outline hover:outline-green-600 duration-100 hover:shadow-sm flex">
+    <div className="bg-white border border-gray-200 rounded-sm p-4 hover:outline hover:outline-green-600 duration-100 hover:shadow-sm flex cursor-pointer" onClick={handleClick}>
       <div className="size-30 rounded relative">
         <img
           src={product.image}

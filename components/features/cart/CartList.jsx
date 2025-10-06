@@ -3,6 +3,7 @@
 import CartCard from "./CartCard";
 import { useCart } from "@/lib/cart-context";
 import HandlerButton from "./handleCartBtn";
+import { useRef } from "react";
 
 export default function CartList() {
   const { carts, setCarts, loading, fetchCarts } = useCart();
@@ -19,6 +20,8 @@ export default function CartList() {
     }
   };
 
+  const debounceTimers = useRef({});
+
   const handleUpdateQuantity = async (cartId, operation) => {
     const originalCarts = [...carts];
 
@@ -27,36 +30,40 @@ export default function CartList() {
         .map((cart) =>
           cart.id === cartId
             ? {
-                ...cart,
-                quantity:
-                  operation === "increment"
-                    ? cart.quantity + 1
-                    : Math.max(0, cart.quantity - 1),
-              }
+              ...cart,
+              quantity:
+                operation === "increment"
+                  ? cart.quantity + 1
+                  : Math.max(0, cart.quantity - 1),
+            }
             : cart
         )
         .filter((cart) => cart.quantity > 0)
     );
 
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/${cartId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ operation }),
-      });
-
-      if (!res.ok) throw new Error("Update failed");
-
-      const result = await res.json();
-
-      if (result.message === "Cart deleted successfully") {
-        setCarts(prev => prev.filter(cart => cart.id !== cartId))
-      }
-
-      // if (result.message === "Cart deleted successfully") fetchCarts();
-    } catch (error) {
-      setCarts(originalCarts);
+    if (debounceTimers.current[cartId]) {
+      clearTimeout(debounceTimers.current[cartId]);
     }
+
+    debounceTimers.current[cartId] = setTimeout(async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/${cartId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ operation }),
+        });
+
+        if (!res.ok) throw new Error("Update failed");
+
+        const result = await res.json();
+
+        if (result.message === "Cart deleted successfully") {
+          setCarts(prev => prev.filter(cart => cart.id !== cartId))
+        }
+      } catch (error) {
+        setCarts(originalCarts);
+      }
+    }, 400);
   };
 
   if (loading)

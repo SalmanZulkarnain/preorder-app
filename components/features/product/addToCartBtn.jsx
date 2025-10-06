@@ -10,7 +10,9 @@ export default function AddToCartButton({ productId }) {
 
   const { fetchCarts } = useCart();
 
-  const handleAdd = async () => {
+  const handleAdd = async (e) => {
+    e.stopPropagation();
+    
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart`, {
         method: "POST",
