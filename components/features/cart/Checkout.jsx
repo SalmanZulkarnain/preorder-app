@@ -113,8 +113,8 @@ export default function Checkout() {
   };
 
   return (
-    <div className="bg-white sm:p-6 p-4 col-span-1">
-      <h3 className="font-bold mb-2">Informasi Pembeli</h3>
+    <div className="col-span-1 p-4 bg-white border border-gray-200 rounded-sm sm:p-6">
+      <h3 className="mb-2 font-bold">Informasi Pembeli</h3>
       <form onSubmit={handleOrder}>
         {message && (
           <div
@@ -161,19 +161,19 @@ export default function Checkout() {
           </div>
         </div>
 
-        <hr className="text-gray-300 p-0 mb-4 flex" />
+        <hr className="flex p-0 mb-4 text-gray-300" />
 
-        <h3 className="font-bold mb-2">Ringkasan Belanja</h3>
+        <h3 className="mb-2 font-bold">Ringkasan Belanja</h3>
         <div className="flex items-center justify-between mb-4">
           <h5 className="text-sm text-gray-500">Total ({carts.length} item)</h5>
           <h5 className="font-bold">Rp{totalAmount.toLocaleString("id-ID")}</h5>
         </div>
 
-        <hr className="text-gray-300 p-0 mb-4 flex" />
+        <hr className="flex p-0 mb-4 text-gray-300" />
 
         <button
           type="submit"
-          className="bg-green-600 w-full rounded-md text-sm py-3 text-white font-medium cursor-pointer hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="w-full py-3 text-sm font-medium text-white transition-colors bg-green-600 rounded-md cursor-pointer hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
           disabled={loading}
         >
           {loading ? "Memproses..." : "Pesan"}

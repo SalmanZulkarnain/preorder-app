@@ -24,33 +24,34 @@ export default function LoginPage() {
       await fetchUser();
       router.push("/admin/dashboard");
     } else {
-      const data = await res.json();
-      setError(data.error);
+      if (email === "" && password === "") {
+        setError("Email dan password wajib diisi.")
+      }
     }
   }
 
   return (
-    <div className="flex items-center justify-center">
-      <form onSubmit={handleLogin} className="p-4 shadow rounded bg-white">
-        <h1 className="text-xl font-bold mb-4">Login Admin</h1>
-        {error && <p className="text-red-500">{error}</p>}
+    <div className="flex items-center justify-center mx-auto ">
+      <form onSubmit={handleLogin} className="p-12 bg-white border border-gray-300 shadow w-md rounded-xl">
+        <h1 className="mb-4 text-4xl font-semibold tracking-wide text-center text-gray-900">Login</h1>
+        <h3 className="mb-4 text-lg font-medium text-gray-500 tracking">Welcome Back, Admin!</h3>
+        {error && <p className="mb-2 text-xs text-red-500">{error}</p>}
 
         <input
-          className="border p-2 w-full mb-2"
+          className="w-full px-3 py-2 mb-3 rounded-lg focus:outline-none ring ring-gray-200 focus:ring-gray-400 placeholder:text-sm"
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
-          className="border p-2 w-full mb-2"
+          className="w-full px-3 py-2 mb-6 rounded-lg focus:outline-none ring ring-gray-200 focus:ring-gray-400 placeholder:text-sm"
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
-        <button className="bg-blue-500 text-white px-4 py-2 rounded w-full">
+        <button type="submit" className="w-full py-2 font-medium text-gray-100 bg-green-600 rounded-full cursor-pointer">
           Login
         </button>
       </form>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { Menu } from "@headlessui/react";
 
 export default function Sidebar({ onToggle, isMobile = false }) {
   const { user } = useAuth();
@@ -30,37 +30,37 @@ export default function Sidebar({ onToggle, isMobile = false }) {
               ✕ {/* Close button for mobile */}
             </button>
           )}
-          <Link href={"/"} className="font-medium text-xl text-green-600 block">
+          <Link href={"/"} className="block text-xl font-medium text-green-600">
             MyShop
           </Link>
         </header>
 
-        {!isMobile && <hr className="text-gray-300 mb-3" />}
+        {!isMobile && <hr className="mb-3 text-gray-300" />}
 
         <nav>
-          <ul className="font-semibold text-sm rounded-sm space-y-2">
-            <li className="hover:bg-gray-200 rounded">
+          <ul className="space-y-2 text-sm font-semibold rounded-sm">
+            <li className="rounded hover:bg-gray-200">
               <Link
                 href="/admin/dashboard"
-                className="block py-2 px-3 text-gray-800 rounded-sm"
+                className="block px-3 py-2 text-gray-800 rounded-sm"
                 onClick={isMobile ? onToggle : undefined} // Auto-close on mobile link click
               >
                 Dashboard
               </Link>
             </li>
-            <li className="hover:bg-gray-200 rounded">
+            <li className="rounded hover:bg-gray-200">
               <Link
                 href="/admin/transaction"
-                className="block py-2 px-3 text-gray-800 rounded-sm"
+                className="block px-3 py-2 text-gray-800 rounded-sm"
                 onClick={isMobile ? onToggle : undefined}
               >
                 Transaction
               </Link>
             </li>
-            <li className="hover:bg-gray-200 rounded">
+            <li className="rounded hover:bg-gray-200">
               <Link
                 href="/admin/product"
-                className="block py-2 px-3 text-gray-800 rounded-sm"
+                className="block px-3 py-2 text-gray-800 rounded-sm"
                 onClick={isMobile ? onToggle : undefined}
               >
                 Manage Product
@@ -71,10 +71,10 @@ export default function Sidebar({ onToggle, isMobile = false }) {
       </div>
 
       {/* Bottom: User menu */}
-      <div className="flex-shrink-0 mt-auto p-2 border-t border-gray-200">
+      <div className="flex-shrink-0 p-2 mt-auto border-t border-gray-200">
         <Menu as="div" className="relative">
-          <Menu.Button className="flex items-center gap-3 p-2 rounded hover:bg-gray-200 w-full">
-            <div className="bg-gray-400 p-2 rounded-full flex-shrink-0">
+          <Menu.Button className="flex items-center w-full gap-3 p-2 rounded hover:bg-gray-200">
+            <div className="flex-shrink-0 p-2 bg-gray-400 rounded-full">
               <img src="/globe.svg" alt="" width={25} height={25} />
             </div>
             <div
@@ -87,7 +87,7 @@ export default function Sidebar({ onToggle, isMobile = false }) {
               <span className="text-gray-500 truncate">{user.email}</span>
             </div>
           </Menu.Button>
-          <Menu.Items className="absolute left-0 bottom-full mb-2 w-full bg-white shadow rounded-lg p-  2 z-10">
+          <Menu.Items className="absolute left-0 z-10 w-full mb-2 bg-white rounded-lg shadow bottom-full p- 2">
             <Menu.Item>
               {({ active }) => (
                 <button

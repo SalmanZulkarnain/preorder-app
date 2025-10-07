@@ -22,7 +22,7 @@ const PreorderFoodLandingPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Banner Section */}
-      <section className="pt-16 pb-12">
+      <section className="pb-12">
         <div className="relative overflow-hidden rounded-lg">
           <Image
             src="/assets/banner.jpg"
@@ -31,17 +31,17 @@ const PreorderFoodLandingPage = () => {
             height={400}
             className="w-full h-[400px] object-cover rounded-xl"
           />
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white px-4">
-            <h1 className="text-3xl md:text-5xl font-bold mb-4">
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center text-white">
+            <h1 className="mb-4 text-3xl font-bold md:text-5xl">
               Preorder Makanan Lezat
             </h1>
-            <p className="text-xl md:text-2xl mb-8">
+            <p className="mb-8 text-xl md:text-2xl">
               Pesan sekarang, nikmati kapan saja. Makanan segar langsung ke
               rumah Anda!
             </p>
             <Link
               href="/product"
-              className="bg-white text-green-600 hover:bg-gray-100 font-medium py-3 px-6 rounded-lg text-lg"
+              className="px-6 py-3 text-lg font-medium text-green-600 bg-white rounded-lg hover:bg-gray-100"
             >
               Lihat Menu
             </Link>
@@ -51,15 +51,15 @@ const PreorderFoodLandingPage = () => {
 
       {/* Features Section */}
       <section className="py-12">
-        <div className="container mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold text-center mb-12">
+        <div className="container max-w-6xl mx-auto">
+          <h2 className="mb-12 text-3xl font-bold text-center">
             Mengapa Preorder di Kami?
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-lg shadow-md p-6 text-center">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <div className="p-6 text-center bg-white rounded-md shadow">
               <div className="mb-4">
-                <h3 className="text-xl font-bold mb-2">Makanan Segar</h3>
+                <h3 className="mb-2 text-xl font-bold">Makanan Segar</h3>
               </div>
               <div className="flex justify-center mb-4">
                 <Image
@@ -67,7 +67,7 @@ const PreorderFoodLandingPage = () => {
                   width={128}
                   height={128}
                   alt="Fresh ingredients and colorful vegetables arranged beautifully"
-                  className="rounded-full w-32 h-32 object-cover"
+                  className="object-cover w-32 h-32 rounded-full"
                 />
               </div>
               <p>
@@ -76,9 +76,9 @@ const PreorderFoodLandingPage = () => {
               </p>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6 text-center">
+            <div className="p-6 text-center bg-white rounded-md shadow">
               <div className="mb-4">
-                <h3 className="text-xl font-bold mb-2">
+                <h3 className="mb-2 text-xl font-bold">
                   Pengiriman Tepat Waktu
                 </h3>
               </div>
@@ -86,7 +86,7 @@ const PreorderFoodLandingPage = () => {
                 <img
                   src="/assets/pengiriman.webp"
                   alt="Fast delivery service with scooter and food package"
-                  className="rounded-full w-32 h-32 object-cover"
+                  className="object-cover w-32 h-32 rounded-full"
                 />
               </div>
               <p>
@@ -95,15 +95,15 @@ const PreorderFoodLandingPage = () => {
               </p>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6 text-center">
+            <div className="p-6 text-center bg-white rounded-md shadow">
               <div className="mb-4">
-                <h3 className="text-xl font-bold mb-2">Beragam Pilihan</h3>
+                <h3 className="mb-2 text-xl font-bold">Beragam Pilihan</h3>
               </div>
               <div className="flex justify-center mb-4">
                 <img
                   src="/assets/beragam.jpg"
                   alt="Variety of delicious foods on a table"
-                  className="rounded-full w-32 h-32 object-cover"
+                  className="object-cover w-32 h-32 rounded-full"
                 />
               </div>
               <p>
@@ -117,19 +117,19 @@ const PreorderFoodLandingPage = () => {
 
       {/* Popular Products Section */}
       <section className="py-12">
-        <div className="container mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold text-center mb-12">Menu Populer</h2>
+        <div className="container max-w-6xl mx-auto">
+          <h2 className="mb-12 text-3xl font-bold text-center">Menu Populer</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-2 sm:gap-4 lg:gap-6 md:grid-cols-2 lg:grid-cols-3">
             {products.map((p) => {
               return <ProductCard key={p.id} product={p} />;
             })}
           </div>
 
-          <div className="text-center mt-8">
+          <div className="mt-8 text-center">
             <Link
               href="/product"
-              className="bg-white border border-green-600 text-green-600 hover:bg-green-50 font-medium py-3 px-6 rounded"
+              className="px-6 py-3 font-medium text-green-600 bg-white border border-green-600 rounded hover:bg-green-50"
             >
               Lihat Semua Menu
             </Link>
@@ -139,46 +139,46 @@ const PreorderFoodLandingPage = () => {
 
       {/* How It Works Section */}
       <section className="py-12">
-        <div className="container mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold text-center mb-12">Cara Memesan</h2>
+        <div className="container max-w-6xl mx-auto">
+          <h2 className="mb-12 text-3xl font-bold text-center">Cara Memesan</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
             <div className="text-center">
-              <div className="bg-primary text-primary-foreground rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+              <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 text-2xl font-bold rounded-full bg-primary text-primary-foreground">
                 1
               </div>
-              <h3 className="font-semibold text-lg mb-2">Pilih Menu</h3>
+              <h3 className="mb-2 text-lg font-semibold">Pilih Menu</h3>
               <p className="text-muted-foreground">
                 Pilih makanan favorit Anda dari berbagai pilihan menu
               </p>
             </div>
 
             <div className="text-center">
-              <div className="bg-primary text-primary-foreground rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+              <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 text-2xl font-bold rounded-full bg-primary text-primary-foreground">
                 2
               </div>
-              <h3 className="font-semibold text-lg mb-2">Masukkan Keranjang</h3>
+              <h3 className="mb-2 text-lg font-semibold">Masukkan Keranjang</h3>
               <p className="text-muted-foreground">
-                Masukkan makanan favorit anda ke dalam keranjang dan isi form
+                Masukkan ke dalam keranjang dan isi form
                 pemesanan
               </p>
             </div>
 
             <div className="text-center">
-              <div className="bg-primary text-primary-foreground rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+              <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 text-2xl font-bold rounded-full bg-primary text-primary-foreground">
                 3
               </div>
-              <h3 className="font-semibold text-lg mb-2">Bayar</h3>
+              <h3 className="mb-2 text-lg font-semibold">Bayar</h3>
               <p className="text-muted-foreground">
                 Lakukan pembayaran dengan metode yang tersedia
               </p>
             </div>
 
             <div className="text-center">
-              <div className="bg-primary text-primary-foreground rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+              <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 text-2xl font-bold rounded-full bg-primary text-primary-foreground">
                 4
               </div>
-              <h3 className="font-semibold text-lg mb-2">Ambil Ditempat</h3>
+              <h3 className="mb-2 text-lg font-semibold">Ambil Ditempat</h3>
               <p className="text-muted-foreground">
                 Ambil makanan anda di hari Minggu yang ceria
               </p>
@@ -189,25 +189,25 @@ const PreorderFoodLandingPage = () => {
 
       {/* Testimonials Section */}
       <section className="py-12">
-        <div className="container mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold text-center mb-12">
+        <div className="container max-w-6xl mx-auto">
+          <h2 className="mb-12 text-3xl font-bold text-center">
             Apa Kata Pelanggan Kami
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <p className="italic mb-4">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            <div className="p-6 bg-white rounded-lg shadow-md">
+              <p className="mb-4 italic">
                 "Makanannya selalu fresh dan enak. Pengiriman selalu tepat waktu
                 sesuai janji. Recommended!"
               </p>
               <div className="flex items-center">
-                <div className="w-12 h-12 rounded-full bg-green-600 mr-4 flex-shrink-0 overflow-hidden">
+                <div className="flex-shrink-0 w-12 h-12 mr-4 overflow-hidden bg-green-600 rounded-full">
                   <Image
                     src="/assets/orang1.jpg"
                     width={48}
                     height={48}
                     alt="Portrait of a smiling young woman"
-                    className="w-full h-full object-cover"
+                    className="object-cover w-full h-full"
                   />
                 </div>
                 <div>
@@ -217,19 +217,19 @@ const PreorderFoodLandingPage = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <p className="italic mb-4">
+            <div className="p-6 bg-white rounded-lg shadow-md">
+              <p className="mb-4 italic">
                 "Saya sering preorder untuk acara kantor. Porsinya pas dan
                 harganya terjangkau untuk kualitas premium."
               </p>
               <div className="flex items-center">
-                <div className="w-12 h-12 rounded-full bg-green-600 mr-4 flex-shrink-0 overflow-hidden">
+                <div className="flex-shrink-0 w-12 h-12 mr-4 overflow-hidden bg-green-600 rounded-full">
                   <Image
                     src="/assets/orang3.jpg"
                     width={48}
                     height={48}
                     alt="Portrait of a professional man in business attire"
-                    className="w-full h-full object-cover"
+                    className="object-cover w-full h-full"
                   />
                 </div>
                 <div>
@@ -239,19 +239,19 @@ const PreorderFoodLandingPage = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <p className="italic mb-4">
+            <div className="p-6 bg-white rounded-lg shadow-md">
+              <p className="mb-4 italic">
                 "Sebagai ibu bekerja, preorder makanan sangat membantu. Tidak
                 perlu repot masak, tapi keluarga tetap bisa makan enak."
               </p>
               <div className="flex items-center">
-                <div className="w-12 h-12 rounded-full bg-green-600 mr-4 flex-shrink-0 overflow-hidden">
+                <div className="flex-shrink-0 w-12 h-12 mr-4 overflow-hidden bg-green-600 rounded-full">
                   <Image
                     src="/assets/orang2.webp"
                     width={48}
                     height={48}
                     alt="Portrait of a professional man in business attire"
-                    className="w-full h-full object-cover"
+                    className="object-cover w-full h-full"
                   />
                 </div>
                 <div>
@@ -266,40 +266,41 @@ const PreorderFoodLandingPage = () => {
 
       {/* Newsletter Section */}
       <section className="py-12">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-bold mb-4">
+        <div className="container flex flex-col items-center max-w-4xl mx-auto text-center">
+          <h2 className="mb-4 text-3xl font-bold">
             Dapatkan Info Menu Terbaru
           </h2>
-          <p className="text-muted-foreground mb-8">
+          <p className="mb-8 text-muted-foreground">
             Daftarkan email Anda untuk mendapatkan informasi menu terbaru dan
             promo spesial
           </p>
 
-          <form
-            onSubmit={handleSubscribe}
-            className="flex flex-col md:flex-row gap-4 justify-center"
-          >
-            <div className="flex-1 max-w-md">
-              <label htmlFor="email" className="sr-only">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                placeholder="Masukkan email Anda"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              />
-            </div>
-            <button
-              type="submit"
-              className="bg-green-600 hover:bg-green-600 text-white font-medium py-2 px-6 rounded-lg"
+            <form
+              onSubmit={handleSubscribe}
+              className="flex flex-col justify-center gap-4 md:flex-row"
             >
-              Berlangganan
-            </button>
-          </form>
+              <div className="flex-1 max-w-md">
+                <label htmlFor="email" className="sr-only">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="Masukkan email Anda"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                />
+              </div>
+              <button
+                type="submit"
+                className="px-6 py-2 font-medium text-white bg-green-600 rounded-lg hover:bg-green-600"
+              >
+                Berlangganan
+              </button>
+            </form>
+
         </div>
       </section>
     </div>

@@ -12,6 +12,7 @@ export async function GET(request) {
   try {
     const start = Date.now();
     const { searchParams } = new URL(request.url);
+
     const status = searchParams.get("status")?.toLowerCase();
     const paymentType = searchParams.get("paymentType")?.toLowerCase();
     const date = searchParams.get("date");
