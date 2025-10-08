@@ -5,12 +5,12 @@ import { useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { IoClose, IoMenu } from "react-icons/io5";
 import clsx from "clsx";
-import { useCartStore } from "@/lib/cart-store";
+import { useCart } from "@/lib/cart-context";
 
 export default function Navlink() {
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
-  const totalItems = useCartStore((state) => state.totalItems);
+  const { totalItems } = useCart();
 
   return (
     <>

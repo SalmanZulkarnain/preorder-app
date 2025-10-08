@@ -1,26 +1,3 @@
-// import { cookies } from "next/headers";
-// import { Prisma } from "@prisma/client";
-// type CartWithProduct = Prisma.CartGetPayload<{
-//   include: { product: true }
-// }>
-
-// async function getCartData(): Promise<CartWithProduct[]> {
-//   const cookieStore = await cookies();
-//   const sessionId = cookieStore.get("session_id")?.value;
-
-//   if (!sessionId) return null;
-
-//   const carts = await prisma.cart.findMany({
-//     where: { sessionId },
-//     include: { product: true },
-//     orderBy: { createdAt: 'desc' }
-//   });
-
-//   if (!carts) throw new Error("No cart found");
-
-//   return carts;
-// }
-
 "use client";
 import { useCart } from "@/lib/cart-context";
 import Image from "next/image";
