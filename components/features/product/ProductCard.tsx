@@ -1,19 +1,26 @@
+import Image from "next/image";
 import AddToCartButton from "./addToCartBtn";
+import type { Product } from "@prisma/client"
 
-export default function ProductCard({ product, onProductClick }) {
+interface ProductCardProps {
+  product: Product;
+  onProductClick?: (product: Product) => void;
+}
+
+export default function ProductCard({ product, onProductClick }: ProductCardProps) {
 
   const handleClick = onProductClick ? () => onProductClick(product) : undefined;
-  
+
   return (
     <div className="flex p-4 duration-100 bg-white border border-gray-200 rounded-sm cursor-pointer hover:border-green-600 hover:shadow-sm" onClick={handleClick}>
       <div className="relative rounded size-30">
-        <img
+        <Image
           src={product.image}
           alt={product.name}
           width={256}
           height={256}
           className="object-cover w-full h-full rounded"
-        ></img>
+        />
       </div>
       <div className="flex flex-col justify-between flex-1 ml-4">
         <h4 className="mb-4 font-medium">{product.name}</h4>

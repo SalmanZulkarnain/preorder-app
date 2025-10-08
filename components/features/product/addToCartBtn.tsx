@@ -4,7 +4,7 @@ import { Plus, Check } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/lib/cart-context";
 
-export default function AddToCartButton({ productId }) {
+export default function AddToCartButton({ productId }: { productId: number }) {
   const [added, setAdded] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -21,7 +21,7 @@ export default function AddToCartButton({ productId }) {
         body: JSON.stringify({ productId }),
       });
 
-      if (!res.ok) throw new Error("Gagal tambah ke keranjang");
+      if (!res.ok) throw new Error("Failed to add to cart");
 
       setAdded(true);
       setTimeout(() => setAdded(false), 1500);

@@ -2,7 +2,7 @@
 
 import CartCard from "./CartCard";
 import { useCart } from "@/lib/cart-context";
-import HandlerButton from "./handleCartBtn";
+import HandlerButton from "./HandleButton";
 import { useRef } from "react";
 
 export default function CartList() {
@@ -36,7 +36,7 @@ export default function CartList() {
 
             return { ...cart, quantity: newQuantity }
           }
-          
+
           return cart;
         }).filter((cart) => cart.quantity > 0)
     );
@@ -83,10 +83,9 @@ export default function CartList() {
 
   return (
     <div className="grid grid-cols-1 gap-2 lg:gap-6 lg:col-span-2">
-      {carts.map((c) => (
-        <CartCard key={c.id} cart={c}>
-          {/* hapus */}
-          <HandlerButton cart={c} onDelete={handleDelete} onUpdateQuantity={handleUpdateQuantity} />
+      {carts.map(cart => (
+        <CartCard key={cart.id} cart={cart}>
+          <HandlerButton cart={cart} onDelete={handleDelete} onUpdateQuantity={handleUpdateQuantity} />
         </CartCard>
       ))}
     </div>

@@ -15,10 +15,9 @@ export default function Checkout() {
   const handleOrder = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage(null); // Reset pesan sebelumnya
+    setMessage(null); 
 
     try {
-      // Validation
       if (!name.trim() || !phoneNumber.trim()) {
         setMessage("Nama dan nomor telepon wajib diisi");
         setMessageType("error");

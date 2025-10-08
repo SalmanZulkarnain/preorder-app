@@ -53,7 +53,7 @@ export async function GET(request) {
             take: limit,
             orderBy: { id: 'desc' }
         });
-
+        
         const totalCount = await prisma.product.count();
 
         return NextResponse.json({

@@ -2,16 +2,15 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useCart } from "@/lib/cart-context";
 import { useAuth } from "@/lib/auth-context";
 import { IoClose, IoMenu } from "react-icons/io5";
 import clsx from "clsx";
+import { useCartStore } from "@/lib/cart-store";
 
 export default function Navlink() {
   const [open, setOpen] = useState(false);
-
   const { user } = useAuth();
-  const { totalItems } = useCart();
+  const totalItems = useCartStore((state) => state.totalItems);
 
   return (
     <>
