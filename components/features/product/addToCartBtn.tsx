@@ -3,11 +3,11 @@
 import { Plus, Check } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/lib/cart-context";
+import { useCartStore } from "@/lib/cart-store";
 
 export default function AddToCartButton({ productId }: { productId: number }) {
   const [added, setAdded] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const { fetchCarts } = useCart();
 
   const handleAdd = async (e) => {
@@ -33,6 +33,18 @@ export default function AddToCartButton({ productId }: { productId: number }) {
       setLoading(false)
     }
   };
+
+  // const addCart = useCartStore((state) => state.addCart);
+  // const isLoading = useCartStore((state) => state.isLoading);
+
+  // const handleAdd = async (e) => {
+  //   e.stopPropagation();
+  //   if (productId) {
+  //     await addCart(productId);
+  //     setAdded(true);
+  //     setTimeout(() => setAdded(false), 1500)
+  //   }
+  // }
 
   return (
     <button

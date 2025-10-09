@@ -66,26 +66,29 @@ export async function POST(request) {
 
   try {
     const existingCartItem = await prisma.cart.findFirst({
-      where: {
-        sessionId,
-        productId,
-      },
+      where: { sessionId, productId },
     });
 
     let cartItem;
     if (existingCartItem) {
-      cartItem = await prisma.cart.update({
+      await prisma.cart.update({
         where: { id: existingCartItem.id },
         data: { quantity: { increment: 1 } },
       });
+      cartItem = await prisma.cart.findUnique({
+        where: { id: existingCartItem.id },
+        include: { product: true }
+      })
     } else {
-      cartItem = await prisma.cart.create({
-        data: {
-          sessionId,
-          productId,
-          quantity: 1,
+      const createdCart = await prisma.cart.create({
+        data: { sessionId, productId, quantity: 1
         },
       });
+
+      cartItem = await prisma.cart.findUnique({
+        where: { id: createdCart.id }, 
+        include: { product: true }
+      })
     }
 
     return NextResponse.json(
