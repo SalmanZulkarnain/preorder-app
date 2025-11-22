@@ -61,6 +61,14 @@ export default function Navlink() {
                   Cart ({totalItems})
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/invoice"
+                  className="block px-3 py-2 text-gray-600 md:p-0 hover:text-black "
+                >
+                  Cek Transaksi
+                </Link>
+              </li>
               {!user ? (
                 <li>
                   <Link

@@ -86,7 +86,7 @@ export default function CartPage() {
     const phoneNumberValidation = !phoneNumber.trim();
     const numberValidation = !/^[0-9]+$/.test(phoneNumber);
     if (phoneNumberValidation) {
-      setPhoneNumberErrorMessage(phoneNumberValidation ? 'Nomor wajib diisi' : ''); 
+      setPhoneNumberErrorMessage(phoneNumberValidation ? 'Nomor wajib diisi' : '');
     } else if (numberValidation) {
       setPhoneNumberErrorMessage(numberValidation ? 'Nomor harus berupa angka' : '');
     }
@@ -141,10 +141,12 @@ export default function CartPage() {
             ),
               (script.onload = () => {
                 window.snap.pay(resultMidtrans.token, callbacks);
+                console.log(resultMidtrans)
               });
             document.body.appendChild(script);
           } else {
             window.snap.pay(resultMidtrans.token, callbacks);
+            console.log(resultMidtrans)
           }
         }
       } else {

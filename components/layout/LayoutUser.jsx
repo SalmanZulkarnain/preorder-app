@@ -22,6 +22,7 @@ export default function LayoutUser({ children }) {
             <li><a href="/" className="hover:text-green-600">Home</a></li>
             <li><a href="/product" className="hover:text-green-600">Products</a></li>
             <li><a href="/cart" className="hover:text-green-600">Cart</a></li>
+            <li><a href="/invoice" className="hover:text-green-600">Cek Transaksi</a></li>
           </ul>
         </div>
       )}
