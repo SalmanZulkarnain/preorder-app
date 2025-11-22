@@ -52,6 +52,16 @@ export async function POST(request) {
 
         const result = await response.json();
 
+        const updateOrder = await prisma.order.update({
+            where: {
+                id: order.id
+            }, 
+            data: {
+                token: result.token,
+                redirectUrl: result.redirect_url
+            }
+        });
+
         return NextResponse.json({
             token: result.token,
             redirect_url: result.redirect_url
