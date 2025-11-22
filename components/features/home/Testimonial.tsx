@@ -55,8 +55,7 @@ const Testimonial = () => {
 
             <div className="p-6 bg-white rounded-lg shadow-md">
               <p className="mb-4 italic">
-                &quot;Sebagai ibu bekerja, preorder makanan sangat membantu. Tidak
-                perlu repot masak, tapi keluarga tetap bisa makan enak.&quot;
+                &quot;Sebagai Pelajar Rantau yang sibuk dan jauh dari rumah, preorder makanan sangat membantu. Harganya terjangkau dan rasanya serasa masakan ibu.&quot;
               </p>
               <div className="flex items-center">
                 <div className="flex-shrink-0 w-12 h-12 mr-4 overflow-hidden bg-green-600 rounded-full">

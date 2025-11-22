@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 import { Menu } from "@headlessui/react";
+import Image from "next/image";
 
 export default function Sidebar({ onToggle, isMobile = false }) {
   const { user } = useAuth();
@@ -30,7 +31,7 @@ export default function Sidebar({ onToggle, isMobile = false }) {
               ✕ {/* Close button for mobile */}
             </button>
           )}
-          <Link href={"/"} className="block text-xl font-medium text-green-600">
+          <Link href={"/admin/dashboard"} className="block text-xl font-medium text-green-600">
             MyShop
           </Link>
         </header>
@@ -75,7 +76,7 @@ export default function Sidebar({ onToggle, isMobile = false }) {
         <Menu as="div" className="relative">
           <Menu.Button className="flex items-center w-full gap-3 p-2 rounded hover:bg-gray-200">
             <div className="flex-shrink-0 p-2 bg-gray-400 rounded-full">
-              <img src="/globe.svg" alt="" width={25} height={25} />
+              <Image src="/globe.svg" alt="" width={25} height={25} />
             </div>
             <div
               className={`flex flex-col text-sm text-left ${

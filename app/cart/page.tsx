@@ -3,6 +3,7 @@ import { useCart } from "@/lib/cart-context";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { Trash2, Minus, Plus } from "lucide-react";
+import { toast, Toaster } from "sonner";
 
 declare global {
   interface Window {
@@ -15,9 +16,9 @@ declare global {
 export default function CartPage() {
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [nameErrorMessage, setNameErrorMessage] = useState(null);
+  const [phoneNumberErrorMessage, setPhoneNumberErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(null);
-  const [messageType, setMessageType] = useState("");
   const { carts, setCarts, fetchCarts, totalAmount } = useCart();
 
   const debounceTimers = useRef({});
@@ -81,16 +82,21 @@ export default function CartPage() {
 
   const handleOrder = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setMessage(null);
+
+    const phoneNumberValidation = !phoneNumber.trim();
+    const numberValidation = !/^[0-9]+$/.test(phoneNumber);
+    if (phoneNumberValidation) {
+      setPhoneNumberErrorMessage(phoneNumberValidation ? 'Nomor wajib diisi' : ''); 
+    } else if (numberValidation) {
+      setPhoneNumberErrorMessage(numberValidation ? 'Nomor harus berupa angka' : '');
+    }
+
+    const nameValidation = !name.trim();
+    setNameErrorMessage(nameValidation ? 'Nama wajib diisi' : '');
+    if (phoneNumberValidation || numberValidation || nameValidation) return;
+
 
     try {
-      if (!name.trim() || !phoneNumber.trim()) {
-        setMessage("Nama dan nomor telepon wajib diisi");
-        setMessageType("error");
-        return;
-      }
-
       const resOrder = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/order`, {
         method: "POST",
         headers: {
@@ -106,8 +112,7 @@ export default function CartPage() {
       const resultOrder = await resOrder.json();
 
       if (resultOrder.success) {
-        setMessage(resultOrder.message);
-        setMessageType("success");
+        toast.success(resultOrder.message);
         // Reset form
         setName("");
         setPhoneNumber("");
@@ -143,12 +148,10 @@ export default function CartPage() {
           }
         }
       } else {
-        setMessage(resultOrder.message);
-        setMessageType("error");
+        toast.error(resultOrder.message);
       }
     } catch (error) {
-      setMessage("Gagal membuat pesanan. Silakan coba lagi.");
-      setMessageType("error");
+      toast.error("Gagal membuat pesanan. Silakan coba lagi.");
     } finally {
       setLoading(false);
     }
@@ -156,30 +159,19 @@ export default function CartPage() {
 
   const callbacks = {
     onSuccess: function () {
-      setMessage("Pembayaran berhasil!");
-      setMessageType("success");
+      toast.success("Pembayaran berhasil!");
       fetchCarts();
     },
     onPending: function () {
-      setMessage("Pembayaran pending. Silakan selesaikan pembayaran Anda.");
-      setMessageType("info");
+      toast.info("Pembayaran pending. Silakan selesaikan pembayaran Anda.");
     },
     onError: function () {
-      setMessage("Pembayaran gagal. Silakan coba lagi.");
-      setMessageType("error");
+      toast.error("Pembayaran gagal. Silakan coba lagi.");
     },
     onClose: function () {
-      setMessage("Anda menutup popup pembayaran.");
-      setMessageType("warning");
+      toast.warning("Anda menutup popup pembayaran.");
     },
   };
-
-  if (!carts || carts.length === 0)
-    return (
-      <p className="p-20 text-xl text-center text-gray-600 lg:col-span-2">
-        Tidak ada produk di keranjang saat ini.
-      </p>
-    );
 
   if (loading)
     return (
@@ -192,6 +184,11 @@ export default function CartPage() {
     <div className="grid items-start max-w-6xl grid-cols-1 gap-6 mx-auto lg:grid-cols-3">
       {/* CART LIST */}
       <div className="grid grid-cols-1 gap-2 lg:gap-6 lg:col-span-2">
+        {!carts || carts.length === 0 && (
+          <p className="p-20 text-xl text-center text-gray-600 lg:col-span-2">
+            Tidak ada produk di keranjang saat ini.
+          </p>
+        )}
         {carts.map(cart => (
           <div key={cart.id} className="flex flex-row gap-2 p-4 duration-100 bg-white border border-gray-200 rounded-sm cursor-pointer hover:outline hover:outline-green-600 hover:shadow-sm sm:p-0">
             <div className="relative rounded sm:size-40 size-20 sm:p-4">
@@ -250,21 +247,12 @@ export default function CartPage() {
       {/* CHECKOUT */}
       <div className="col-span-1 p-4 bg-white border border-gray-200 rounded-sm sm:p-6">
         <h3 className="mb-2 font-bold">Informasi Pembeli</h3>
+        <Toaster duration={2000} richColors position="top-center"></Toaster>
         <form onSubmit={handleOrder}>
-          {message && (
-            <div
-              className={`p-3 rounded-md mb-4 ${messageType === "success"
-                ? "bg-green-100 text-green-600"
-                : "bg-red-100 text-red-700"
-                }`}
-            >
-              {message}
-            </div>
-          )}
           <div className="mb-4 space-y-2">
             <div>
               <label htmlFor="customerName" className="text-gray-500 text-[12px]">
-                Customer Name *
+                Customer Name <span className="text-red-700">*</span>
               </label>
               <input
                 type="text"
@@ -275,13 +263,16 @@ export default function CartPage() {
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Masukkan nama lengkap"
               />
+              {nameErrorMessage && (
+                <span className={`text-xs text-red-700`}>{nameErrorMessage}</span>
+              )}
             </div>
             <div>
               <label
                 htmlFor="customerPhone"
                 className="text-gray-500 text-[12px]"
               >
-                Customer Phone *
+                Customer Phone <span className="text-red-700">*</span>
               </label>
               <input
                 type="tel"
@@ -292,6 +283,9 @@ export default function CartPage() {
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 placeholder="Contoh: 08123456789"
               />
+              {phoneNumberErrorMessage && (
+                <span className={`text-xs text-red-700`}>{phoneNumberErrorMessage}</span>
+              )}
             </div>
           </div>
 

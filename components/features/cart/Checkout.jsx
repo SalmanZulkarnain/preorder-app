@@ -15,7 +15,7 @@ export default function Checkout() {
   const handleOrder = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage(null); 
+    setMessage(null);
 
     try {
       if (!name.trim() || !phoneNumber.trim()) {
@@ -117,11 +117,10 @@ export default function Checkout() {
       <form onSubmit={handleOrder}>
         {message && (
           <div
-            className={`p-3 rounded-md mb-4 ${
-              messageType === "success"
+            className={`p-3 rounded-md mb-4 ${messageType === "success"
                 ? "bg-green-100 text-green-600"
                 : "bg-red-100 text-red-700"
-            }`}
+              }`}
           >
             {message}
           </div>
@@ -129,7 +128,7 @@ export default function Checkout() {
         <div className="mb-4 space-y-2">
           <div>
             <label htmlFor="customerName" className="text-gray-500 text-[12px]">
-              Customer Name *
+              Customer Name <span className="text-red-700">*</span>
             </label>
             <input
               type="text"

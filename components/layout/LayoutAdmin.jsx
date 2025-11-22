@@ -8,7 +8,7 @@ export default function LayoutAdmin({ children }) {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-100">
       {/* Sidebar Desktop */}
       <aside className="fixed hidden w-64 h-full bg-white shadow-lg md:flex md:flex-col">
         <Sidebar />
@@ -31,11 +31,11 @@ export default function LayoutAdmin({ children }) {
 
       {/* Main content */}
       <div className="flex flex-col flex-1 md:ml-64">
-        <header className="fixed inset-x-0 top-0 z-30 bg-white shadow-sm">
-          <Navbar onToggleSidebar={() => setSidebarOpen(!isSidebarOpen)} />
+        <header className="sticky top-0 z-30 bg-white shadow-sm">
+          <Navbar isAdmin={true} onToggleSidebar={() => setSidebarOpen(!isSidebarOpen)} />
         </header>
 
-        <main className="min-h-screen p-4 pt-16 sm:p-6 md:p-10 bg-gray-50">
+        <main className="min-h-screen p-4 sm:p-6 md:p-10 bg-gray-50">
           {children}
         </main>
 

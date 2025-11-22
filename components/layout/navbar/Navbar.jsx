@@ -6,7 +6,7 @@ export default function Navbar({ isAdmin, onToggleSidebar }) {
   return (
     <div className="flex items-center justify-between px-6 py-3 md:py-4">
       <Link href="/" className="text-xl font-semibold text-green-600">
-        MyShop
+        PO-Man
       </Link>
 
       {/* Mobile Hamburger for Admin */}
@@ -21,13 +21,6 @@ export default function Navbar({ isAdmin, onToggleSidebar }) {
 
       {/* Non-Admin Nav (hidden for admin) */}
       {!isAdmin && <Navlink />}
-
-      {/* Admin: Optional quick actions or search here */}
-      {isAdmin && (
-        <div>
-          <span className="text-sm text-gray-600">Admin Mode</span>
-        </div>
-      )}
     </div>
   );
 }

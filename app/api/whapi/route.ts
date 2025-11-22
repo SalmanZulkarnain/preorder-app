@@ -35,7 +35,7 @@ export async function POST(req) {
     })
 
     if (existing) {
-      return NextResponse.json({ message: 'Phone number used.' }, { status: 400 });
+      return NextResponse.json({ message: 'Used phone number' }, { status: 400 });
     }
 
     const subscriber = await prisma.whatsappSubscriber.create({
@@ -43,7 +43,7 @@ export async function POST(req) {
     });
 
     return NextResponse.json(
-      { message: "Berhasil menambah nomor", success: true, data: subscriber },
+      { message: "Phone number added", success: true, data: subscriber },
       { status: 201 }
     );
   } catch (err) {
