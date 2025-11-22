@@ -56,6 +56,8 @@ model Order {
   customerName  String
   totalAmount   Int
   status        String
+  token         String?
+  redirectUrl   String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -114,7 +116,7 @@ model User {
 }
 
 model WhatsappSubscriber {
-  id Int @id @default(autoincrement())
-  phone String @unique
+  id        Int      @id @default(autoincrement())
+  phone     String   @unique
   createdAt DateTime @default(now())
 }
