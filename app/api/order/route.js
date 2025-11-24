@@ -130,11 +130,32 @@ export async function POST(request) {
       };
     });
 
-    return NextResponse.json({
+    cookieStore.get("myTransactions")?.value;
+    // let arr = [];
+    // try {
+    //   arr = raw ? JSON.parse(decodeURIComponent(raw)) : [];
+    //   if (!Array.isArray(arr)) arr = [];
+    // } catch (e) {
+    //   arr = [];
+    // }
+    // const txId = result.order.transactionId;
+    // arr = [txId, ...arr.filter((id) => id !== txId)].slice(0, 10);
+
+    const response = NextResponse.json({
       message: "Pesanan berhasil dibuat!",
       success: true,
       data: result
     }, { status: 201 });
+
+    response.cookies.set("myTransactions", JSON.stringify(arr), {
+      httpOnly: true,
+      path: "/",
+      maxAge: 60 * 60 * 24,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production"
+    });
+
+    return response;
   } catch (error) {
     console.error('Order creation error: ', error);
     return NextResponse.json({
