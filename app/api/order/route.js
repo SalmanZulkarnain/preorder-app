@@ -131,15 +131,15 @@ export async function POST(request) {
     });
 
     cookieStore.get("myTransactions")?.value;
-    // let arr = [];
-    // try {
-    //   arr = raw ? JSON.parse(decodeURIComponent(raw)) : [];
-    //   if (!Array.isArray(arr)) arr = [];
-    // } catch (e) {
-    //   arr = [];
-    // }
-    // const txId = result.order.transactionId;
-    // arr = [txId, ...arr.filter((id) => id !== txId)].slice(0, 10);
+    let arr = [];
+    try {
+      arr = raw ? JSON.parse(decodeURIComponent(raw)) : [];
+      if (!Array.isArray(arr)) arr = [];
+    } catch (e) {
+      arr = [];
+    }
+    const txId = result.order.transactionId;
+    arr = [txId, ...arr.filter((id) => id !== txId)].slice(0, 10);
 
     const response = NextResponse.json({
       message: "Pesanan berhasil dibuat!",
