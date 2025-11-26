@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma';
-import ProductList from '@/components/features/product/ProductList';
+import ProductList from './components/ProductList';
 import type { Product } from '@prisma/client';
 
 export default async function ProductPage() {
@@ -11,8 +11,6 @@ export default async function ProductPage() {
         <p className="text-xl text-center text-gray-600">
           Tidak ada produk yang tersedia saat ini.
         </p>
-
-
       ) : <ProductList products={products} />
       }
     </>

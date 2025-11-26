@@ -1,5 +1,5 @@
 import Image from "next/image";
-import AddToCartButton from "./addToCartBtn";
+import AddToCartButton from "./AddButton";
 import type { Product } from "@prisma/client"
 
 interface ProductCardProps {
@@ -7,7 +7,7 @@ interface ProductCardProps {
   onProductClick?: (product: Product) => void;
 }
 
-export default function ProductCard({ product, onProductClick }: ProductCardProps) {
+const ProductCard = ({ product, onProductClick }: ProductCardProps) => {
 
   const handleClick = onProductClick ? () => onProductClick(product) : undefined;
 
@@ -33,3 +33,5 @@ export default function ProductCard({ product, onProductClick }: ProductCardProp
     </div>
   );
 }
+
+export default ProductCard;

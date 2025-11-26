@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import ProductCard from '../product/ProductCard'
+import ProductCard from '@/app/product/components/ProductCard'
 import prisma from '@/lib/prisma'
 import type { Product } from '@prisma/client'
 
