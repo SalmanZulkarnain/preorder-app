@@ -16,6 +16,7 @@ export default function InvoicePage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ transactionId: inputInvoice }),
+        credentials: "include",
       });
 
       const result = await res.json();
@@ -55,7 +56,9 @@ export default function InvoicePage() {
     let mounted = true;
     (async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/invoice`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/invoice`, {
+          credentials: "include",
+        });
         const result = await res.json();
         if (!mounted) return;
         if (result.success) setRecentPayments(result.data);

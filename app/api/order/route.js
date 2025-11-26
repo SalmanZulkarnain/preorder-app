@@ -130,14 +130,20 @@ export async function POST(request) {
       };
     });
 
-    cookieStore.get("myTransactions")?.value;
+    const raw = cookieStore.get("myTransactions")?.value;
     let arr = [];
-    try {
-      arr = raw ? JSON.parse(decodeURIComponent(raw)) : [];
-      if (!Array.isArray(arr)) arr = [];
-    } catch (e) {
-      arr = [];
+    if (raw) {
+      try {
+        arr = JSON.parse(raw);
+      } catch (err) {
+        try {
+          arr = JSON.parse(decodeURIComponent(raw));
+        } catch (err2) {
+          arr = [];
+        }
+      }
     }
+    if (!Array.isArray(arr)) arr = [];
     const txId = result.order.transactionId;
     arr = [txId, ...arr.filter((id) => id !== txId)].slice(0, 10);
 

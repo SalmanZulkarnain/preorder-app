@@ -2,7 +2,7 @@
 import { useCart } from "@/lib/cart-context";
 import Image from "next/image";
 import { useRef, useState } from "react";
-import { Trash2, Minus, Plus } from "lucide-react";
+import { Trash2, Minus, Plus, CheckCircle2, AlertTriangle, X } from "lucide-react";
 import { toast, Toaster } from "sonner";
 
 declare global {
@@ -19,6 +19,8 @@ export default function CartPage() {
   const [nameErrorMessage, setNameErrorMessage] = useState(null);
   const [phoneNumberErrorMessage, setPhoneNumberErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState(null);
+  const [paymentMessage, setPaymentMessage] = useState("");
   const { carts, setCarts, fetchCarts, totalAmount } = useCart();
 
   const debounceTimers = useRef({});
@@ -80,8 +82,19 @@ export default function CartPage() {
     }
   };
 
+  const setPaymentFeedback = (status, message) => {
+    setPaymentStatus(status);
+    setPaymentMessage(message);
+  };
+
+  const handleDismissPaymentStatus = () => {
+    setPaymentStatus(null);
+    setPaymentMessage("");
+  };
+
   const handleOrder = async (e) => {
     e.preventDefault();
+    handleDismissPaymentStatus();
 
     const phoneNumberValidation = !phoneNumber.trim();
     const numberValidation = !/^[0-9]+$/.test(phoneNumber);
@@ -94,6 +107,8 @@ export default function CartPage() {
     const nameValidation = !name.trim();
     setNameErrorMessage(nameValidation ? 'Nama wajib diisi' : '');
     if (phoneNumberValidation || numberValidation || nameValidation) return;
+
+    setLoading(true);
 
 
     try {
@@ -148,12 +163,16 @@ export default function CartPage() {
             window.snap.pay(resultMidtrans.token, callbacks);
             console.log(resultMidtrans)
           }
+        } else {
+          setPaymentFeedback("error", "Token pembayaran tidak tersedia. Silakan coba lagi.");
         }
       } else {
         toast.error(resultOrder.message);
+        setPaymentFeedback("error", resultOrder.message || "Gagal membuat pesanan.");
       }
     } catch (error) {
       toast.error("Gagal membuat pesanan. Silakan coba lagi.");
+      setPaymentFeedback("error", "Gagal membuat pesanan. Silakan coba lagi.");
     } finally {
       setLoading(false);
     }
@@ -163,15 +182,19 @@ export default function CartPage() {
     onSuccess: function () {
       toast.success("Pembayaran berhasil!");
       fetchCarts();
+      setPaymentFeedback("success", "Pembayaran berhasil! Kami akan segera memproses pesanan Anda.");
     },
     onPending: function () {
       toast.info("Pembayaran pending. Silakan selesaikan pembayaran Anda.");
+      setPaymentFeedback("pending", "Pembayaran Anda masih menunggu. Silakan selesaikan prosesnya.");
     },
     onError: function () {
       toast.error("Pembayaran gagal. Silakan coba lagi.");
+      setPaymentFeedback("error", "Pembayaran gagal. Silakan coba lagi.");
     },
     onClose: function () {
       toast.warning("Anda menutup popup pembayaran.");
+      setPaymentFeedback("warning", "Anda menutup jendela pembayaran. Lanjutkan pembayaran untuk menyelesaikan pesanan.");
     },
   };
 
@@ -182,8 +205,34 @@ export default function CartPage() {
       </div>
     );
 
+  const statusStyles = {
+    success: { wrapper: "bg-green-50 border-green-200 text-green-900", Icon: CheckCircle2 },
+    pending: { wrapper: "bg-yellow-50 border-yellow-200 text-yellow-900", Icon: AlertTriangle },
+    warning: { wrapper: "bg-yellow-50 border-yellow-200 text-yellow-900", Icon: AlertTriangle },
+    error: { wrapper: "bg-red-50 border-red-200 text-red-900", Icon: AlertTriangle },
+  };
+
+  const ActiveStatusIcon = paymentStatus ? statusStyles[paymentStatus]?.Icon || AlertTriangle : null;
+
   return (
     <div className="grid items-start max-w-6xl grid-cols-1 gap-6 mx-auto lg:grid-cols-3">
+      {paymentStatus && (
+        <div className={`lg:col-span-3 flex items-start gap-3 p-4 border rounded-sm ${statusStyles[paymentStatus]?.wrapper || "bg-gray-50 border-gray-200 text-gray-900"}`}>
+          {ActiveStatusIcon && <ActiveStatusIcon className="mt-1 size-5" />}
+          <div className="flex-1">
+            <p className="text-sm font-semibold capitalize">{paymentStatus}</p>
+            <p className="text-sm">{paymentMessage}</p>
+          </div>
+          <button
+            type="button"
+            aria-label="Tutup notifikasi status pembayaran"
+            onClick={handleDismissPaymentStatus}
+            className="text-sm text-current hover:opacity-70"
+          >
+            <X className="size-4" />
+          </button>
+        </div>
+      )}
       {/* CART LIST */}
       <div className="grid grid-cols-1 gap-2 lg:gap-6 lg:col-span-2">
         {!carts || carts.length === 0 && (
