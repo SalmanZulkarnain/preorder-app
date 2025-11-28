@@ -38,7 +38,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
             if (result.success){
                 set({ carts: result.data, isLoading: false })
             } else {
-                set({ carts: result.message, isLoading: false })
+                set({ carts: [], error: result.message || 'Failed to fetch carts', isLoading: false })
             }
         } catch (error) {
             console.error('Fetch carts error: ', error);
@@ -67,7 +67,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
                     isLoading: false
                 }))
             } else {
-                set({ carts: result.message, isLoading: false })
+                set({ error: result.message || 'Failed to add cart', isLoading: false })
             }
         } catch (error) {
             console.error('Fetch carts error: ', error);

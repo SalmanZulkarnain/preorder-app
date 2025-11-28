@@ -75,7 +75,8 @@ export async function PUT(req, { params }) {
                 imageUrl = `/uploads/${fileName}`;
 
                 if (existingProduct.image && existingProduct.image.startsWith('/uploads/')) {
-                    const oldPath = path.join(process.cwd(), "public", "uploads", existingProduct.image);
+                    const oldFileName = existingProduct.image.replace('/uploads/', '');
+                    const oldPath = path.join(process.cwd(), "public", "uploads", oldFileName);
                     try {
                         await unlink(oldPath);
                         console.log('🗑️ Old local image deleted');
@@ -144,7 +145,8 @@ export async function DELETE(req, { params }) {
             const isDevelopment = process.env.NODE_ENV === 'development';
 
             if (isDevelopment && product.image.startsWith('/uploads/')) {
-                const imagePath = path.join(process.cwd(), "public", product.image);
+                const imageFileName = product.image.replace('/uploads/', '');
+                const imagePath = path.join(process.cwd(), "public", "uploads", imageFileName);
                 try {
                     await unlink(imagePath);
                     console.log('Local image deleted');

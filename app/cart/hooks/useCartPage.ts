@@ -2,13 +2,11 @@ import { useState } from "react";
 import { useCart } from "@/lib/cart-context";
 import { useRef } from "react";
 import { toast } from "sonner";
-import { validateCheckoutForm } from "../utils/validation";
+import { CheckoutSchema, checkoutSchema } from "@/lib/utils/zodSchema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const useCartPage = () => {
-    const [name, setName] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [nameErrorMessage, setNameErrorMessage] = useState(null);
-    const [phoneNumberErrorMessage, setPhoneNumberErrorMessage] = useState(null);
     const [loading, setLoading] = useState(false);
     const [paymentStatus, setPaymentStatus] = useState(null);
     const [paymentMessage, setPaymentMessage] = useState("");
@@ -83,17 +81,15 @@ export const useCartPage = () => {
         setPaymentMessage("");
     };
 
-    const handleOrder = async (e) => {
+    const form = useForm<CheckoutSchema>({
+        resolver: zodResolver(checkoutSchema)
+    });
+
+    const onOrder = async (values: CheckoutSchema, e) => {
         e.preventDefault();
         handleDismissPaymentStatus();
 
-        const { nameError, phoneError, hasError } = validateCheckoutForm(name, phoneNumber);
-        setNameErrorMessage(nameError);
-        setPhoneNumberErrorMessage(phoneError);
-        if (hasError) return;
-
         setLoading(true);
-
 
         try {
             const resOrder = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/order`, {
@@ -102,8 +98,8 @@ export const useCartPage = () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    name: name.trim(),
-                    phoneNumber: phoneNumber.trim(),
+                    name: values.name,
+                    phoneNumber: values.phoneNumber,
                 }),
                 credentials: "include",
             });
@@ -112,9 +108,7 @@ export const useCartPage = () => {
 
             if (resultOrder.success) {
                 toast.success(resultOrder.message);
-                // Reset form
-                setName("");
-                setPhoneNumber("");
+                form.reset();
                 console.log(resultOrder.data.order.id);
 
                 const resMidtrans = await fetch(
@@ -137,15 +131,13 @@ export const useCartPage = () => {
                         script.setAttribute(
                             "data-client-key",
                             process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY
-                        ),
-                            (script.onload = () => {
-                                window.snap.pay(resultMidtrans.token, callbacks);
-                                console.log(resultMidtrans)
-                            });
+                        );
+                        script.onload = () => {
+                            window.snap.pay(resultMidtrans.token, callbacks);
+                        };
                         document.body.appendChild(script);
                     } else {
                         window.snap.pay(resultMidtrans.token, callbacks);
-                        console.log(resultMidtrans)
                     }
                 } else {
                     setPaymentFeedback("error", "Token pembayaran tidak tersedia. Silakan coba lagi.");
@@ -183,21 +175,14 @@ export const useCartPage = () => {
     };
 
     return {
-        name,
-        setName,
-        phoneNumber,
-        setPhoneNumber,
-        nameErrorMessage,
-        setNameErrorMessage,
-        phoneNumberErrorMessage,
-        setPhoneNumberErrorMessage,
+        form,
         loading,
         paymentStatus,
         paymentMessage,
         handleUpdateQuantity,
         handleDelete,
         handleDismissPaymentStatus,
-        handleOrder,
+        onOrder,
         totalAmount,
         carts,
     }

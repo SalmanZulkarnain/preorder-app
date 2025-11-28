@@ -14,6 +14,11 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
 
+    if (!email || !password) {
+      setError("Email dan password wajib diisi.");
+      return;
+    }
+
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -24,14 +29,13 @@ export default function LoginPage() {
       await fetchUser();
       router.push("/admin/dashboard");
     } else {
-      if (email === "" && password === "") {
-        setError("Email dan password wajib diisi.")
-      }
+      const result = await res.json();
+      setError(result.message || "Email atau password salah.");
     }
   }
 
   return (
-    <div className="flex items-center justify-center mx-auto ">
+    <div className="flex items-center justify-center mx-auto">
       <form onSubmit={handleLogin} className="p-12 bg-white border border-gray-300 shadow w-md rounded-xl">
         <h1 className="mb-4 text-4xl font-semibold tracking-wide text-center text-gray-900">Login</h1>
         <h3 className="mb-4 text-lg font-medium text-gray-500 tracking">Welcome Back, Admin!</h3>

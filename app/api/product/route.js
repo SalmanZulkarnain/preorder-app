@@ -94,6 +94,13 @@ export async function POST(request) {
             );
         }
 
+        if (!image || !image?.name) {
+            return NextResponse.json(
+                { message: 'Image is required', success: false },
+                { status: 400 }
+            );
+        }
+
         let imageUrl = null;
 
         if (image && image?.name) {

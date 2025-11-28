@@ -13,7 +13,7 @@ declare global {
 }
 
 export default function CartPage() {
-  const { name, setName, phoneNumber, setPhoneNumber, nameErrorMessage, phoneNumberErrorMessage, loading, paymentStatus, paymentMessage, handleDismissPaymentStatus, handleOrder, handleUpdateQuantity, handleDelete, totalAmount, carts } = useCartPage();
+  const { form, loading, paymentStatus, paymentMessage, handleDismissPaymentStatus, onOrder, handleUpdateQuantity, handleDelete, totalAmount, carts } = useCartPage();
 
   if (loading)
     return (
@@ -28,7 +28,7 @@ export default function CartPage() {
       
       <CartList carts={carts} handleDelete={handleDelete} handleUpdateQuantity={handleUpdateQuantity} />
 
-      <CheckoutForm handleOrder={handleOrder} name={name} setName={setName} nameErrorMessage={nameErrorMessage} phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} phoneNumberErrorMessage={phoneNumberErrorMessage} loading={loading} carts={carts} totalAmount={totalAmount} />
+      <CheckoutForm form={form} onOrder={onOrder} loading={loading} carts={carts} totalAmount={totalAmount}/>
     </div>
   );
 }

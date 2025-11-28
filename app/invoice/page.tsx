@@ -73,13 +73,13 @@ export default function InvoicePage() {
 
   return (
     <div className="flex items-center justify-center mx-auto py-20">
-      <div className="flex flex-col items-center justify-center space-y-10">
+      <div className="grid items-start max-w-6xl grid-cols-1 gap-6 mx-auto">
         <div className="text-center">
-          <h1 className="mb-4 text-4xl font-semibold tracking-wide text-center text-gray-800">Cek Transaksi Kamu dengan Mudah dan Cepat</h1>
-          <h2 className="mb-4 text-xl font-medium tracking-wide text-center text-gray-500">Lihat detail pembelian kamu menggunakan nomor Transaksi.</h2>
+          <h1 className="mb-4 lg:text-4xl text-3xl font-semibold tracking-wide text-center text-gray-800">Cek Transaksi Kamu dengan Mudah dan Cepat</h1>
+          <h2 className="mb-4 lg:text-xl text-lg font-medium tracking-wide text-center text-gray-500">Lihat detail pembelian kamu menggunakan nomor Transaksi.</h2>
         </div>
-        <form onSubmit={handleFind} className="p-8 bg-white border border-gray-300 shadow w-xl rounded-xl">
-          <h3 className="mb-4 text-lg font-medium text-gray-500 tracking">Cari detail pembelian kamu disini</h3>
+        <form onSubmit={handleFind} className="p-8 bg-white border border-gray-300 shadow rounded-xl">
+          <h3 className="mb-4 lg:text-xl text-lg font-medium text-gray-500">Cari detail pembelian kamu disini</h3>
           {error && <p className="mb-2 text-xs text-red-500">{error}</p>}
 
           <input
@@ -94,7 +94,7 @@ export default function InvoicePage() {
           </button>
         </form>
         <div className="mt-5">
-          <div className="bg-white rounded-xl px-6 py-4">
+          <div className="bg-white rounded-xl px-6 py-4 overflow-x-auto">
             <div className="flex justify-between items-center">
               <h2 className="text-lg font-semibold mb-4">Recent Transactions</h2>
             </div>

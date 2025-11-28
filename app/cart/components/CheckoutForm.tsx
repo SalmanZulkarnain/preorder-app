@@ -1,24 +1,24 @@
-import { Toaster } from "sonner"
+import { Toaster } from "sonner";
 
 interface CheckoutFormProps {
-    handleOrder: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
-    name: string;
-    setName: (value: string) => void;
-    nameErrorMessage: string | null;
-    phoneNumber: string;
-    setPhoneNumber: (value: string) => void;
-    phoneNumberErrorMessage: string | null;
-    loading: boolean;
-    carts: any[];
-    totalAmount: number;
+  onOrder: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  loading: boolean;
+  carts: any[];
+  totalAmount: number;
+  form: any;
 }
 
-const CheckoutForm = ({ handleOrder, name, setName, nameErrorMessage, phoneNumber, setPhoneNumber, phoneNumberErrorMessage, loading, carts, totalAmount }: CheckoutFormProps) => {
-    return (
-      <div className="col-span-1 p-4 bg-white border border-gray-200 rounded-sm sm:p-6">
+const CheckoutForm = ({ onOrder, loading, carts, totalAmount, form }: CheckoutFormProps) => {
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, '');
+    form.setValue('phoneNumber', value);
+  }
+
+  return (
+    <div className="col-span-1 p-4 bg-white border border-gray-200 rounded-sm sm:p-6">
       <h3 className="mb-2 font-bold">Informasi Pembeli</h3>
       <Toaster duration={2000} richColors position="top-center"></Toaster>
-      <form onSubmit={handleOrder}>
+      <form onSubmit={form.handleSubmit(onOrder)}>
         <div className="mb-4 space-y-2">
           <div>
             <label htmlFor="customerName" className="text-gray-500 text-[12px]">
@@ -26,16 +26,12 @@ const CheckoutForm = ({ handleOrder, name, setName, nameErrorMessage, phoneNumbe
             </label>
             <input
               type="text"
-              name="name"
               id="customerName"
-              className="outline px-2 py-1.5 rounded w-full border border-gray-300 focus:border-green-500 focus:outline-none"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
               placeholder="Masukkan nama lengkap"
+              className="outline px-2 py-1.5 rounded w-full border border-gray-300 focus:border-green-500 focus:outline-none"
+              {...form.register('name')}
             />
-            {nameErrorMessage && (
-              <span className={`text-xs text-red-700`}>{nameErrorMessage}</span>
-            )}
+            <span className={`text-xs text-red-700`}>{form.formState.errors.name?.message}</span>
           </div>
           <div>
             <label
@@ -46,16 +42,13 @@ const CheckoutForm = ({ handleOrder, name, setName, nameErrorMessage, phoneNumbe
             </label>
             <input
               type="tel"
-              name="phoneNumber"
+              inputMode="numeric"
               id="customerPhone"
-              className="outline px-2 py-1.5 rounded w-full border border-gray-300 focus:border-green-500 focus:outline-none"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
               placeholder="Contoh: 08123456789"
+              className="outline px-2 py-1.5 rounded w-full border border-gray-300 focus:border-green-500 focus:outline-none"
+              {...form.register('phoneNumber', { onChange: handlePhoneChange })}
             />
-            {phoneNumberErrorMessage && (
-              <span className={`text-xs text-red-700`}>{phoneNumberErrorMessage}</span>
-            )}
+            <span className={`text-xs text-red-700`}>{form.formState.errors.phoneNumber?.message}</span>
           </div>
         </div>
 
@@ -78,7 +71,7 @@ const CheckoutForm = ({ handleOrder, name, setName, nameErrorMessage, phoneNumbe
         </button>
       </form>
     </div>
-    )
+  )
 }
 
 export default CheckoutForm;

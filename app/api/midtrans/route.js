@@ -50,7 +50,22 @@ export async function POST(request) {
             body: JSON.stringify(parameter)
         })
 
+        if (!response.ok) {
+            const errorResult = await response.json();
+            return NextResponse.json({
+                message: errorResult.error_message || "Failed to create payment transaction",
+                success: false
+            }, { status: response.status });
+        }
+
         const result = await response.json();
+
+        if (!result.token || !result.redirect_url) {
+            return NextResponse.json({
+                message: "Invalid response from payment gateway",
+                success: false
+            }, { status: 500 });
+        }
 
         const updateOrder = await prisma.order.update({
             where: {
