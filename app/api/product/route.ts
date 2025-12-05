@@ -5,6 +5,30 @@ import prisma from '@/lib/prisma';
 import path from 'path';
 import { put } from "@vercel/blob";
 
+interface ProductProps {
+    price: number,
+    discountPercent ?: number | null;
+    discountStart ?: string | Date | null;
+    discountEnd ?: string | Date | null;
+}
+
+export function getFinalPrice(product: ProductProps) {
+    const now = new Date();
+    const start = product.discountStart ? new Date(product.discountStart) : null;
+    const end = product.discountEnd ? new Date(product.discountEnd) : null;
+
+    const discountActive =
+        (!start || now >= start) && (!end || now <= end);
+
+    if (!discountActive) return product.price;
+
+    if (typeof product.discountPercent === "number" && product.discountPercent > 0) {
+        return Math.round(product.price * (1 - 20 / 100));
+    }
+
+    return product.price;
+}
+
 export async function getSessionId() {
     const cookieStore = await cookies();
     let sessionId = cookieStore.get('sessionId')?.value;
@@ -53,13 +77,18 @@ export async function GET(request) {
             take: limit,
             orderBy: { id: 'desc' }
         });
-        
+
+        const mapped = products.map((p) => ({
+            ...p,
+            finalPrice: getFinalPrice(p)
+        }));
+
         const totalCount = await prisma.product.count();
 
         return NextResponse.json({
             message: 'Products fetched',
             success: true,
-            data: products,
+            data: mapped,
             pagination: {
                 totalCount,
                 page,

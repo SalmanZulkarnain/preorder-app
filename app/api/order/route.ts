@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import prisma from "@/lib/prisma";
+import { getCurrentPrice } from "@/lib/utils/pricing";
 
-// GET endpoint (tidak diubah)
 export async function GET() {
   try {
     const orders = await prisma.order.findMany({
@@ -41,14 +41,13 @@ function generateTransactionId() {
   return `INV-${timestamp}-${random}`;
 }
 
-// POST endpoint untuk membuat order baru
-export async function POST(request) {
+export async function POST(req: Request) {
   try {
-    const { name, phoneNumber } = await request.json();
+    const { name, phoneNumber } = await req.json();
 
     if (!name || !phoneNumber) {
       return NextResponse.json({
-        message: "Nama dan nomor telepon wajib diisi",
+        message: "Require name and phone number",
         success: false
       }, { status: 400 });
     }
@@ -58,25 +57,37 @@ export async function POST(request) {
 
     if (!sessionId) {
       return NextResponse.json({
-        message: "Tidak ada sesi aktif",
+        message: "No active session",
         success: false
       }, { status: 400 });
     }
 
-    const carts = await prisma.cart.findMany({
+    const cartItems = await prisma.cart.findMany({
       where: { sessionId },
       include: { product: true }
     });
 
-    if (carts.length === 0) {
+    if (cartItems.length === 0) {
       return NextResponse.json({
-        message: "Keranjang kosong",
+        message: "Empty cart",
         success: false
       }, { status: 400 });
     }
 
-    const total = carts.reduce((sum, cart) =>
-      sum + (cart.product.price * cart.quantity), 0
+    const orderItems = cartItems.map((item) => {
+      const pricing = getCurrentPrice(item.product);
+
+      return {
+        productId: item.productId,
+        quantity: item.quantity,
+        priceAtOrder: pricing.finalPrice,
+        originalPrice: pricing.originalPrice,
+        discountApplied: pricing.hasDiscount ? pricing.originalPrice - pricing.finalPrice : null
+      }
+    });
+
+    const totalAmount = orderItems.reduce((sum, item) =>
+      sum + (item.priceAtOrder * item.quantity), 0
     );
 
     const transactionId = generateTransactionId();
@@ -103,20 +114,23 @@ export async function POST(request) {
           transactionId,
           customerId: customer.id,
           customerName: name,
-          totalAmount: total,
-          status: 'unpaid'
+          totalAmount: totalAmount,
+          status: 'unpaid',
+          orderItems: {
+            create: orderItems
+          }
         }
       });
 
       // 3. create order items
-      const orderItems = await tx.orderItem.createMany({
-        data: carts.map(cart => ({
-          orderId: order.id,
-          productId: cart.productId,
-          quantity: cart.quantity,
-          priceAtOrder: cart.product.price
-        }))
-      });
+      // const orderItems = await tx.orderItem.createMany({
+      //   data: carts.map(cart => ({
+      //     orderId: order.id,
+      //     productId: cart.productId,
+      //     quantity: cart.quantity,
+      //     priceAtOrder: cart.product.price
+      //   }))
+      // });
 
       // 4. delete cart
       await tx.cart.deleteMany({

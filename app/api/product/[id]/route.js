@@ -7,6 +7,7 @@ import path from 'path';
 export async function GET(req, { params }) {
     try {
         const { id } = await params;
+
         const product = await prisma.product.findUnique({
             where: { id: Number(id) }
         });
@@ -178,4 +179,37 @@ export async function DELETE(req, { params }) {
             success: false
         }, { status: 500 });
     }
+}
+
+
+export async function PATCH(request, { params }) {
+    const { id } = params;
+    const productId = Number(id);
+    
+    const { discountPercent } = await request.json(); 
+    
+    const product = await prisma.product.findUnique({
+        where: { id: Number(id) }
+    });
+
+    if (!product) {
+        return NextResponse.json({
+            success: false
+        }, { status: 400 });
+    }
+
+    const finalPrice = ((100 - discountPercent) / 100) * product.price;
+
+    const productUpdated = await prisma.product.update({
+        where: { id: Number(id) },
+        data: {
+            finalPrice
+        }
+    })
+
+    return NextResponse.json({
+        data: {
+            product: productUpdated
+        }
+    }, { status: 200 })
 }
