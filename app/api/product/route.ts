@@ -45,7 +45,7 @@ export async function getSessionId() {
     return sessionId;
 }
 
-export async function GET(request) {
+export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
 
@@ -107,7 +107,7 @@ export async function GET(request) {
     }
 }
 
-export async function POST(request) {
+export async function POST(request: Request) {
     try {
         const formData = await request.formData();
 
@@ -130,7 +130,7 @@ export async function POST(request) {
             );
         }
 
-        let imageUrl = null;
+        let imageUrl: string | null = null;
 
         if (image && image?.name) {
             const fileName = `${Date.now()}-${image.name.replace(/\s+/g, "_")}`;
@@ -156,9 +156,9 @@ export async function POST(request) {
 
         const product = await prisma.product.create({
             data: {
-                image: imageUrl,
-                name,
-                description,
+                image: imageUrl ?? '',
+                name: String(name),
+                description: String(description),
                 price
             }
         });
@@ -168,10 +168,11 @@ export async function POST(request) {
             success: true,
             data: product
         }, { status: 201 });
-    } catch (err) {
+    } catch (err: unknown) {
         console.error('Failed to add product: ', err);
+        const e = err instanceof Error ? err : new Error(String(err));
         return NextResponse.json({
-            message: err.message || 'Internal server error',
+            message: e.message || 'Internal server error',
             success: false
         }, { status: 500 });
     }

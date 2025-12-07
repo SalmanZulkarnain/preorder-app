@@ -1,7 +1,7 @@
 import { Toaster } from "sonner";
 
 interface CheckoutFormProps {
-  onOrder: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  onOrder: (values: any, e?: any) => Promise<void>;
   loading: boolean;
   carts: any[];
   totalAmount: number;

@@ -17,7 +17,6 @@ const Popular = async () => {
                             <ProductCard
                                 key={product.id}
                                 product={product}
-                                onProductClick={null}
                             />
                         );
                     })}

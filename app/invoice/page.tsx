@@ -5,7 +5,7 @@ import { formatDate } from "@/lib/utils/formatDate";
 export default function InvoicePage() {
   const [inputInvoice, setInputInvoice] = useState("");
   const [error, setError] = useState("");
-  const [recentPayments, setRecentPayments] = useState([]);
+  const [recentPayments, setRecentPayments] = useState<any[]>([]);
 
   async function handleFind(e: React.FormEvent) {
     e.preventDefault();

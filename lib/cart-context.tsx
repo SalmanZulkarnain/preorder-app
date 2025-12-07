@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect } from "react";
-import type { Cart } from "@prisma/client";
 import { Prisma } from "@prisma/client";
 
 type CartWithProduct = Prisma.CartGetPayload<{
@@ -10,17 +9,17 @@ type CartWithProduct = Prisma.CartGetPayload<{
 
 type CartContextType = {
     carts: CartWithProduct[];
-    setCarts: React.Dispatch<React.SetStateAction<Cart[]>>;
+    setCarts: React.Dispatch<React.SetStateAction<CartWithProduct[]>>;
     fetchCarts: () => Promise<void>;
     totalItems: number;
     totalAmount: number;
     loading: boolean;
 }
 
-const CartContext = createContext<CartContextType>(null);
+const CartContext = createContext<CartContextType | null>(null);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-    const [carts, setCarts] = useState([]);
+    const [carts, setCarts] = useState<CartWithProduct[]>([]);
     const [loading, setLoading] = useState(true);
 
     const fetchCarts = async () => {
@@ -31,7 +30,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             if (!response.ok) throw new Error('Gagal fetch data cart');
 
             const result = await response.json();
-            setCarts(result.data);
+            setCarts(result.data as CartWithProduct[]);
         } catch (error) {
             console.error("Error fetching carts: ", error);
             setCarts([]);
@@ -58,5 +57,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useCart() {
-    return useContext(CartContext);
+    const ctx = useContext(CartContext);
+    if (!ctx) throw new Error('useCart must be used within CartProvider');
+    return ctx;
 }

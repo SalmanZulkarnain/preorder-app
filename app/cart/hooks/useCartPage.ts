@@ -1,21 +1,20 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useCart } from "@/lib/cart-context";
-import { useRef } from "react";
 import { toast } from "sonner";
 import { CheckoutSchema, checkoutSchema } from "@/lib/utils/zodSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export const useCartPage = () => {
-    const [loading, setLoading] = useState(false);
-    const [paymentStatus, setPaymentStatus] = useState(null);
-    const [paymentMessage, setPaymentMessage] = useState("");
+    const [loading, setLoading] = useState<boolean>(false);
+    const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
+    const [paymentMessage, setPaymentMessage] = useState<string>("");
     const { carts, setCarts, fetchCarts, totalAmount } = useCart();
 
-    const debounceTimers = useRef({});
-    const quantityRefs = useRef({});
+    const debounceTimers = useRef<Record<string, ReturnType<typeof setTimeout> | undefined>>({});
+    const quantityRefs = useRef<Record<string, number>>({});
 
-    const handleUpdateQuantity = async (cartId, operation) => {
+    const handleUpdateQuantity = async (cartId: number | string, operation: 'increment' | 'decrement') => {
         const originalCarts = [...carts];
 
         setCarts((prev) =>
@@ -23,8 +22,9 @@ export const useCartPage = () => {
                 .map((cart) => {
                     if (cart.id === cartId) {
                         const newQuantity = operation === "increment" ? cart.quantity + 1 : Math.max(0, cart.quantity - 1);
+                        const key = String(cartId);
 
-                        quantityRefs.current[cartId] = newQuantity;
+                        quantityRefs.current[key] = newQuantity;
 
                         return { ...cart, quantity: newQuantity }
                     }
@@ -33,14 +33,15 @@ export const useCartPage = () => {
                 }).filter((cart) => cart.quantity > 0)
         );
 
-        if (debounceTimers.current[cartId]) {
-            clearTimeout(debounceTimers.current[cartId]);
+        const key = String(cartId);
+        if (debounceTimers.current[key]) {
+            clearTimeout(debounceTimers.current[key]);
         }
 
-        debounceTimers.current[cartId] = setTimeout(async () => {
+        debounceTimers.current[key] = setTimeout(async () => {
             try {
-                const finalQuantity = quantityRefs.current[cartId];
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/${cartId}`, {
+                const finalQuantity = quantityRefs.current[key];
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/${key}`, {
                     method: "PATCH",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ quantity: finalQuantity }),
@@ -59,7 +60,7 @@ export const useCartPage = () => {
         }, 400);
     }
 
-    const handleDelete = async (cartId) => {
+    const handleDelete = async (cartId: number | string) => {
         const originalCarts = [...carts];
         setCarts((prev) => prev.filter((cart) => cart.id !== cartId));
 
@@ -71,7 +72,7 @@ export const useCartPage = () => {
         }
     };
 
-    const setPaymentFeedback = (status, message) => {
+    const setPaymentFeedback = (status: string, message: string) => {
         setPaymentStatus(status);
         setPaymentMessage(message);
     };
@@ -85,8 +86,7 @@ export const useCartPage = () => {
         resolver: zodResolver(checkoutSchema)
     });
 
-    const onOrder = async (values: CheckoutSchema, e) => {
-        e.preventDefault();
+    const onOrder = async (values: CheckoutSchema) => {
         handleDismissPaymentStatus();
 
         setLoading(true);
@@ -125,19 +125,19 @@ export const useCartPage = () => {
                 const resultMidtrans = await resMidtrans.json();
 
                 if (resultMidtrans.token) {
-                    if (!window.snap) {
+                    if (!(window as any).snap) {
                         const script = document.createElement("script");
                         script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
                         script.setAttribute(
                             "data-client-key",
-                            process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY
+                            String(process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY)
                         );
                         script.onload = () => {
-                            window.snap.pay(resultMidtrans.token, callbacks);
+                            (window as any).snap?.pay(resultMidtrans.token, callbacks);
                         };
                         document.body.appendChild(script);
                     } else {
-                        window.snap.pay(resultMidtrans.token, callbacks);
+                        (window as any).snap?.pay(resultMidtrans.token, callbacks);
                     }
                 } else {
                     setPaymentFeedback("error", "Token pembayaran tidak tersedia. Silakan coba lagi.");

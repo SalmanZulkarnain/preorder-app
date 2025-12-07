@@ -176,12 +176,13 @@ export async function POST(req: Request) {
     });
 
     return response;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Order creation error: ', error);
+    const err = error instanceof Error ? error : new Error(String(error));
     return NextResponse.json({
       message: 'Internal server error',
       success: false,
-      error: error.message
+      error: err.message
     }, { status: 500 });
   }
 }

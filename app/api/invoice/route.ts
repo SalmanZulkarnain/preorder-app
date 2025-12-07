@@ -1,6 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 import { cookies } from "next/headers";
-const prisma = new PrismaClient();
 import { NextResponse } from "next/server";
 
 export async function GET() {

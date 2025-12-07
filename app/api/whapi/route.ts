@@ -15,7 +15,8 @@ export async function GET() {
       { message: "Berhasil mengambil nomor", success: true, data: subscriber },
       { status: 201 }
     );
-  } catch (err) {
+  } catch (err: unknown) {
+    const e = err instanceof Error ? err : new Error(String(err));
     return NextResponse.json(
       {
         message: err.message,
@@ -26,9 +27,10 @@ export async function GET() {
   }
 }
 
-export async function POST(req) {
+export async function POST(req: Request) {
   try {
-    const { phone } = await req.json();
+    const body = await req.json();
+    const phone = String(body.phone ?? "");
 
     const existing = await prisma.whatsappSubscriber.findUnique({
       where: { phone }
@@ -49,7 +51,7 @@ export async function POST(req) {
   } catch (err) {
     return NextResponse.json(
       {
-        message: err.message,
+        message: e.message,
         success: false,
       },
       { status: 500 }

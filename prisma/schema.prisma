@@ -5,12 +5,12 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "./generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Product {
@@ -19,13 +19,10 @@ model Product {
   image       String
   description String?
   price       Int
-
-  discountPercent  Int?
   discountPrice    Int?
   discountStart    DateTime?
   discountEnd      DateTime?
   isDiscountActive Boolean   @default(false)
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -43,6 +40,7 @@ model Cart {
   updatedAt DateTime @updatedAt
 
   @@index([productId])
+  @@index([sessionId])
 }
 
 model Customer {
@@ -53,6 +51,8 @@ model Customer {
   updatedAt   DateTime @updatedAt
 
   orders Order[]
+
+  @@index([phoneNumber])
 }
 
 model Order {
@@ -73,6 +73,7 @@ model Order {
 
   @@index([customerId])
   @@index([status])
+  @@index([createdAt])
 }
 
 model OrderItem {
@@ -83,7 +84,6 @@ model OrderItem {
   order        Order   @relation(fields: [orderId], references: [id])
   quantity     Int
   priceAtOrder Int
-
   originalPrice   Int?
   discountApplied Int?
 
@@ -109,11 +109,11 @@ model Payment {
   expiryTime            DateTime?
   createdAt             DateTime? @default(now())
   updatedAt             DateTime  @updatedAt
+
   rawResponse           Json?
 
   @@index([paymentType])
   @@index([transactionTime])
-  @@index([transactionId])
 }
 
 model User {
