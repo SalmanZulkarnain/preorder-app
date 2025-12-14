@@ -10,7 +10,7 @@ export function getCurrentPrice(product: Product) {
     product.discountPrice && 
     product.discountStart &&
     product.discountEnd && 
-    now >= product.discountStart
+    now >= product.discountStart &&
     now <= product.discountEnd
 
     return {
@@ -24,6 +24,6 @@ export function getCurrentPrice(product: Product) {
 export function calculateCartTotal(cartItems: CartItemWithProduct[]) {
     return cartItems.reduce((total, item) => {
         const { finalPrice } = getCurrentPrice(item.product);
-        return total + (finalPrice * item.quantity);
+        return total + ((finalPrice ?? 0) * item.quantity);
     }, 0);
 }

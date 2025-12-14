@@ -80,9 +80,9 @@ export async function POST(req: Request) {
       return {
         productId: item.productId,
         quantity: item.quantity,
-        priceAtOrder: pricing.finalPrice,
+        priceAtOrder: pricing.finalPrice ?? pricing.originalPrice,
         originalPrice: pricing.originalPrice,
-        discountApplied: pricing.hasDiscount ? pricing.originalPrice - pricing.finalPrice : null
+        discountApplied: pricing.hasDiscount && pricing.finalPrice ? pricing.originalPrice - pricing.finalPrice : null
       }
     });
 
