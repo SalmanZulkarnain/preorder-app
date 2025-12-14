@@ -1,6 +1,6 @@
 "use client";
+import { Product } from "@/prisma/generated/prisma/client";
 import { createContext, useContext, useState, useEffect } from "react";
-import type { Product } from "@prisma/client";
 
 type ProductContextType = {
     products: Product[];

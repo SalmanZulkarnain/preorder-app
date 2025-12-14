@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { writeFile } from "fs/promises";
-import prisma from '@/lib/prisma';
+import prisma from '@/lib/db';
 import path from 'path';
 import { put } from "@vercel/blob";
 

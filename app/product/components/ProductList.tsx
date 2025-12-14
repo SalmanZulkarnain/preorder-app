@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
 import ProductCard from "./ProductCard";
-import type { Product } from "@prisma/client";
+import type { Product } from "@/prisma/generated/prisma/client";
 
 export default function ProductList({ products }: { products: Product[] }) {
     const [selected, setSelected] = useState(null);

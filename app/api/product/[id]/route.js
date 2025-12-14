@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { put, del } from "@vercel/blob";
 import { writeFile, unlink } from "fs/promises";
-import prisma from '@/lib/prisma';
+import prisma from "@/lib/db";
 import path from 'path';
 
 export async function GET(req, { params }) {

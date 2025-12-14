@@ -9,7 +9,7 @@ export default function AddToCartButton({ productId }: { productId: number }) {
   const [loading, setLoading] = useState(false);
   const { fetchCarts } = useCart();
 
-  const handleAdd = async (e) => {
+  const handleAdd = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
     try {

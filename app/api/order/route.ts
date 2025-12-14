@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import prisma from "@/lib/prisma";
+import prisma from "@/lib/db";
 import { getCurrentPrice } from "@/lib/utils/pricing";
 
 export async function GET() {
@@ -181,7 +181,7 @@ export async function POST(req: Request) {
     return NextResponse.json({
       message: 'Internal server error',
       success: false,
-      error: error.message
+      error
     }, { status: 500 });
   }
 }

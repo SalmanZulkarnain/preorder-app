@@ -1,14 +1,15 @@
 import { Toaster } from "sonner";
+import { CheckoutSchema } from "@/lib/utils/zodSchema";
 
 interface CheckoutFormProps {
-  onOrder: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   loading: boolean;
   carts: any[];
   totalAmount: number;
   form: any;
+  onOrder: (values: CheckoutSchema, e?: React.BaseSyntheticEvent) => Promise<void>;
 }
 
-const CheckoutForm = ({ onOrder, loading, carts, totalAmount, form }: CheckoutFormProps) => {
+const CheckoutForm = ({ loading, carts, totalAmount, form, onOrder }: CheckoutFormProps) => {
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, '');
     form.setValue('phoneNumber', value);

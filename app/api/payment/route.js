@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createHash } from "crypto";
-import prisma from "@/lib/prisma";
+import prisma from "@/lib/db";
 
 // Validation helper
 function isValidDate(dateString) {
