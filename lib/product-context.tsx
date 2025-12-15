@@ -9,7 +9,7 @@ type ProductContextType = {
     loading: boolean;
 }
 
-const ProductContext = createContext<ProductContextType>(null);
+const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
 export function ProductProvider({ children }: { children: React.ReactNode; }) {
     const [products, setProducts] = useState<Product[]>([]);
@@ -42,5 +42,9 @@ export function ProductProvider({ children }: { children: React.ReactNode; }) {
 }
 
 export function useProduct() {
-    return useContext(ProductContext);
+    const context = useContext(ProductContext);
+    if (!context) {
+        throw new Error('useProduct must be used within ProductProvider');
+    }
+    return context;
 }

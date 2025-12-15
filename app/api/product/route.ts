@@ -5,14 +5,16 @@ import prisma from '@/lib/db';
 import path from 'path';
 import { put } from "@vercel/blob";
 
+import { Product } from '@/prisma/generated/prisma/client';
+
 interface ProductProps {
     price: number,
     discountPercent ?: number | null;
-    discountStart ?: string | Date | null;
-    discountEnd ?: string | Date | null;
+    discountStart? : string | Date | null;
+    discountEnd? : string | Date | null;
 }
 
-export function getFinalPrice(product: ProductProps) {
+export function getFinalPrice(product: Product) {
     const now = new Date();
     const start = product.discountStart ? new Date(product.discountStart) : null;
     const end = product.discountEnd ? new Date(product.discountEnd) : null;
@@ -45,7 +47,7 @@ export async function getSessionId() {
     return sessionId;
 }
 
-export async function GET(request) {
+export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
 
@@ -107,7 +109,7 @@ export async function GET(request) {
     }
 }
 
-export async function POST(request) {
+export async function POST(request: Request) {
     try {
         const formData = await request.formData();
 
@@ -168,10 +170,10 @@ export async function POST(request) {
             success: true,
             data: product
         }, { status: 201 });
-    } catch (err) {
-        console.error('Failed to add product: ', err);
+    } catch (error) {
+        console.error('Failed to add product: ', error);
         return NextResponse.json({
-            message: err.message || 'Internal server error',
+            message: error || 'Internal server error',
             success: false
         }, { status: 500 });
     }

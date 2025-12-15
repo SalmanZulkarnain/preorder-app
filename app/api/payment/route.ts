@@ -3,12 +3,12 @@ import { createHash } from "crypto";
 import prisma from "@/lib/db";
 
 // Validation helper
-function isValidDate(dateString) {
+function isValidDate(dateString: string) {
   const date = new Date(dateString);
   return !isNaN(date.getTime());
 }
 
-export async function GET(request) {
+export async function GET(request: Request) {
   try {
     const start = Date.now();
     const { searchParams } = new URL(request.url);
@@ -131,9 +131,9 @@ export async function GET(request) {
 }
 
 
-export async function POST(request) {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
-    const jsonBody = await request.json();
+    const jsonBody: MidtransWebhookPayload = await request.json();
     console.log("Midtrans webhook payload:", jsonBody);
 
     const {
@@ -173,12 +173,12 @@ export async function POST(request) {
         paymentType: payment_type,
         bank: va_numbers?.[0]?.bank ?? null,
         vaNumber: va_numbers?.[0]?.va_number ?? null,
-        grossAmount: parseInt(gross_amount),
+        grossAmount: parseInt(String(gross_amount)),
         transactionStatus: transaction_status,
         fraudStatus: fraud_status,
         transactionTime: transaction_time ? new Date(transaction_time) : null,
         expiryTime: expiry_time ? new Date(expiry_time) : null,
-        rawResponse: jsonBody,
+        rawResponse: jsonBody as any,
       },
       create: {
         transactionId: order_id,
@@ -186,12 +186,12 @@ export async function POST(request) {
         paymentType: payment_type,
         bank: va_numbers?.[0]?.bank ?? null,
         vaNumber: va_numbers?.[0]?.va_number ?? null,
-        grossAmount: parseInt(gross_amount),
+        grossAmount: parseInt(String(gross_amount)),
         transactionStatus: transaction_status,
         fraudStatus: fraud_status,
         transactionTime: transaction_time ? new Date(transaction_time) : null,
         expiryTime: expiry_time ? new Date(expiry_time) : null,
-        rawResponse: jsonBody,
+        rawResponse: jsonBody as any,
       },
     });
 
@@ -220,9 +220,10 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
     console.error("Internal server error: ", error);
     return NextResponse.json(
-      { message: "Internal server error", success: false },
+      { message: errorMessage || "Internal server error", success: false },
       { status: 500 }
     );
   }
