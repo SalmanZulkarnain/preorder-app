@@ -18,7 +18,21 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "prisma/generated/**",
     ],
+  },
+  {
+    files: ["app/**/*.{js,jsx}", "components/**/*.{js,jsx}", "lib/**/*.{js,jsx}"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "Program",
+          message:
+            "Use TypeScript (.ts/.tsx) instead of JavaScript in app/, components/, and lib/.",
+        },
+      ],
+    },
   },
 ];
 

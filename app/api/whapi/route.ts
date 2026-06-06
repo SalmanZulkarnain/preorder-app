@@ -1,7 +1,5 @@
-// import prisma from "@/lib/db";
+import prisma from "@/lib/db";
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
 
 type Subcscriber = {
   phone: string;
@@ -16,9 +14,10 @@ export async function GET() {
       { status: 201 }
     );
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json(
       {
-        message: err.message,
+        message,
         success: false,
       },
       { status: 500 }
@@ -26,7 +25,7 @@ export async function GET() {
   }
 }
 
-export async function POST(req) {
+export async function POST(req: Request) {
   try {
     const { phone } = await req.json();
 
@@ -47,9 +46,10 @@ export async function POST(req) {
       { status: 201 }
     );
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json(
       {
-        message: err.message,
+        message,
         success: false,
       },
       { status: 500 }

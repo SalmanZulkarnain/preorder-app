@@ -1,16 +1,8 @@
 "use client";
-import { useCartPage } from "./hooks/useCartPage";
-import CartList from "./components/CartList";
-import CheckoutForm from "./components/CheckoutForm";
-import CartStatusBanner from "./components/CartStatusBanner";
-
-declare global {
-  interface Window {
-    snap?: {
-      pay: (token: string, callbacks: any) => void;
-    };
-  }
-}
+import { useCartPage } from "./_hooks/useCartPage";
+import CartList from "./_components/CartList";
+import CheckoutForm from "./_components/CheckoutForm";
+import CartStatusBanner from "./_components/CartStatusBanner";
 
 export default function CartPage() {
   const { form, loading, paymentStatus, paymentMessage, handleDismissPaymentStatus, onOrder, handleUpdateQuantity, handleDelete, totalAmount, carts } = useCartPage();

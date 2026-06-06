@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useAuth } from "@/lib/auth-context";
+import { useAuth } from "@/lib/contexts/auth-context";
 import { IoClose, IoMenu } from "react-icons/io5";
 import clsx from "clsx";
-import { useCart } from "@/lib/cart-context";
+import { useCart } from "@/lib/contexts/cart-context";
 import { ShoppingCart } from "lucide-react";
 
 export default function Navlink() {

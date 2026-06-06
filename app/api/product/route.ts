@@ -125,42 +125,41 @@ export async function POST(request: Request) {
             );
         }
 
-        if (!image || !image?.name) {
+        if (!(image instanceof File) || !image.name) {
             return NextResponse.json(
                 { message: 'Image is required', success: false },
                 { status: 400 }
             );
         }
 
-        let imageUrl = null;
+        let imageUrl: string | null = null;
+        const nameStr = String(name);
+        const descriptionStr = String(description);
 
-        if (image && image?.name) {
-            const fileName = `${Date.now()}-${image.name.replace(/\s+/g, "_")}`;
-            const isDevelopment = process.env.NODE_ENV === 'development';
+        const fileName = `${Date.now()}-${image.name.replace(/\s+/g, "_")}`;
+        const isDevelopment = process.env.NODE_ENV === 'development';
 
-            if (isDevelopment) {
-                const bytes = await image.arrayBuffer();
-                const buffer = Buffer.from(bytes);
-                const uploadPath = path.join(process.cwd(), "public", "uploads", fileName);
+        if (isDevelopment) {
+            const bytes = await image.arrayBuffer();
+            const buffer = Buffer.from(bytes);
+            const uploadPath = path.join(process.cwd(), "public", "uploads", fileName);
 
-                await writeFile(uploadPath, buffer);
-                imageUrl = `/uploads/${fileName}`;
-            } else {
-                const blob = await put(fileName, image, {
-                    access: 'public',
-                    token: process.env.BLOB_READ_WRITE_TOKEN
-                });
+            await writeFile(uploadPath, buffer);
+            imageUrl = `/uploads/${fileName}`;
+        } else {
+            const blob = await put(fileName, image, {
+                access: 'public',
+                token: process.env.BLOB_READ_WRITE_TOKEN
+            });
 
-                imageUrl = blob.url;
-            }
-
+            imageUrl = blob.url;
         }
 
         const product = await prisma.product.create({
             data: {
                 image: imageUrl,
-                name,
-                description,
+                name: nameStr,
+                description: descriptionStr,
                 price
             }
         });

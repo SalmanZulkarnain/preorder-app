@@ -1,9 +1,9 @@
-import Banner from "./components/Banner";
-import Feature from "./components/Feature";
-import Tutorial from "./components/Tutorial";
-import Testimonial from "./components/Testimonial";
-import Subscribe from "./components/Subscribe";
-import Popular from "./components/Popular";
+import Banner from "@/components/features/marketing/Banner";
+import Feature from "@/components/features/marketing/Feature";
+import Tutorial from "@/components/features/marketing/Tutorial";
+import Testimonial from "@/components/features/marketing/Testimonial";
+import Subscribe from "@/components/features/marketing/Subscribe";
+import Popular from "@/components/features/marketing/Popular";
 
 const PreorderFoodLandingPage = () => {
 

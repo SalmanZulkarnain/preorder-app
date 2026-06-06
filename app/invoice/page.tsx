@@ -1,11 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { formatDate } from "@/lib/utils/formatDate";
+import type { Order } from "@/prisma/generated/prisma/client";
 
 export default function InvoicePage() {
   const [inputInvoice, setInputInvoice] = useState("");
   const [error, setError] = useState("");
-  const [recentPayments, setRecentPayments] = useState([]);
+  const [recentPayments, setRecentPayments] = useState<Order[]>([]);
 
   async function handleFind(e: React.FormEvent) {
     e.preventDefault();

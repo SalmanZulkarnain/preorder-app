@@ -1,6 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { createHash } from "crypto";
 import prisma from "@/lib/db";
+import type { Prisma } from "@/prisma/generated/prisma/client";
+import type { MidtransWebhookPayload } from "@/types/payment";
 
 // Validation helper
 function isValidDate(dateString: string) {
@@ -19,11 +21,11 @@ export async function GET(request: Request) {
     const transactionId = searchParams.get("transactionId")?.trim();
 
     // pagination params
-    const page = parseInt(searchParams.get("page")) || 1;
-    const limit = parseInt(searchParams.get("limit")) || 10;
+    const page = parseInt(searchParams.get("page") ?? "1") || 1;
+    const limit = parseInt(searchParams.get("limit") ?? "10") || 10;
     const skip = (page - 1) * limit;
 
-    const where = {};
+    const where: Prisma.PaymentWhereInput = {};
 
     if (paymentType && ['qris', 'bank_transfer', 'echannel'].includes(paymentType)) {
       where.paymentType = paymentType;

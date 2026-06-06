@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    allowedDevOrigins: ['autopilot-mortality-strict.ngrok-free.dev'],
     images: {
         remotePatterns: [
             {
@@ -7,7 +8,7 @@ const nextConfig = {
                 hostname: '**.vercel-storage.com'
             }
         ]
-    }
+    },
 };
 
 export default nextConfig;

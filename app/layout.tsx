@@ -1,7 +1,7 @@
 import "@/app/globals.css";
 import { Inter } from "next/font/google";
-import { AuthProvider } from "@/lib/auth-context";
-import { CartProvider } from "@/lib/cart-context";
+import { AuthProvider } from "@/lib/contexts/auth-context";
+import { CartProvider } from "@/lib/contexts/cart-context";
 import LayoutContent from "@/components/layout/LayoutContent";
 import { ReactNode } from "react";
 
