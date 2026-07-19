@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import ProductCard from '@/app/product/_components/ProductCard'
-import prisma from '@/lib/db'
-import type { Product } from '@/prisma/generated/prisma/client'
+import { prisma } from '@/lib/prisma'
+import type { Product } from "@/generated/prisma/client";
 
 const Popular = async () => {
     const products: Product[] = await prisma.product.findMany();

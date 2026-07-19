@@ -1,6 +1,6 @@
 import Image from "next/image";
 import AddToCartButton from "./AddButton";
-import type { Product } from "@/prisma/generated/prisma/client";
+import type { Product } from "@/generated/prisma/client";
 
 interface ProductCardProps {
   product: Product;

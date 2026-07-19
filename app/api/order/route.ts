@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import prisma from "@/lib/db";
+import { prisma } from "@/lib/prisma";
 import { getCurrentPrice } from "@/lib/utils/pricing";
 
 export async function GET() {

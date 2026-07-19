@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { formatDate } from "@/lib/utils/formatDate";
-import type { Order } from "@/prisma/generated/prisma/client";
+import type { Order } from "@/generated/prisma/client";
 
 export default function InvoicePage() {
   const [inputInvoice, setInputInvoice] = useState("");

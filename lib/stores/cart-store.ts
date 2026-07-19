@@ -1,4 +1,4 @@
-import { Prisma } from "@/prisma/generated/prisma/client";
+import { Prisma } from "@/generated/prisma/client";
 import { create } from "zustand";
 
 type CartWithProduct = Prisma.CartGetPayload<{

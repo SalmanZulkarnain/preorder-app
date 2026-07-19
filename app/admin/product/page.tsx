@@ -8,7 +8,8 @@ import ProductFilter from "@/components/features/product/ProductFilter";
 import Image from "next/image";
 import { toast, Toaster } from "sonner";
 import Button from "@/components/ui/ButtonExport";
-import type { Product } from "@/prisma/generated/prisma/client";
+
+import type { Product } from "@/generated/prisma/client";
 
 type ProductFilters = Record<string, string>;
 

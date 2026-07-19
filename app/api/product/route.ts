@@ -1,11 +1,9 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { writeFile } from "fs/promises";
-import prisma from '@/lib/db';
 import path from 'path';
 import { put } from "@vercel/blob";
-
-import { Product } from '@/prisma/generated/prisma/client';
+import { prisma } from '@/lib/prisma';
 
 interface ProductProps {
     price: number,
@@ -14,7 +12,7 @@ interface ProductProps {
     discountEnd? : string | Date | null;
 }
 
-export function getFinalPrice(product: Product) {
+export function getFinalPrice(product: ProductProps) {
     const now = new Date();
     const start = product.discountStart ? new Date(product.discountStart) : null;
     const end = product.discountEnd ? new Date(product.discountEnd) : null;

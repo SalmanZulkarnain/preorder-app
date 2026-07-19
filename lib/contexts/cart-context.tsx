@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { Prisma } from "@/prisma/generated/prisma/client";
+import { Prisma } from "@/generated/prisma/client";
 
 type CartWithProduct = Prisma.CartGetPayload<{
     include: { product: true };

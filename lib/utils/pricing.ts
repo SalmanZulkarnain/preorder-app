@@ -1,5 +1,5 @@
-import type { Product } from "@/prisma/generated/prisma/client";
-import { Prisma } from "@/prisma/generated/prisma/client";
+import type { Product } from "@/generated/prisma/client";
+import { Prisma } from "@/generated/prisma/client";
 
 type CartItemWithProduct = Prisma.CartGetPayload<{ include: { product: true }}>
 

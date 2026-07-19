@@ -340,7 +340,7 @@ export default function TransactionTable({ filters, initialPayments }: Transacti
                           </tr>
                         </thead>
                         <tbody>
-                          {selectedPayment.order.orderItems.map((item) => (
+                          {selectedPayment.order.orderItems.map((item: any) => (
                             <tr key={item.id}>
                               <td className="border p-3 border-gray-200">{item.product.id}</td>
                               <td className="border p-3 border-gray-200">{item.product.name}</td>

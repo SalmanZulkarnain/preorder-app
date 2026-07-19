@@ -1,6 +1,6 @@
-import prisma from '@/lib/db';
-import type { Product } from '@/prisma/generated/prisma/client';
+import { prisma } from '@/lib/prisma';
 import ProductList from './_components/ProductList';
+import type { Product } from '@/generated/prisma/client';
 
 export default async function ProductPage() {
   const products: Product[] = await prisma.product.findMany();

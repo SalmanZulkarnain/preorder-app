@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createHash } from "crypto";
-import prisma from "@/lib/db";
-import type { Prisma } from "@/prisma/generated/prisma/client";
+import { prisma } from "@/lib/prisma";
 import type { MidtransWebhookPayload } from "@/types/payment";
+import { Prisma } from "@/generated/prisma/client";
 
 // Validation helper
 function isValidDate(dateString: string) {

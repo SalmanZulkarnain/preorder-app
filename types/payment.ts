@@ -1,4 +1,4 @@
-import type { Prisma } from "@/prisma/generated/prisma/client";
+import type { Prisma } from "@/generated/prisma/client";
 
 export type PaymentWithOrder = Prisma.PaymentGetPayload<{
     include: {

@@ -1,5 +1,5 @@
-import prisma from "@/lib/db";
-import type { Prisma } from "@/prisma/generated/prisma/client";
+import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@/generated/prisma/client";
 
 type DateRange = Prisma.DateTimeFilter;
 
