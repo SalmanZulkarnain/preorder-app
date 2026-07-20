@@ -19,7 +19,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     async function fetchUser() {
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/me`, {
+            const res = await fetch(`/api/me`, {
                 headers: { "ngrok-skip-browser-warning": "true" },
             });
 

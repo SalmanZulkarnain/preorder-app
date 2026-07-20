@@ -16,7 +16,7 @@ export default function Sidebar({ onToggle, onClose, isMobile = false }: Sidebar
   const handleMobileClose = onClose ?? onToggle;
 
   const handleLogout = async () => {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/logout`, {
+    await fetch(`/api/logout`, {
       method: "POST",
       credentials: "include",
     });

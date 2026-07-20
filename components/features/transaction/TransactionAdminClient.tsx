@@ -30,7 +30,7 @@ export default function TransactionAdminClient({
     try {
       const params = new URLSearchParams(filters).toString();
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/payment/export?${params}`
+        `/api/payment/export?${params}`
       );
 
       if (!response.ok) throw new Error("Export failed");

@@ -18,7 +18,7 @@ export default function ProductUpdate({ params }: { params: Promise<{ id: string
   const fetchProduct = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/product/${id}`
+        `/api/product/${id}`
       );
       if (!response.ok) throw new Error("Gagal fetch data produk");
       const result = await response.json();
@@ -63,7 +63,7 @@ export default function ProductUpdate({ params }: { params: Promise<{ id: string
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/product/${id}`,
+        `/api/product/${id}`,
         {
           method: "PUT",
           body: formData,

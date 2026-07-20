@@ -39,7 +39,7 @@ export default function ProductCreate() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/product`,
+        `/api/product`,
         {
           method: "POST",
           body: formData,
@@ -55,7 +55,6 @@ export default function ProductCreate() {
         setPrice("");
         setImage(null);
         setPreview("");
-        e.currentTarget.reset();
         setTimeout(() => {
           router.push("/admin/product");
         }, 1000);

@@ -13,7 +13,7 @@ export default function AddToCartButton({ productId }: { productId: number }) {
     e.stopPropagation();
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart`, {
+      const res = await fetch(`/api/cart`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

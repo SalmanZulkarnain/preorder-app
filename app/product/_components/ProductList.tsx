@@ -19,7 +19,7 @@ export default function ProductList({ products }: { products: Product[] }) {
 
     return (
         <>
-            <div className="grid max-w-screen-xl grid-cols-1 gap-2 mx-auto md:grid-cols-2 lg:grid-cols-3 sm:gap-4 lg:gap-6">
+            <div className="grid max-w-7xl grid-cols-1 gap-2 mx-auto md:grid-cols-2 lg:grid-cols-3 sm:gap-4 lg:gap-6">
                 {products.map(product => {
                     return <ProductCard key={product.id} product={product} onProductClick={handleProductClick} />;
                 })}

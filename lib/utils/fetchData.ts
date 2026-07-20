@@ -12,7 +12,7 @@ type Pagination = {
 export async function getPayment() {
     try {
         const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/payment?page=1&limit=10`,
+            `/api/payment?page=1&limit=10`,
             { cache: "no-store" }
         );
 
@@ -36,7 +36,7 @@ export async function getPayment() {
 
 export async function getData() {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customer`);
+        const response = await fetch(`/api/customer`);
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);

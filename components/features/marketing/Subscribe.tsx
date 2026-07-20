@@ -17,7 +17,7 @@ const Subscribe = () => {
 
     const onSubscribe = async (values: PhoneSchema) => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/whapi`, {
+            const response = await fetch(`/api/whapi`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ phone: values.phone })

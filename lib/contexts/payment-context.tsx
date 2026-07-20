@@ -35,7 +35,7 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
         try {
             const params = new URLSearchParams(filterParams).toString();
             setLoading(true);
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payment?${params}`);
+            const res = await fetch(`/api/payment?${params}`);
 
             if (!res.ok) throw new Error("Gagal fetch data payment");
 

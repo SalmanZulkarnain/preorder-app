@@ -41,7 +41,7 @@ export const useCartPage = () => {
         debounceTimers.current[cartId] = setTimeout(async () => {
             try {
                 const finalQuantity = quantityRefs.current[cartId];
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/${cartId}`, {
+                const res = await fetch(`/api/cart/${cartId}`, {
                     method: "PATCH",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ quantity: finalQuantity }),
@@ -65,7 +65,7 @@ export const useCartPage = () => {
         setCarts((prev) => prev.filter((cart) => cart.id !== cartId));
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/${cartId}`, { method: "DELETE" });
+            const res = await fetch(`/api/cart/${cartId}`, { method: "DELETE" });
             if (!res.ok) throw new Error("Delete failed");
         } catch {
             setCarts(originalCarts);
@@ -113,7 +113,7 @@ export const useCartPage = () => {
         setLoading(true);
 
         try {
-            const resOrder = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/order`, {
+            const resOrder = await fetch(`/api/order`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -132,7 +132,7 @@ export const useCartPage = () => {
                 form.reset();
 
                 const resMidtrans = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/midtrans`,
+                    `/api/midtrans`,
                     {
                         method: "POST",
                         headers: {

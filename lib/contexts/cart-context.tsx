@@ -25,7 +25,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     const fetchCarts = async () => {
         try {
             setLoading(true);
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart`, {
+            const response = await fetch(`/api/cart`, {
                 headers: { "ngrok-skip-browser-warning": "true" },
             });
 

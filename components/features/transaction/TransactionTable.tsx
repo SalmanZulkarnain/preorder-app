@@ -47,7 +47,7 @@ export default function TransactionTable({ filters, initialPayments }: Transacti
       }).toString();
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/payment?${params}`
+        `/api/payment?${params}`
       );
 
       if (!res.ok) throw new Error("Failed to fetch payment");

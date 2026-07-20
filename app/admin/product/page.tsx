@@ -37,7 +37,7 @@ export default function ProductAdmin() {
 
   const handleExport = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/export`);
+      const res = await fetch(`/api/product/export`);
       if (!res.ok) throw new Error('Export failed');
 
       const blob = await res.blob();
@@ -69,7 +69,7 @@ export default function ProductAdmin() {
       }).toString();
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/product?${params}`
+        `/api/product?${params}`
       );
       const result = await res.json();
 
@@ -92,7 +92,7 @@ export default function ProductAdmin() {
     try {
       setLoadingId(productId);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`,
+        `/api/product/${productId}`,
         {
           method: "DELETE",
         }

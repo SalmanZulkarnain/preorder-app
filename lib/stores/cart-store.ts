@@ -26,7 +26,7 @@ export const useCartStore = create<CartStore>((set) => ({
     fetchCarts: async () => {
         set({ isLoading: true, error: null });
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart`);
+            const response = await fetch(`/api/cart`);
             const result = await response.json();
 
             if (result.success) {
@@ -47,7 +47,7 @@ export const useCartStore = create<CartStore>((set) => ({
     addCart: async (productId) => {
         set({ isLoading: true, error: null });
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart`, {
+            const response = await fetch(`/api/cart`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
