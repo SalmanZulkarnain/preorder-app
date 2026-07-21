@@ -12,7 +12,7 @@ type Pagination = {
 export async function getPayment() {
     try {
         const response = await fetch(
-            `/api/payment?page=1&limit=10`,
+            `${process.env.NEXT_PUBLIC_API_URL}/payment`,
             { cache: "no-store" }
         );
 

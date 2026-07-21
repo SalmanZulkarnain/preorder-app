@@ -26,7 +26,7 @@ export default function LayoutUser({ children }: { children: ReactNode }) {
         </div>
       )}
 
-      <main className="flex-1 p-2 sm:p-4 lg:p-6">{children}</main>
+      <main className="flex-1 m-4 lg:p-6 mb-12">{children}</main>
       <Footer />
     </div>
   );

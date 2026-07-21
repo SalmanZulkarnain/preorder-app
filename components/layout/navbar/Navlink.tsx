@@ -47,7 +47,7 @@ export default function Navlink() {
               }
             )}
           >
-            <ul className="flex flex-col p-4 text-sm font-semibold uppercase rounded-sm shadow-sm md:p-0 md:flex-row md:items-center md:shadow-none md:space-x-10 md:bg-white">
+            <ul className="flex flex-col p-4 text-sm font-medium rounded-sm shadow-sm md:p-0 md:flex-row md:items-center md:shadow-none md:space-x-10 md:bg-white">
               <li>
                 <Link
                   href="/"
@@ -61,7 +61,7 @@ export default function Navlink() {
                   href="/product"
                   className="block px-3 py-2 text-gray-600 md:p-0 hover:text-black "
                 >
-                  Product
+                  Products
                 </Link>
               </li>
               <li>
@@ -69,7 +69,7 @@ export default function Navlink() {
                   href="/cart"
                   className="block px-3 py-2 text-gray-600 md:p-0 hover:text-black "
                 >
-                  Cart ({totalItems})
+                  Carts ({totalItems})
                 </Link>
               </li>
               <li>
@@ -77,7 +77,7 @@ export default function Navlink() {
                   href="/invoice"
                   className="block px-3 py-2 text-gray-600 md:p-0 hover:text-black "
                 >
-                  Cek Transaksi
+                  Transactions
                 </Link>
               </li>
               {!user ? (

@@ -100,7 +100,7 @@ export default function InvoicePage() {
               <h2 className="text-lg font-semibold mb-4">Recent Transactions</h2>
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full table-auto min-w-[800px] border-collapse text-left">
+              <table className="w-full table-auto min-w-200 border-collapse text-left">
                 <thead className="text-gray-500 text-xs sm:text-sm">
                   <tr>
                     <th className="px-5 py-4 border-b border-gray-200 first:pl-0">

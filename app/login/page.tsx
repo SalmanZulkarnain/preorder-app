@@ -44,19 +44,21 @@ export default function LoginPage() {
         <input
           className="w-full px-3 py-2 mb-3 rounded-lg focus:outline-none ring ring-gray-200 focus:ring-gray-400 placeholder:text-sm"
           type="email"
-          placeholder="Email"
+          placeholder="admin@example.com"
+          autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
           className="w-full px-3 py-2 mb-6 rounded-lg focus:outline-none ring ring-gray-200 focus:ring-gray-400 placeholder:text-sm"
           type="password"
-          placeholder="Password"
+          placeholder="password123"
+          autoComplete="password123"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit" className="w-full py-2 font-medium text-gray-100 bg-green-600 rounded-full cursor-pointer">
-          Login
+          Login as Demo Admin
         </button>
       </form>
     </div>
