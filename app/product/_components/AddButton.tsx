@@ -1,13 +1,13 @@
 "use client";
 
+import { useCartStore } from "@/lib/stores/cart-store";
 import { Plus, Check } from "lucide-react";
 import { useState } from "react";
-import { useCart } from "@/lib/contexts/cart-context";
 
 export default function AddToCartButton({ productId }: { productId: number }) {
   const [added, setAdded] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { fetchCarts } = useCart();
+  const { fetchCarts } = useCartStore();
 
   const handleAdd = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();

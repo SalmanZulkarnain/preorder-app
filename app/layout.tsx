@@ -1,7 +1,6 @@
 import "@/app/globals.css";
 import { Inter } from "next/font/google";
 import { AuthProvider } from "@/lib/contexts/auth-context";
-import { CartProvider } from "@/lib/contexts/cart-context";
 import LayoutContent from "@/components/layout/LayoutContent";
 import { ReactNode } from "react";
 
@@ -12,14 +11,12 @@ export const metadata = {
   description: "Tempat PreOrder Makanan",
 };
 
-export default function RootLayout({ children }: { children: ReactNode; }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-            <CartProvider>
-              <LayoutContent>{children}</LayoutContent>
-            </CartProvider>
+          <LayoutContent>{children}</LayoutContent>
         </AuthProvider>
       </body>
     </html>

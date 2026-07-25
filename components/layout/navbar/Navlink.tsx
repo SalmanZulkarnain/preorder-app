@@ -5,13 +5,15 @@ import { useState } from "react";
 import { useAuth } from "@/lib/contexts/auth-context";
 import { IoClose, IoMenu } from "react-icons/io5";
 import clsx from "clsx";
-import { useCart } from "@/lib/contexts/cart-context";
 import { ShoppingCart } from "lucide-react";
+import { useCartStore } from "@/lib/stores/cart-store";
 
 export default function Navlink() {
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
-  const { totalItems } = useCart();
+  const totalItems = useCartStore((state) =>
+    state.carts.reduce((sum, cart) => sum + cart.quantity, 0),
+  );
 
   return (
     <>
@@ -22,7 +24,10 @@ export default function Navlink() {
               href="/cart"
               className="block relative px-3 py-2 text-gray-500 font-bold md:p-0 hover:text-black md:hidden"
             >
-              <ShoppingCart /> <span className="absolute -top-2 text-sm right-0 bg-red-500 px-1 rounded text-red-200">{totalItems}</span>
+              <ShoppingCart />{" "}
+              <span className="absolute -top-2 text-sm right-0 bg-red-500 px-1 rounded text-red-200">
+                {totalItems}
+              </span>
             </Link>
             <button
               onClick={() => {
@@ -43,8 +48,8 @@ export default function Navlink() {
               "absolute md:static bg-white top-full left-0 w-full md:block md:w-auto transform transition-all duration-300 ease-in-out origin-top md:duration-0",
               {
                 "max-h-0 overflow-hidden md:max-h-none": !open,
-                "max-h-screen md:max-h-none": open
-              }
+                "max-h-screen md:max-h-none": open,
+              },
             )}
           >
             <ul className="flex flex-col p-4 text-sm font-medium rounded-sm shadow-sm md:p-0 md:flex-row md:items-center md:shadow-none md:space-x-10 md:bg-white">

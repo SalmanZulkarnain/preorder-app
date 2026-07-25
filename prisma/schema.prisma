@@ -20,11 +20,6 @@ enum OrderStatus {
   EXPIRED // kadaluwarsa (baik sebelum atau sesudah pilih metode)
 }
 
-enum UserRole {
-  ADMIN
-  CUSTOMER
-}
-
 model Product {
   id          Int     @id @default(autoincrement())
   name        String
@@ -135,7 +130,6 @@ model User {
   name      String
   email     String   @unique
   password  String
-  role      String   @default("ADMIN")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

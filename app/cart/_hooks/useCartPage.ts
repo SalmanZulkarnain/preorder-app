@@ -1,9 +1,9 @@
 import { useState, useRef } from "react";
-import { useCart } from "@/lib/contexts/cart-context";
 import { toast } from "sonner";
 import { CheckoutSchema, checkoutSchema } from "@/lib/utils/zodSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useCartStore } from "@/lib/stores/cart-store";
 
 type PaymentStatus = "success" | "pending" | "error" | "warning" | null;
 
@@ -11,8 +11,9 @@ export const useCartPage = () => {
     const [loading, setLoading] = useState(false);
     const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>(null);
     const [paymentMessage, setPaymentMessage] = useState("");
-    const { carts, setCarts, fetchCarts, totalAmount } = useCart();
-
+    const { carts, setCarts, clearCarts, fetchCarts } = useCartStore();
+    const totalAmount = useCartStore(state => state.carts.reduce((sum, cart) => sum + cart.quantity * cart.product.price, 0))
+    
     const debounceTimers = useRef<Record<number, ReturnType<typeof setTimeout>>>({});
     const quantityRefs = useRef<Record<number, number>>({});
 
@@ -157,6 +158,7 @@ export const useCartPage = () => {
                     } else {
                         window.snap.pay(resultMidtrans.token, callbacks);
                     }
+                    clearCarts()
                 } else {
                     setPaymentFeedback("error", "Token pembayaran tidak tersedia. Silakan coba lagi.");
                 }

@@ -8,11 +8,9 @@ import LayoutUser from "./LayoutUser";
 export default function LayoutContent({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
 
-  const isAdmin = user?.role === "ADMIN";
-
   if (loading) return null;
 
-  return isAdmin ? (
+  return user ? (
     <LayoutAdmin>{children}</LayoutAdmin>
   ) : (
     <LayoutUser>{children}</LayoutUser>

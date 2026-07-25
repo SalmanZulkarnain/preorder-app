@@ -11,6 +11,8 @@ interface CartStore {
     error: string | null;
     fetchCarts: () => Promise<void>;
     addCart: (productId: number) => Promise<void>;
+    setCarts: (updater: CartWithProduct[] | ((prev: CartWithProduct[]) => CartWithProduct[])) => void;
+    clearCarts: () => void;
     setLoading: (loading: boolean) => void;
     setError: (error: string) => void;
 }
@@ -22,6 +24,13 @@ export const useCartStore = create<CartStore>((set) => ({
 
     setLoading: (loading) => set({ isLoading: loading }),
     setError: (error) => set({ error }),
+
+    setCarts: (updater) =>
+        set(state => ({
+            carts: typeof updater === "function" ? updater(state.carts) : updater
+        })),
+
+    clearCarts: () => set({ carts: [] }),
 
     fetchCarts: async () => {
         set({ isLoading: true, error: null });
@@ -75,4 +84,5 @@ export const useCartStore = create<CartStore>((set) => ({
             set({ error: "Failed to add cart", isLoading: false });
         }
     },
+
 }));

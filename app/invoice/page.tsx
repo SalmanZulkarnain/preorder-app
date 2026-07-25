@@ -1,7 +1,6 @@
-"use client";
-import React, { useEffect, useState } from "react";
 import { formatDate } from "@/lib/utils/formatDate";
-import type { Order } from "@/generated/prisma/client";
+import InvoiceForm from "./invoice-form";
+import { getOrdersBySession } from "@/lib/services/orderService";
 
 const statusStyles = {
   PAID: "bg-green-100 text-green-600",
@@ -10,74 +9,29 @@ const statusStyles = {
   EXPIRED: "bg-red-100 text-red-600",
 };
 
-export default function InvoicePage() {
-  const [inputInvoice, setInputInvoice] = useState("");
-  const [error, setError] = useState("");
-  const [recentPayments, setRecentPayments] = useState<Order[]>([]);
+export default async function InvoicePage() {
+  // const [recentPayments, setRecentPayments] = useState<Order[]>([]);
 
-  async function handleFind(e: React.FormEvent) {
-    e.preventDefault();
-    setError("");
+  // useEffect(() => {
+  //   let mounted = true;
+  //   (async () => {
+  //     try {
+  //       const res = await fetch(`/api/invoice`, {
+  //         credentials: "include",
+  //       });
+  //       const result = await res.json();
+  //       if (!mounted) return;
+  //       if (result.success) setRecentPayments(result.data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   })();
+  //   return () => {
+  //     mounted = false;
+  //   };
+  // }, []);
 
-    try {
-      const res = await fetch(`/api/invoice`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ transactionId: inputInvoice }),
-        credentials: "include",
-      });
-
-      const result = await res.json();
-
-      if (!res.ok) {
-        setError(result.message || "Transaction not found");
-        return;
-      }
-
-      const { redirectUrl, token } = result.data;
-
-      if (redirectUrl) {
-        window.location.href = redirectUrl;
-        return;
-      }
-
-      if (token && (window as any).snap?.pay) {
-        (window as any).snap.pay(token, {
-          onSuccess: () => {
-            window.location.reload();
-          },
-          onPending: () => window.alert("Payment pending"),
-          onError: () => window.alert("Payment failed"),
-          onClose: () => window.alert("Payment popup closed"),
-        });
-        return;
-      }
-
-      setError("No payment link or token available for this transaction");
-    } catch (error) {
-      console.error(error);
-      setError("Failed to find transaction. Try again later.");
-    }
-  }
-
-  useEffect(() => {
-    let mounted = true;
-    (async () => {
-      try {
-        const res = await fetch(`/api/invoice`, {
-          credentials: "include",
-        });
-        const result = await res.json();
-        if (!mounted) return;
-        if (result.success) setRecentPayments(result.data);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-    return () => {
-      mounted = false;
-    };
-  }, []);
+  const orders = await getOrdersBySession();
 
   return (
     <div className="flex items-center justify-center mx-auto py-20">
@@ -90,29 +44,7 @@ export default function InvoicePage() {
             Lihat detail pembelian kamu menggunakan nomor Transaksi.
           </h2>
         </div>
-        <form
-          onSubmit={handleFind}
-          className="p-8 bg-white border border-gray-300 shadow rounded-xl"
-        >
-          <h3 className="mb-4 lg:text-xl text-lg font-medium text-gray-500">
-            Cari detail pembelian kamu disini
-          </h3>
-          {error && <p className="mb-2 text-xs text-red-500">{error}</p>}
-
-          <input
-            className="w-full px-3 py-2 mb-3 rounded-lg focus:outline-none ring ring-gray-200 focus:ring-gray-400 placeholder:text-sm"
-            type="text"
-            placeholder="Masukkan nomor transaksi kamu (Contoh: INV-XXXXXXXX-XXX"
-            value={inputInvoice}
-            onChange={(e) => setInputInvoice(e.target.value)}
-          />
-          <button
-            type="submit"
-            className="w-full py-2 font-medium text-gray-100 bg-green-600 rounded-full cursor-pointer"
-          >
-            Cari Transaksi
-          </button>
-        </form>
+        <InvoiceForm />
         <div className="mt-5">
           <div className="bg-white rounded-xl px-6 py-4 overflow-x-auto">
             <div className="flex justify-between items-center">
@@ -142,7 +74,7 @@ export default function InvoicePage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {recentPayments.map((p) => (
+                  {orders.map((p) => (
                     <tr key={p.id}>
                       <td className="px-5 py-4 border-b border-gray-200 first:pl-0">
                         {formatDate(p.createdAt)}

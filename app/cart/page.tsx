@@ -15,7 +15,7 @@ export default function CartPage() {
     handleUpdateQuantity,
     handleDelete,
     totalAmount,
-    carts,
+    carts
   } = useCartPage();
 
   if (loading)
