@@ -151,6 +151,7 @@ export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof t
 
 export const PaymentScalarFieldEnum = {
   id: 'id',
+  orderId: 'orderId',
   transactionId: 'transactionId',
   midtransTransactionId: 'midtransTransactionId',
   paymentType: 'paymentType',

@@ -1,19 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import Papa from "papaparse";
-import { Prisma } from "@/generated/prisma/client";
+import { Prisma, OrderStatus } from "@/generated/prisma/client";
 
 export async function GET(req: NextRequest) {
     try {
         const { searchParams } = new URL(req.url);
-        const status = searchParams.get("status")?.toLowerCase();
+        const status = searchParams.get("status")?.toUpperCase();
         const paymentType = searchParams.get("paymentType")?.toLowerCase();
 
         const where: Prisma.PaymentWhereInput = {};
 
-        if (status && ['paid', 'pending', 'expired', 'cancelled'].includes(status)) {
+        if (status && Object.values(OrderStatus).includes(status as OrderStatus)) {
             where.order = {
-                status: status
+                status: status as OrderStatus
             };
         }
 

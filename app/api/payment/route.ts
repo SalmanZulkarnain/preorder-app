@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createHash } from "crypto";
 import { prisma } from "@/lib/prisma";
 import type { MidtransWebhookPayload } from "@/types/payment";
-import { Prisma } from "@/generated/prisma/client";
+import { Prisma, OrderStatus } from "@/generated/prisma/client";
 
 // Validation helper
 function isValidDate(dateString: string) {
@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     const start = Date.now();
     const { searchParams } = new URL(request.url);
 
-    const status = searchParams.get("status")?.toLowerCase();
+    const status = searchParams.get("status")?.toUpperCase();
     const paymentType = searchParams.get("paymentType")?.toLowerCase();
     const date = searchParams.get("date");
     const transactionId = searchParams.get("transactionId")?.trim();
@@ -42,9 +42,9 @@ export async function GET(request: Request) {
       };
     }
 
-    if (status && ['paid', 'pending', 'expired', 'cancelled'].includes(status)) {
+    if (status && Object.values(OrderStatus).includes(status as OrderStatus)) {
       where.order = {
-        status: status
+        status: status as OrderStatus
       };
     }
 
@@ -104,7 +104,7 @@ export async function GET(request: Request) {
       skip,
       take: limit
     });
-    
+
     // ✅ Tambahin ini
     const dataSize = JSON.stringify(payments).length;
     console.log(`Data size: ${(dataSize / 1024).toFixed(2)} KB`);
@@ -136,7 +136,7 @@ export async function GET(request: Request) {
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     const jsonBody: MidtransWebhookPayload = await request.json();
-    console.log("Midtrans webhook payload:", jsonBody);
+    console.log("Midtrans Webhook Payload: ", jsonBody);
 
     const {
       order_id,
@@ -147,7 +147,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       transaction_status,
       fraud_status,
       transaction_time,
-      settlement_time,
       expiry_time,
       status_code,
       signature_key,
@@ -167,9 +166,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // ✅ Simpan ke database
+    const order = await prisma.order.findUnique({
+      where: {
+        transactionId: order_id
+      }
+    })
+
+    if (!order) {
+      throw new Error("Order not found");
+    }
+
     const payments = await prisma.payment.upsert({
-      where: { transactionId: order_id },
+      where: { orderId: order.id },
       update: {
         midtransTransactionId: transaction_id,
         paymentType: payment_type,
@@ -194,21 +202,21 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         transactionTime: transaction_time ? new Date(transaction_time) : null,
         expiryTime: expiry_time ? new Date(expiry_time) : null,
         rawResponse: jsonBody as any,
+        orderId: order?.id,
       },
     });
 
     // ✅ Update order status
-    const updatedOrderStatus = await prisma.order.update({
+    await prisma.order.update({
       where: { transactionId: order_id },
       data: {
         status:
           transaction_status === "settlement"
-            ? "paid"
+            ? "PAID"
             : transaction_status === "expire"
-              ? "expired"
-              : transaction_status === "cancel"
-                ? "cancelled"
-                : "pending",
+              ? "EXPIRED"
+              : transaction_status === "pending"
+                ? "PENDING" : "WAITING_PAYMENT_METHOD"
       },
     });
 
@@ -216,8 +224,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       {
         message: "Berhasil menambah payment",
         success: true,
-        data: payments,
-        updatedOrderStatus,
+        data: payments
       },
       { status: 201 }
     );

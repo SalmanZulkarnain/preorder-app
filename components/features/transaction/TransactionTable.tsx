@@ -25,6 +25,13 @@ type TransactionTableProps = {
   initialPayments?: InitialPayments;
 };
 
+const statusStyles = {
+  PAID: "bg-green-100 text-green-600",
+  PENDING: "bg-blue-100 text-blue-600",
+  WAITING_PAYMENT_METHOD: "bg-yellow-100 text-yellow-600",
+  EXPIRED: "bg-red-100 text-red-600",
+};
+
 export default function TransactionTable({ filters, initialPayments }: TransactionTableProps) {
   const [selectedPayment, setSelectedPayment] = useState<PaymentWithOrder | null>(null);
   const [open, setOpen] = useState(false);
@@ -128,13 +135,13 @@ export default function TransactionTable({ filters, initialPayments }: Transacti
                 <td className="border-b border-gray-200 px-5 py-4">
                   <span
                     className={`font-medium px-3 py-1 rounded-full ${
-                      p.order.status === "paid"
+                      p.order.status === "PAID"
                         ? "text-green-600 bg-green-100"
-                        : p.order.status === "pending"
-                        ? "text-yellow-600 bg-yellow-100"
-                        : p.order.status === "expired"
+                        : p.order.status === "PENDING"
+                        ? "text-blue-600 bg-blue-100"
+                        : p.order.status === "EXPIRED"
                         ? "text-red-600 bg-red-100"
-                        : "text-orange-600 bg-orange-100"
+                        : "text-yellow-600 bg-yellow-100"
                     }`}
                   >
                     {p.order.status}
@@ -252,11 +259,7 @@ export default function TransactionTable({ filters, initialPayments }: Transacti
               <span className="font-bold block mb-2">Status</span>
               <hr className="mb-3 border-gray-300" />
               <h3
-                className={`rounded p-3 text-sm ${
-                  selectedPayment.order.status === "paid"
-                    ? "bg-green-100 text-green-600"
-                    : "bg-yellow-100 text-yellow-600"
-                }`}
+                className={`rounded p-3 text-sm ${statusStyles[selectedPayment.order.status]}`}
               >
                 Transaction status: {selectedPayment.order.status}
               </h3>

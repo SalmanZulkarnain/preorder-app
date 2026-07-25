@@ -44,7 +44,7 @@ export type OrderMinAggregateOutputType = {
   transactionId: string | null
   customerName: string | null
   totalAmount: number | null
-  status: string | null
+  status: $Enums.OrderStatus | null
   token: string | null
   redirectUrl: string | null
   createdAt: Date | null
@@ -57,7 +57,7 @@ export type OrderMaxAggregateOutputType = {
   transactionId: string | null
   customerName: string | null
   totalAmount: number | null
-  status: string | null
+  status: $Enums.OrderStatus | null
   token: string | null
   redirectUrl: string | null
   createdAt: Date | null
@@ -223,7 +223,7 @@ export type OrderGroupByOutputType = {
   transactionId: string
   customerName: string
   totalAmount: number
-  status: string
+  status: $Enums.OrderStatus
   token: string | null
   redirectUrl: string | null
   createdAt: Date
@@ -259,7 +259,7 @@ export type OrderWhereInput = {
   transactionId?: Prisma.StringFilter<"Order"> | string
   customerName?: Prisma.StringFilter<"Order"> | string
   totalAmount?: Prisma.IntFilter<"Order"> | number
-  status?: Prisma.StringFilter<"Order"> | string
+  status?: Prisma.EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
   token?: Prisma.StringNullableFilter<"Order"> | string | null
   redirectUrl?: Prisma.StringNullableFilter<"Order"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Order"> | Date | string
@@ -294,7 +294,7 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   customerId?: Prisma.IntFilter<"Order"> | number
   customerName?: Prisma.StringFilter<"Order"> | string
   totalAmount?: Prisma.IntFilter<"Order"> | number
-  status?: Prisma.StringFilter<"Order"> | string
+  status?: Prisma.EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
   token?: Prisma.StringNullableFilter<"Order"> | string | null
   redirectUrl?: Prisma.StringNullableFilter<"Order"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Order"> | Date | string
@@ -331,7 +331,7 @@ export type OrderScalarWhereWithAggregatesInput = {
   transactionId?: Prisma.StringWithAggregatesFilter<"Order"> | string
   customerName?: Prisma.StringWithAggregatesFilter<"Order"> | string
   totalAmount?: Prisma.IntWithAggregatesFilter<"Order"> | number
-  status?: Prisma.StringWithAggregatesFilter<"Order"> | string
+  status?: Prisma.EnumOrderStatusWithAggregatesFilter<"Order"> | $Enums.OrderStatus
   token?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   redirectUrl?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Order"> | Date | string
@@ -342,7 +342,7 @@ export type OrderCreateInput = {
   transactionId: string
   customerName: string
   totalAmount: number
-  status: string
+  status?: $Enums.OrderStatus
   token?: string | null
   redirectUrl?: string | null
   createdAt?: Date | string
@@ -358,7 +358,7 @@ export type OrderUncheckedCreateInput = {
   transactionId: string
   customerName: string
   totalAmount: number
-  status: string
+  status?: $Enums.OrderStatus
   token?: string | null
   redirectUrl?: string | null
   createdAt?: Date | string
@@ -371,7 +371,7 @@ export type OrderUpdateInput = {
   transactionId?: Prisma.StringFieldUpdateOperationsInput | string
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   redirectUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -387,7 +387,7 @@ export type OrderUncheckedUpdateInput = {
   transactionId?: Prisma.StringFieldUpdateOperationsInput | string
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   redirectUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -402,7 +402,7 @@ export type OrderCreateManyInput = {
   transactionId: string
   customerName: string
   totalAmount: number
-  status: string
+  status?: $Enums.OrderStatus
   token?: string | null
   redirectUrl?: string | null
   createdAt?: Date | string
@@ -413,7 +413,7 @@ export type OrderUpdateManyMutationInput = {
   transactionId?: Prisma.StringFieldUpdateOperationsInput | string
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   redirectUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -426,7 +426,7 @@ export type OrderUncheckedUpdateManyInput = {
   transactionId?: Prisma.StringFieldUpdateOperationsInput | string
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   redirectUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -541,6 +541,10 @@ export type OrderUncheckedUpdateManyWithoutCustomerNestedInput = {
   deleteMany?: Prisma.OrderScalarWhereInput | Prisma.OrderScalarWhereInput[]
 }
 
+export type EnumOrderStatusFieldUpdateOperationsInput = {
+  set?: $Enums.OrderStatus
+}
+
 export type OrderCreateNestedOneWithoutOrderItemsInput = {
   create?: Prisma.XOR<Prisma.OrderCreateWithoutOrderItemsInput, Prisma.OrderUncheckedCreateWithoutOrderItemsInput>
   connectOrCreate?: Prisma.OrderCreateOrConnectWithoutOrderItemsInput
@@ -573,7 +577,7 @@ export type OrderCreateWithoutCustomerInput = {
   transactionId: string
   customerName: string
   totalAmount: number
-  status: string
+  status?: $Enums.OrderStatus
   token?: string | null
   redirectUrl?: string | null
   createdAt?: Date | string
@@ -587,7 +591,7 @@ export type OrderUncheckedCreateWithoutCustomerInput = {
   transactionId: string
   customerName: string
   totalAmount: number
-  status: string
+  status?: $Enums.OrderStatus
   token?: string | null
   redirectUrl?: string | null
   createdAt?: Date | string
@@ -631,7 +635,7 @@ export type OrderScalarWhereInput = {
   transactionId?: Prisma.StringFilter<"Order"> | string
   customerName?: Prisma.StringFilter<"Order"> | string
   totalAmount?: Prisma.IntFilter<"Order"> | number
-  status?: Prisma.StringFilter<"Order"> | string
+  status?: Prisma.EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
   token?: Prisma.StringNullableFilter<"Order"> | string | null
   redirectUrl?: Prisma.StringNullableFilter<"Order"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Order"> | Date | string
@@ -642,7 +646,7 @@ export type OrderCreateWithoutOrderItemsInput = {
   transactionId: string
   customerName: string
   totalAmount: number
-  status: string
+  status?: $Enums.OrderStatus
   token?: string | null
   redirectUrl?: string | null
   createdAt?: Date | string
@@ -657,7 +661,7 @@ export type OrderUncheckedCreateWithoutOrderItemsInput = {
   transactionId: string
   customerName: string
   totalAmount: number
-  status: string
+  status?: $Enums.OrderStatus
   token?: string | null
   redirectUrl?: string | null
   createdAt?: Date | string
@@ -685,7 +689,7 @@ export type OrderUpdateWithoutOrderItemsInput = {
   transactionId?: Prisma.StringFieldUpdateOperationsInput | string
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   redirectUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -700,7 +704,7 @@ export type OrderUncheckedUpdateWithoutOrderItemsInput = {
   transactionId?: Prisma.StringFieldUpdateOperationsInput | string
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   redirectUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -712,7 +716,7 @@ export type OrderCreateWithoutPaymentsInput = {
   transactionId: string
   customerName: string
   totalAmount: number
-  status: string
+  status?: $Enums.OrderStatus
   token?: string | null
   redirectUrl?: string | null
   createdAt?: Date | string
@@ -727,7 +731,7 @@ export type OrderUncheckedCreateWithoutPaymentsInput = {
   transactionId: string
   customerName: string
   totalAmount: number
-  status: string
+  status?: $Enums.OrderStatus
   token?: string | null
   redirectUrl?: string | null
   createdAt?: Date | string
@@ -755,7 +759,7 @@ export type OrderUpdateWithoutPaymentsInput = {
   transactionId?: Prisma.StringFieldUpdateOperationsInput | string
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   redirectUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -770,7 +774,7 @@ export type OrderUncheckedUpdateWithoutPaymentsInput = {
   transactionId?: Prisma.StringFieldUpdateOperationsInput | string
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   redirectUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -783,7 +787,7 @@ export type OrderCreateManyCustomerInput = {
   transactionId: string
   customerName: string
   totalAmount: number
-  status: string
+  status?: $Enums.OrderStatus
   token?: string | null
   redirectUrl?: string | null
   createdAt?: Date | string
@@ -794,7 +798,7 @@ export type OrderUpdateWithoutCustomerInput = {
   transactionId?: Prisma.StringFieldUpdateOperationsInput | string
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   redirectUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -808,7 +812,7 @@ export type OrderUncheckedUpdateWithoutCustomerInput = {
   transactionId?: Prisma.StringFieldUpdateOperationsInput | string
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   redirectUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -822,7 +826,7 @@ export type OrderUncheckedUpdateManyWithoutCustomerInput = {
   transactionId?: Prisma.StringFieldUpdateOperationsInput | string
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   redirectUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -954,7 +958,7 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     transactionId: string
     customerName: string
     totalAmount: number
-    status: string
+    status: $Enums.OrderStatus
     token: string | null
     redirectUrl: string | null
     createdAt: Date
@@ -1390,7 +1394,7 @@ export interface OrderFieldRefs {
   readonly transactionId: Prisma.FieldRef<"Order", 'String'>
   readonly customerName: Prisma.FieldRef<"Order", 'String'>
   readonly totalAmount: Prisma.FieldRef<"Order", 'Int'>
-  readonly status: Prisma.FieldRef<"Order", 'String'>
+  readonly status: Prisma.FieldRef<"Order", 'OrderStatus'>
   readonly token: Prisma.FieldRef<"Order", 'String'>
   readonly redirectUrl: Prisma.FieldRef<"Order", 'String'>
   readonly createdAt: Prisma.FieldRef<"Order", 'DateTime'>

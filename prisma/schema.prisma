@@ -13,6 +13,18 @@ datasource db {
   provider = "postgresql"
 }
 
+enum OrderStatus {
+  WAITING_PAYMENT_METHOD // order dibuat, belum pilih metode pembayaran
+  PENDING // udah pilih metode, nunggu dibayar
+  PAID // sukses dibayar
+  EXPIRED // kadaluwarsa (baik sebelum atau sesudah pilih metode)
+}
+
+enum UserRole {
+  ADMIN
+  CUSTOMER
+}
+
 model Product {
   id          Int     @id @default(autoincrement())
   name        String
@@ -56,17 +68,17 @@ model Customer {
 }
 
 model Order {
-  id            Int      @id @default(autoincrement())
+  id            Int         @id @default(autoincrement())
   customerId    Int
-  customer      Customer @relation(fields: [customerId], references: [id])
-  transactionId String   @unique
+  customer      Customer    @relation(fields: [customerId], references: [id])
+  transactionId String      @unique
   customerName  String
   totalAmount   Int
-  status        String
+  status        OrderStatus @default(WAITING_PAYMENT_METHOD)
   token         String?
   redirectUrl   String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 
   orderItems OrderItem[]
   payments   Payment[]
@@ -96,8 +108,9 @@ model OrderItem {
 
 model Payment {
   id                    Int       @id @default(autoincrement())
-  transactionId         String    @unique
-  order                 Order     @relation(fields: [transactionId], references: [transactionId])
+  orderId               Int       @unique
+  order                 Order     @relation(fields: [orderId], references: [id])
+  transactionId         String
   midtransTransactionId String
   paymentType           String
   bank                  String?
@@ -114,6 +127,7 @@ model Payment {
   @@index([paymentType])
   @@index([transactionTime])
   @@index([transactionId])
+  @@index([orderId])
 }
 
 model User {

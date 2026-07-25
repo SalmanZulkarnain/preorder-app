@@ -9,29 +9,41 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     if (!email || !password) {
       setError("Email dan password wajib diisi.");
+      setLoading(false);
       return;
     }
 
     const res = await fetch(`/api/login`, {
       method: "POST",
-      headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" },
+      headers: { 
+        "Content-Type": "application/json", 
+        "ngrok-skip-browser-warning": "true",
+      },
+      credentials: "include",
       body: JSON.stringify({ email, password }),
     });
 
     if (res.ok) {
-      await fetchUser();
-      router.push("/admin/dashboard");
+      const ok = await fetchUser();
+      if (ok) {
+        router.replace("/admin/dashboard");
+      } else {
+        setError("Login sukses tapi verifikasi session gagal");
+      }
     } else {
       const result = await res.json();
       setError(result.message || "Email atau password salah.");
     }
+    setLoading(false)
   }
 
   return (
@@ -57,8 +69,8 @@ export default function LoginPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit" className="w-full py-2 font-medium text-gray-100 bg-green-600 rounded-full cursor-pointer">
-          Login as Demo Admin
+        <button type="submit" disabled={loading} className="w-full py-2 font-medium text-gray-100 bg-green-600 rounded-full cursor-pointer">
+          {loading ? "Logging in..." : "Login as Demo Admin"}
         </button>
       </form>
     </div>

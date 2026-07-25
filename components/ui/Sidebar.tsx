@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useAuth } from "@/lib/contexts/auth-context";
-import { Menu } from "@headlessui/react";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 type SidebarProps = {
   onToggle?: () => void;
@@ -11,16 +12,29 @@ type SidebarProps = {
   isMobile?: boolean;
 };
 
-export default function Sidebar({ onToggle, onClose, isMobile = false }: SidebarProps) {
-  const { user } = useAuth();
+export default function Sidebar({
+  onToggle,
+  onClose,
+  isMobile = false,
+}: SidebarProps) {
+  const { user, setUser } = useAuth();
+  const router = useRouter();
   const handleMobileClose = onClose ?? onToggle;
 
   const handleLogout = async () => {
-    await fetch(`/api/logout`, {
-      method: "POST",
-      credentials: "include",
-    });
-    window.location.href = "/";
+    try {
+      setUser(null); 
+
+      await fetch(`/api/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      router.replace("/");
+      router.refresh();
+    }
   };
 
   if (!user) return null;
@@ -41,7 +55,10 @@ export default function Sidebar({ onToggle, onClose, isMobile = false }: Sidebar
               ✕
             </button>
           )}
-          <Link href={"/admin/dashboard"} className="block text-xl font-medium text-green-600">
+          <Link
+            href={"/admin/dashboard"}
+            className="block text-xl font-medium text-green-600"
+          >
             MyShop
           </Link>
         </header>
@@ -81,10 +98,10 @@ export default function Sidebar({ onToggle, onClose, isMobile = false }: Sidebar
         </nav>
       </div>
 
-      <div className="flex-shrink-0 p-2 mt-auto border-t border-gray-200">
+      <div className="shrink-0 p-2 mt-auto border-t border-gray-200">
         <Menu as="div" className="relative">
-          <Menu.Button className="flex items-center w-full gap-3 p-2 rounded hover:bg-gray-200">
-            <div className="flex-shrink-0 p-2 bg-gray-400 rounded-full">
+          <MenuButton className="flex items-center w-full gap-3 p-2 rounded hover:bg-gray-200">
+            <div className="shrink-0 p-2 bg-gray-400 rounded-full">
               <Image src="/globe.svg" alt="" width={25} height={25} />
             </div>
             <div
@@ -95,9 +112,9 @@ export default function Sidebar({ onToggle, onClose, isMobile = false }: Sidebar
               <span className="truncate">{user.name}</span>
               <span className="text-gray-500 truncate">{user.email}</span>
             </div>
-          </Menu.Button>
-          <Menu.Items className="absolute left-0 z-10 w-full mb-2 bg-white rounded-lg shadow bottom-full p- 2">
-            <Menu.Item>
+          </MenuButton>
+          <MenuItems className="absolute left-0 z-10 w-full mb-2 bg-white rounded-lg shadow bottom-full p- 2">
+            <MenuItem>
               {({ active }) => (
                 <button
                   className={`w-full text-left p-2 text-sm rounded ${
@@ -108,8 +125,8 @@ export default function Sidebar({ onToggle, onClose, isMobile = false }: Sidebar
                   Logout
                 </button>
               )}
-            </Menu.Item>
-          </Menu.Items>
+            </MenuItem>
+          </MenuItems>
         </Menu>
       </div>
     </div>

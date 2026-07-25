@@ -9,6 +9,13 @@ type TransactionDetailProps = {
   toggleSection: (section: string) => void;
 };
 
+const statusStyles = {
+  PAID: "bg-green-100 text-green-600",
+  PENDING: "bg-blue-100 text-blue-600",
+  WAITING_PAYMENT_METHOD: "bg-yellow-100 text-yellow-600",
+  EXPIRED: "bg-red-100 text-red-600",
+};
+
 export default function TransactionDetail({
   open,
   onClose,
@@ -52,11 +59,7 @@ export default function TransactionDetail({
               <span className="font-bold block mb-2">Status</span>
               <hr className="mb-3 border-gray-300" />
               <h3
-                className={`rounded p-3 text-sm ${
-                  selectedPayment.order.status === "paid"
-                    ? "bg-green-100 text-green-600"
-                    : "bg-yellow-100 text-yellow-600"
-                }`}
+                className={`rounded p-3 text-sm ${statusStyles[selectedPayment.order.status]}`}
               >
                 Transaction status: {selectedPayment.order.status}
               </h3>

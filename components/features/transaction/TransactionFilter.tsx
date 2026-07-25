@@ -108,10 +108,10 @@ export default function TransactionFilter({ onFilter }: TransactionFilterProps) 
                 className="border border-gray-300 rounded-md p-2 focus:outline-none focus:border-gray-500 w-full"
               >
                 <option value="">All</option>
-                <option value="paid">Paid</option>
-                <option value="pending">Pending</option>
-                <option value="expired">Expired</option>
-                <option value="cancelled">Cancelled</option>
+                <option value="WAITING_PAYMENT_METHOD">Waiting Payment Method</option>
+                <option value="PAID">Paid</option>
+                <option value="PENDING">Pending</option>
+                <option value="EXPIRED">Expired</option>
               </select>
             </div>
 

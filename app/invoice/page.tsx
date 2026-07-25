@@ -3,6 +3,13 @@ import React, { useEffect, useState } from "react";
 import { formatDate } from "@/lib/utils/formatDate";
 import type { Order } from "@/generated/prisma/client";
 
+const statusStyles = {
+  PAID: "bg-green-100 text-green-600",
+  PENDING: "bg-blue-100 text-blue-600",
+  WAITING_PAYMENT_METHOD: "bg-yellow-100 text-yellow-600",
+  EXPIRED: "bg-red-100 text-red-600",
+};
+
 export default function InvoicePage() {
   const [inputInvoice, setInputInvoice] = useState("");
   const [error, setError] = useState("");
@@ -41,15 +48,15 @@ export default function InvoicePage() {
           },
           onPending: () => window.alert("Payment pending"),
           onError: () => window.alert("Payment failed"),
-          onClose: () => window.alert("Payment popup closed")
+          onClose: () => window.alert("Payment popup closed"),
         });
         return;
       }
 
-      setError("No payment link or token available for this transaction")
+      setError("No payment link or token available for this transaction");
     } catch (error) {
       console.error(error);
-      setError("Failed to find transaction. Try again later.")
+      setError("Failed to find transaction. Try again later.");
     }
   }
 
@@ -69,18 +76,27 @@ export default function InvoicePage() {
     })();
     return () => {
       mounted = false;
-    }
+    };
   }, []);
 
   return (
     <div className="flex items-center justify-center mx-auto py-20">
       <div className="grid items-start max-w-6xl grid-cols-1 gap-6 mx-auto">
         <div className="text-center">
-          <h1 className="mb-4 lg:text-4xl text-3xl font-semibold tracking-wide text-center text-gray-800">Cek Transaksi Kamu dengan Mudah dan Cepat</h1>
-          <h2 className="mb-4 lg:text-xl text-lg font-medium tracking-wide text-center text-gray-500">Lihat detail pembelian kamu menggunakan nomor Transaksi.</h2>
+          <h1 className="mb-4 lg:text-4xl text-3xl font-semibold tracking-wide text-center text-gray-800">
+            Cek Transaksi Kamu dengan Mudah dan Cepat
+          </h1>
+          <h2 className="mb-4 lg:text-xl text-lg font-medium tracking-wide text-center text-gray-500">
+            Lihat detail pembelian kamu menggunakan nomor Transaksi.
+          </h2>
         </div>
-        <form onSubmit={handleFind} className="p-8 bg-white border border-gray-300 shadow rounded-xl">
-          <h3 className="mb-4 lg:text-xl text-lg font-medium text-gray-500">Cari detail pembelian kamu disini</h3>
+        <form
+          onSubmit={handleFind}
+          className="p-8 bg-white border border-gray-300 shadow rounded-xl"
+        >
+          <h3 className="mb-4 lg:text-xl text-lg font-medium text-gray-500">
+            Cari detail pembelian kamu disini
+          </h3>
           {error && <p className="mb-2 text-xs text-red-500">{error}</p>}
 
           <input
@@ -90,14 +106,19 @@ export default function InvoicePage() {
             value={inputInvoice}
             onChange={(e) => setInputInvoice(e.target.value)}
           />
-          <button type="submit" className="w-full py-2 font-medium text-gray-100 bg-green-600 rounded-full cursor-pointer">
+          <button
+            type="submit"
+            className="w-full py-2 font-medium text-gray-100 bg-green-600 rounded-full cursor-pointer"
+          >
             Cari Transaksi
           </button>
         </form>
         <div className="mt-5">
           <div className="bg-white rounded-xl px-6 py-4 overflow-x-auto">
             <div className="flex justify-between items-center">
-              <h2 className="text-lg font-semibold mb-4">Recent Transactions</h2>
+              <h2 className="text-lg font-semibold mb-4">
+                Recent Transactions
+              </h2>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full table-auto min-w-200 border-collapse text-left">
@@ -137,10 +158,7 @@ export default function InvoicePage() {
                       </td>
                       <td className="px-5 py-4 border-b border-gray-200 first:pl-0">
                         <span
-                          className={`px-2 py-1 capitalize rounded-full font-medium text-xs ${p.status === "paid"
-                              ? "bg-green-100 text-green-600"
-                              : "bg-yellow-100 text-yellow-600"
-                            }`}
+                          className={`px-2 py-1 capitalize rounded-full font-medium text-xs ${statusStyles[p.status]}`}
                         >
                           {p.status}
                         </span>

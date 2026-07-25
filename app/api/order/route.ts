@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { getCurrentPrice } from "@/lib/utils/pricing";
+import { customAlphabet } from "nanoid";
 
 export async function GET() {
   try {
@@ -32,13 +33,6 @@ export async function GET() {
       success: false
     }, { status: 500 });
   }
-}
-
-// Helper function untuk generate transaction ID
-function generateTransactionId() {
-  const timestamp = Date.now();
-  const random = Math.floor(Math.random() * 1000);
-  return `INV-${timestamp}-${random}`;
 }
 
 export async function POST(req: Request) {
@@ -90,7 +84,8 @@ export async function POST(req: Request) {
       sum + (item.priceAtOrder * item.quantity), 0
     );
 
-    const transactionId = generateTransactionId();
+    const nanoid = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", 10);
+    const transactionId = `INV-${nanoid()}`;
 
     // menggunakan Prisma Transaction untuk memastikan semua operasi berhasil atau gagal
     const result = await prisma.$transaction(async (tx) => {
@@ -115,7 +110,6 @@ export async function POST(req: Request) {
           customerId: customer.id,
           customerName: name,
           totalAmount: totalAmount,
-          status: 'unpaid',
           orderItems: {
             create: orderItems
           }

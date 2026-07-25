@@ -6,8 +6,6 @@ export async function GET() {
   const cookieStore = await cookies();
   const session = cookieStore.get("session_user");
 
-  console.log(session);
-
   if (!session) {
     return NextResponse.json({ message: "Belum login" }, { status: 401 });
   }
