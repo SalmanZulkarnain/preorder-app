@@ -9,7 +9,7 @@ type TableProps<T> = {
 export default function Table<T>({ columns, data, renderRow }: TableProps<T>) {
   return (
     <div className="overflow-x-auto shadow-sm">
-      <table className="w-full min-w-[1000px] border-collapse">
+      <table className="w-full min-w-250 border-collapse">
         <thead className="text-gray-500 text-xs sm:text-sm">
           <tr>
             {columns.map((column) => (

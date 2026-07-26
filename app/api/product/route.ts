@@ -1,15 +1,13 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { writeFile } from "fs/promises";
-import path from 'path';
-import { put } from "@vercel/blob";
-import { prisma } from '@/lib/prisma';
+import { requireAuth } from '@/lib/auth/requireAuth';
+import { addProduct, getAllProducts } from '@/lib/services/productService';
 
 interface ProductProps {
     price: number,
-    discountPercent ?: number | null;
-    discountStart? : string | Date | null;
-    discountEnd? : string | Date | null;
+    discountPercent?: number | null;
+    discountStart?: string | Date | null;
+    discountEnd?: string | Date | null;
 }
 
 export function getFinalPrice(product: ProductProps) {
@@ -45,58 +43,29 @@ export async function getSessionId() {
     return sessionId;
 }
 
-export async function GET(request: Request) {
+export async function GET(req: NextRequest) {
     try {
-        const { searchParams } = new URL(request.url);
+        const { searchParams } = new URL(req.url);
 
-        const minPrice = searchParams.get("minPrice");
-        const maxPrice = searchParams.get("maxPrice");
-        const name = searchParams.get("name");
+        const result = await getAllProducts({
+            minPrice: searchParams.get("minPrice") ?? undefined,
+            maxPrice: searchParams.get("maxPrice") ?? undefined,
+            name: searchParams.get("name") ?? undefined,
 
-        const page = Number(searchParams.get("page")) || 1;
-        const limit = Number(searchParams.get("limit")) || 5;
+            page: Number(searchParams.get("page")) || 1,
+            limit: Number(searchParams.get("limit")) || 5,
+        })
 
-        const skip = (page - 1) * limit;
-
-        const products = await prisma.product.findMany({
-            where: {
-                ...(minPrice || maxPrice ? {
-                    price: {
-                        ...(minPrice && { gte: Number(minPrice) }),
-                        ...(maxPrice && { lte: Number(maxPrice) }),
-                    }
-                } : {}),
-                ...(name && {
-                    name: {
-                        contains: name,
-                        mode: "insensitive"
-                    }
-                })
-            },
-            skip,
-            take: limit,
-            orderBy: { id: 'desc' }
-        });
-
-        const mapped = products.map((p) => ({
+        const mapped = result.products.map((p) => ({
             ...p,
             finalPrice: getFinalPrice(p)
         }));
-
-        const totalCount = await prisma.product.count();
 
         return NextResponse.json({
             message: 'Products fetched',
             success: true,
             data: mapped,
-            pagination: {
-                totalCount,
-                page,
-                limit: Number(limit),
-                totalPages: Math.ceil(totalCount / limit),
-                hasNextPage: Number(page) < Math.ceil(totalCount / limit),
-                hasPrevPage: Number(page) > 1
-            }
+            pagination: result.pagination
         }, { status: 200 });
     } catch (error) {
         console.error('Failed to fetch: ', error);
@@ -107,59 +76,23 @@ export async function GET(request: Request) {
     }
 }
 
-export async function POST(request: Request) {
+export async function POST(req: NextRequest) {
+    const user = await requireAuth();
+
+    if (!user) {
+        return NextResponse.json({
+            message: "Unauthorized", success: false
+        }, { status: 401 })
+    }
+
     try {
-        const formData = await request.formData();
+        const formData = await req.formData();
 
-        const image = formData.get("image");
-        const name = formData.get("name");
-        const description = formData.get("description");
-        const price = Number(formData.get("price"));
-
-        if (!name || !description || isNaN(price)) {
-            return NextResponse.json(
-                { message: 'Invalid product data', success: false },
-                { status: 400 }
-            );
-        }
-
-        if (!(image instanceof File) || !image.name) {
-            return NextResponse.json(
-                { message: 'Image is required', success: false },
-                { status: 400 }
-            );
-        }
-
-        let imageUrl: string | null = null;
-        const nameStr = String(name);
-        const descriptionStr = String(description);
-
-        const fileName = `${Date.now()}-${image.name.replace(/\s+/g, "_")}`;
-        const isDevelopment = process.env.NODE_ENV === 'development';
-
-        if (isDevelopment) {
-            const bytes = await image.arrayBuffer();
-            const buffer = Buffer.from(bytes);
-            const uploadPath = path.join(process.cwd(), "public", "uploads", fileName);
-
-            await writeFile(uploadPath, buffer);
-            imageUrl = `/uploads/${fileName}`;
-        } else {
-            const blob = await put(fileName, image, {
-                access: 'public',
-                token: process.env.BLOB_READ_WRITE_TOKEN
-            });
-
-            imageUrl = blob.url;
-        }
-
-        const product = await prisma.product.create({
-            data: {
-                image: imageUrl,
-                name: nameStr,
-                description: descriptionStr,
-                price
-            }
+        const product = await addProduct({
+            image: formData.get("image") as File | null,
+            name: formData.get("name"),
+            description: formData.get("description"),
+            price: Number(formData.get("price"))
         });
 
         return NextResponse.json({
@@ -169,9 +102,12 @@ export async function POST(request: Request) {
         }, { status: 201 });
     } catch (error) {
         console.error('Failed to add product: ', error);
+
+        const message = error instanceof Error ? error.message : 'Internal server error';
+        const status = message === "Invalid product data" ? 400 : message === "Image is required" ? 422 : 500;
         return NextResponse.json({
-            message: error || 'Internal server error',
+            message,
             success: false
-        }, { status: 500 });
+        }, { status });
     }
 }

@@ -66,6 +66,7 @@ model Order {
   id            Int         @id @default(autoincrement())
   customerId    Int
   customer      Customer    @relation(fields: [customerId], references: [id])
+  sessionId     String
   transactionId String      @unique
   customerName  String
   totalAmount   Int

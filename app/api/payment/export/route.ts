@@ -2,8 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import Papa from "papaparse";
 import { Prisma, OrderStatus } from "@/generated/prisma/client";
+import { requireAuth } from "@/lib/auth/requireAuth";
 
 export async function GET(req: NextRequest) {
+    const user = await requireAuth();
+
+    if (!user) {
+        return NextResponse.json({
+            message: "Unauthorized", success: false
+        }, { status: 401 });
+    }
+
     try {
         const { searchParams } = new URL(req.url);
         const status = searchParams.get("status")?.toUpperCase();

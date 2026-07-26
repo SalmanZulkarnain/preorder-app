@@ -17,7 +17,7 @@ export default function Navlink() {
 
   return (
     <>
-      {user?.role !== "ADMIN" && (
+      {!user && (
         <>
           <div className="flex items-center justify-center">
             <Link

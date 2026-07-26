@@ -26,15 +26,10 @@ export default function TransactionDetail({
   return (
     <>
       {open && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40 m-0"
-          onClick={onClose}
-        ></div>
+        <div className="fixed inset-0 bg-black/50 z-40 m-0" onClick={onClose} />
       )}
       <div
-        className={`fixed top-0 right-0 h-full bg-white shadow-2xl z-50 px-4 sm:px-6 py-6 overflow-y-auto transform transition-transform duration-300 ease-in-out ${
-          open ? "translate-x-0" : "translate-x-full"
-        } ${open ? "w-full sm:w-96 md:w-150" : ""}`}
+        className={`fixed top-0 right-0 h-full bg-white shadow-2xl z-50 px-4 sm:px-6 py-6 overflow-y-auto transform transition-transform duration-300 ease-in-out ${open ? "translate-x-0" : "translate-x-full"} ${open ? "w-full sm:w-96 md:w-150" : ""}`}
       >
         <button
           className="text-gray-500 hover:text-gray-800 w-full text-right text-xl mb-4"
@@ -71,11 +66,15 @@ export default function TransactionDetail({
               <div className="space-y-3 text-sm">
                 <div>
                   <h5 className="font-bold">Transaction ID</h5>
-                  <span className="block">{selectedPayment.midtransTransactionId}</span>
+                  <span className="block">
+                    {selectedPayment.midtransTransactionId}
+                  </span>
                 </div>
                 <div>
                   <h5 className="font-bold">Payment Type</h5>
-                  <span className="uppercase block">{selectedPayment.paymentType}</span>
+                  <span className="uppercase block">
+                    {selectedPayment.paymentType}
+                  </span>
                 </div>
                 <div>
                   <h5 className="font-bold">Created On</h5>
@@ -112,7 +111,8 @@ export default function TransactionDetail({
                     <div className="pt-4">
                       <div className="p-4 bg-gray-100 rounded">
                         <p>
-                          <strong>Name:</strong> {selectedPayment.order.customer.name}
+                          <strong>Name:</strong>{" "}
+                          {selectedPayment.order.customerName}
                         </p>
                         <p>
                           <strong>Mobile number:</strong>{" "}
@@ -135,24 +135,43 @@ export default function TransactionDetail({
                       <table className="table-auto w-full text-left">
                         <thead>
                           <tr>
-                            <th className="border border-gray-200 p-3 text-sm">PRODUCT ID</th>
-                            <th className="border border-gray-200 p-3 text-sm">PRODUCT NAME</th>
-                            <th className="border border-gray-200 p-3 text-sm">QUANTITY</th>
-                            <th className="border border-gray-200 p-3 text-sm">PRICE</th>
-                            <th className="border border-gray-200 p-3 text-sm">SUBTOTAL</th>
+                            <th className="border border-gray-200 p-3 text-sm">
+                              PRODUCT ID
+                            </th>
+                            <th className="border border-gray-200 p-3 text-sm">
+                              PRODUCT NAME
+                            </th>
+                            <th className="border border-gray-200 p-3 text-sm">
+                              QUANTITY
+                            </th>
+                            <th className="border border-gray-200 p-3 text-sm">
+                              PRICE
+                            </th>
+                            <th className="border border-gray-200 p-3 text-sm">
+                              SUBTOTAL
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
                           {selectedPayment.order.orderItems.map((item: any) => (
                             <tr key={item.id}>
-                              <td className="border p-3 border-gray-200">{item.product.id}</td>
-                              <td className="border p-3 border-gray-200">{item.product.name}</td>
-                              <td className="border p-3 border-gray-200">{item.quantity}</td>
+                              <td className="border p-3 border-gray-200">
+                                {item.product.id}
+                              </td>
+                              <td className="border p-3 border-gray-200">
+                                {item.product.name}
+                              </td>
+                              <td className="border p-3 border-gray-200">
+                                {item.quantity}
+                              </td>
                               <td className="border p-3 border-gray-200">
                                 Rp{item.priceAtOrder.toLocaleString("id-ID")}
                               </td>
                               <td className="border p-3 border-gray-200">
-                                Rp{(item.priceAtOrder * item.quantity).toLocaleString("id-ID")}
+                                Rp
+                                {(
+                                  item.priceAtOrder * item.quantity
+                                ).toLocaleString("id-ID")}
                               </td>
                             </tr>
                           ))}

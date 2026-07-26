@@ -3,8 +3,17 @@ import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { getCurrentPrice } from "@/lib/utils/pricing";
 import { customAlphabet } from "nanoid";
+import { requireAuth } from "@/lib/auth/requireAuth";
 
 export async function GET() {
+  const user = await requireAuth();
+
+  if (!user) {
+    return NextResponse.json({
+      message: "Unauthorized", success: false
+    }, { status: 401 });
+  }
+
   try {
     const orders = await prisma.order.findMany({
       include: {
@@ -106,25 +115,16 @@ export async function POST(req: Request) {
       // 2. create order
       const order = await tx.order.create({
         data: {
+          sessionId,
           transactionId,
           customerId: customer.id,
           customerName: name,
           totalAmount: totalAmount,
           orderItems: {
             create: orderItems
-          }
+          },
         }
       });
-
-      // 3. create order items
-      // const orderItems = await tx.orderItem.createMany({
-      //   data: carts.map(cart => ({
-      //     orderId: order.id,
-      //     productId: cart.productId,
-      //     quantity: cart.quantity,
-      //     priceAtOrder: cart.product.price
-      //   }))
-      // });
 
       // 4. delete cart
       await tx.cart.deleteMany({
@@ -162,10 +162,10 @@ export async function POST(req: Request) {
     }, { status: 201 });
 
     response.cookies.set("myTransactions", JSON.stringify(arr), {
-      httpOnly: true,
       path: "/",
-      maxAge: 60 * 60 * 24,
+      httpOnly: true,
       sameSite: "lax",
+      maxAge: 60 * 60 * 24,
       secure: process.env.NODE_ENV === "production"
     });
 

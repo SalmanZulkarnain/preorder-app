@@ -1,8 +1,17 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import Papa from "papaparse";
+import { requireAuth } from "@/lib/auth/requireAuth";
 
 export async function GET() {
+    const user = await requireAuth();
+
+    if (!user) {
+        return NextResponse.json({
+            message: "Unauthorized", success: false
+        }, { status: 401 });
+    }
+
     try {
         const products = await prisma.product.findMany({
             orderBy: {

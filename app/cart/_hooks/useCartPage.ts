@@ -13,7 +13,7 @@ export const useCartPage = () => {
     const [paymentMessage, setPaymentMessage] = useState("");
     const { carts, setCarts, clearCarts, fetchCarts } = useCartStore();
     const totalAmount = useCartStore(state => state.carts.reduce((sum, cart) => sum + cart.quantity * cart.product.price, 0))
-    
+
     const debounceTimers = useRef<Record<number, ReturnType<typeof setTimeout>>>({});
     const quantityRefs = useRef<Record<number, number>>({});
 
@@ -158,7 +158,7 @@ export const useCartPage = () => {
                     } else {
                         window.snap.pay(resultMidtrans.token, callbacks);
                     }
-                    clearCarts()
+                    clearCarts();
                 } else {
                     setPaymentFeedback("error", "Token pembayaran tidak tersedia. Silakan coba lagi.");
                 }

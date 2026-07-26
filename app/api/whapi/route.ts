@@ -1,11 +1,16 @@
+import { requireAuth } from "@/lib/auth/requireAuth";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-type Subcscriber = {
-  phone: string;
-}
-
 export async function GET() {
+  const user = await requireAuth();
+
+  if (!user) {
+    return NextResponse.json({
+      message: "Unauthorized", success: false
+    }, { status: 401 })
+  }
+
   try {
     const subscriber = await prisma.whatsappSubscriber.findMany();
 

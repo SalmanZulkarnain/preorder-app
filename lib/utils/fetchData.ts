@@ -13,7 +13,7 @@ export async function getPayment() {
     try {
         const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/payment`,
-            { cache: "no-store" }
+            { cache: "no-store", credentials: "include" }
         );
 
         if (!response.ok) {
