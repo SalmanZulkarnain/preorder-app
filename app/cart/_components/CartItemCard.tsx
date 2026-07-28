@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { Trash2 } from "lucide-react";
 import QuantityStepper from "./QuantityStepper";
+import { CartWithProduct } from "@/types/cart";
 
 interface CartItemCardProps {
-  cart: any;
+  cart: CartWithProduct;
   onDelete: (cartId: number) => void;
   onUpdateQuantity: (cartId: number, operation: "increment" | "decrement") => void;
 }

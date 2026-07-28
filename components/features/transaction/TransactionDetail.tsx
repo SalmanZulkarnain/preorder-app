@@ -153,7 +153,7 @@ export default function TransactionDetail({
                           </tr>
                         </thead>
                         <tbody>
-                          {selectedPayment.order.orderItems.map((item: any) => (
+                          {selectedPayment.order.orderItems.map((item) => (
                             <tr key={item.id}>
                               <td className="border p-3 border-gray-200">
                                 {item.product.id}

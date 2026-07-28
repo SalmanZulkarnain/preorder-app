@@ -90,7 +90,7 @@ export default async function DashboardPage() {
         </div>
 
         <div className="bg-white rounded-xl p-4 space-y-4 sm:col-span-4 md:col-span-2">
-          <p className="font-bold">Today's Overview</p>
+          <p className="font-bold">Today&apos;s Overview</p>
           <hr />
           <div className="space-y-4">
             <div className="flex items-center justify-between">

@@ -23,16 +23,24 @@ export default function TransactionFilter({ onFilter }: TransactionFilterProps) 
     paymentType: "",
     date: "",
   });
-
+  const [debouncedTransactionId, setDebouncedTransactionId] = useState(filters.transactionId);
+  
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      onFilter(filters);
+      setDebouncedTransactionId(filters.transactionId);
     }, 400);
 
     return () => clearTimeout(timeout);
   }, [filters.transactionId]);
+
+  useEffect(() => {
+    onFilter({
+      ...filters,
+      transactionId: debouncedTransactionId
+    })
+  }, [filters.status, filters.paymentType, filters.date, debouncedTransactionId])
 
   const handleInputChange = (key: keyof TransactionFilters, value: string) => {
     setFilters((prev) => ({

@@ -1,11 +1,13 @@
 import { Toaster } from "sonner";
 import { CheckoutSchema } from "@/lib/utils/zodSchema";
+import { Cart } from "@/generated/prisma/client";
+import { UseFormReturn } from "react-hook-form";
 
 interface CheckoutFormProps {
   loading: boolean;
-  carts: any[];
+  carts: Cart[];
   totalAmount: number;
-  form: any;
+  form: UseFormReturn<CheckoutSchema>;
   onOrder: (values: CheckoutSchema, e?: React.BaseSyntheticEvent) => Promise<void>;
 }
 

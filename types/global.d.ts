@@ -1,12 +1,16 @@
-interface MidtransSnapCallbacks {
-    onSuccess?: () => void;
-    onPending?: () => void;
-    onError?: () => void;
-    onClose?: () => void;
+export { };
+
+declare global {
+    interface Window {
+        snap?: {
+            pay: (token: string, callbacks?: SnapPayOptions) => void;
+        };
+    }
 }
 
-interface Window {
-    snap?: {
-        pay: (token: string, callbacks?: MidtransSnapCallbacks) => void;
-    };
+interface SnapPayOptions {
+    onSuccess?: (result: unknown) => void;
+    onPending?: (result: unknown) => void;
+    onError?: (result: unknown) => void;
+    onClose?: () => void;
 }

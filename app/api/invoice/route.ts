@@ -11,10 +11,10 @@ export async function GET() {
         let ids = [];
         try {
             ids = JSON.parse(raw);
-        } catch (err) {
+        } catch {
             try {
                 ids = JSON.parse(decodeURIComponent(raw));
-            } catch (err2) {
+            } catch {
                 ids = [];
             }
         }

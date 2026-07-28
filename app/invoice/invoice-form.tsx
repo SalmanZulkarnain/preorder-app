@@ -32,8 +32,8 @@ export default function InvoiceForm() {
           return;
         }
   
-        if (token && (window as any).snap?.pay) {
-          (window as any).snap.pay(token, {
+        if (token && window.snap?.pay) {
+          window.snap.pay(token, {
             onSuccess: () => {
               window.location.reload();
             },

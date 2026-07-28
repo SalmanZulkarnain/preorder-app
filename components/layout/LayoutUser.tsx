@@ -2,6 +2,7 @@
 import { ReactNode, useState } from "react";
 import Navbar from "@/components/layout/navbar/Navbar";
 import Footer from "@/components/ui/Footer";
+import Link from "next/link";
 
 export default function LayoutUser({ children }: { children: ReactNode }) {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -18,10 +19,10 @@ export default function LayoutUser({ children }: { children: ReactNode }) {
       {isMenuOpen && (
         <div className="absolute left-0 w-full bg-white shadow-md top-16 md:hidden">
           <ul className="flex flex-col p-4 space-y-2 font-semibold text-gray-700">
-            <li><a href="/" className="hover:text-green-600">Home</a></li>
-            <li><a href="/product" className="hover:text-green-600">Products</a></li>
-            <li><a href="/cart" className="hover:text-green-600">Cartsaa</a></li>
-            <li><a href="/invoice" className="hover:text-green-600">Cek Transaksi</a></li>
+            <li><Link href="/" className="hover:text-green-600">Home</Link></li>
+            <li><Link href="/product" className="hover:text-green-600">Products</Link></li>
+            <li><Link href="/cart" className="hover:text-green-600">Cartsaa</Link></li>
+            <li><Link href="/invoice" className="hover:text-green-600">Cek Transaksi</Link></li>
           </ul>
         </div>
       )}

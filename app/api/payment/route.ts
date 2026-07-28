@@ -4,13 +4,13 @@ import { requireAuth } from "@/lib/auth/requireAuth";
 import { getAllPayments, processMidtransWebhook } from "@/lib/services/paymentService";
 
 export async function GET(req: NextRequest) {
-  const user = await requireAuth();
+  // const user = await requireAuth();
 
-  if (!user) {
-    return NextResponse.json({
-      message: "Unauthorized", success: false
-    }, { status: 401 });
-  }
+  // if (!user) {
+  //   return NextResponse.json({
+  //     message: "Unauthorized", success: false
+  //   }, { status: 401 });
+  // }
 
   try {
     const start = Date.now();

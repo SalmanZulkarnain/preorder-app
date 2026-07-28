@@ -145,7 +145,7 @@ export default function ProductAdmin() {
               Product List
             </h3>
             <p className="text-sm text-gray-500">
-              Track your store's progress to boost your sales.
+              Track your store&apos;s progress to boost your sales.
             </p>
           </div>
           <div className="flex gap-3">

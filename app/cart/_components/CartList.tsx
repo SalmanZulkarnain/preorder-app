@@ -1,7 +1,8 @@
 import CartItemCard from "./CartItemCard";
+import { CartWithProduct } from "@/types/cart";
 
 interface CartListProps {
-    carts: any[];
+    carts: CartWithProduct[];
     handleDelete: (cartId: number) => void;
     handleUpdateQuantity: (cartId: number, operation: "increment" | "decrement") => void;
 }

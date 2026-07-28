@@ -143,10 +143,10 @@ export async function POST(req: Request) {
     if (raw) {
       try {
         arr = JSON.parse(raw);
-      } catch (err) {
+      } catch {
         try {
           arr = JSON.parse(decodeURIComponent(raw));
-        } catch (err2) {
+        } catch {
           arr = [];
         }
       }
